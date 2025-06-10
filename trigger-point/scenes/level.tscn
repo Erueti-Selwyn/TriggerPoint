@@ -10,6 +10,7 @@ albedo_color = Color(0.377919, 0.377919, 0.377919, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_2s6tp"]
 material = SubResource("StandardMaterial3D_fhc4a")
 flip_faces = true
+size = Vector3(10, 3.5, 8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4r8r"]
 albedo_color = Color(0.33363, 0.186561, 0.0174108, 1)
@@ -22,7 +23,7 @@ albedo_color = Color(0.695503, 0.695503, 0.695503, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_eanyj"]
 material = SubResource("StandardMaterial3D_y5ny2")
-size = Vector3(0.5, 1, 1.5)
+size = Vector3(0.4, 1, 1.25)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qt43v"]
 
@@ -39,39 +40,38 @@ ssao_enabled = true
 [node name="environment" type="Node3D" parent="."]
 
 [node name="Walls" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(10, 0, 0, 0, 4, 0, 0, 0, 8, 0, 0, 0)
 mesh = SubResource("BoxMesh_2s6tp")
 skeleton = NodePath("../..")
 
 [node name="Table" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(3, 0, 0, 0, 0.2, 0, 0, 0, 4, 0, -0.62749, 0)
+transform = Transform3D(3, 0, 0, 0, 0.2, 0, 0, 0, 4, -0.253035, -0.62749, 0)
 mesh = SubResource("BoxMesh_b6db7")
 skeleton = NodePath("../..")
 
 [node name="TableLeg1" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(0.2, 0, 0, 0, 2, 0, 0, 0, 0.2, 1.39937, -1.62309, -1.87408)
+transform = Transform3D(0.2, 0, 0, 0, 2, 0, 0, 0, 0.2, 1.14633, -1.62309, -1.87408)
 mesh = SubResource("BoxMesh_b6db7")
 skeleton = NodePath("../..")
 
 [node name="TableLeg2" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(0.2, 0, 0, 0, 2, 0, 0, 0, 0.2, 1.39937, -1.62309, 1.87731)
+transform = Transform3D(0.2, 0, 0, 0, 2, 0, 0, 0, 0.2, 1.14633, -1.62309, 1.87731)
 mesh = SubResource("BoxMesh_b6db7")
 skeleton = NodePath("../..")
 
 [node name="Scoreboard" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6463, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.334499, 1.60219, 0)
 mesh = SubResource("BoxMesh_eanyj")
 skeleton = NodePath("../..")
 
 [node name="Label3D" type="Label3D" parent="environment/Scoreboard"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.251728, -0.224112, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.251728, -0.313023, 0)
 text = "0        0"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_c2ie3")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="WorldEnvironment"]
-transform = Transform3D(1, 0, 0, 0, -0.0511507, 0.998691, 0, -0.998691, -0.0511507, 0, 1.29795, -0.134119)
+transform = Transform3D(1, 0, 0, 0, -0.0511507, 0.998691, 0, -0.998691, -0.0511507, -0.322684, 1.62516, -0.00738534)
 light_size = 0.505
 shadow_enabled = true
 shadow_blur = 0.7
@@ -79,7 +79,7 @@ distance_fade_begin = 0.0
 distance_fade_shadow = 463.74
 
 [node name="player" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.757, 0.778, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.46047, 0.551631, 0)
 script = ExtResource("1_n4l56")
 camera = NodePath("Camera3D")
 rotation_down = Vector3(-0.802328, 1.5708, -4.5217e-08)
@@ -96,7 +96,7 @@ transform = Transform3D(1.39849, 0, -0.542437, 0, 1.5, 0, 0.542437, 0, 1.39849, 
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7671, -0.430131, 1.07481)
 
 [node name="item2" parent="." instance=ExtResource("3_nlqmw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7671, -0.430131, -0.00810206)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.714235, -0.430131, -0.00810206)
 
 [node name="item3" parent="." instance=ExtResource("3_nlqmw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7671, -0.430131, -0.95162)

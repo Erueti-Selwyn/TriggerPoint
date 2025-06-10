@@ -27,7 +27,7 @@ material = ExtResource("1_osj7j")
 size = Vector3(0.03, 0.1, 0.1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_obg6w"]
-size = Vector3(0.10083, 0.243652, 1.12207)
+size = Vector3(0.250671, 0.102173, 1.1499)
 
 [node name="gun" type="Node3D" node_paths=PackedStringArray("meshes")]
 script = ExtResource("1_dgpo4")
@@ -64,5 +64,5 @@ skeleton = NodePath("../..")
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.000854492, -0.0568848, -0.0610352)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.000305212, -0.0610047, -0.0749513)
 shape = SubResource("BoxShape3D_obg6w")

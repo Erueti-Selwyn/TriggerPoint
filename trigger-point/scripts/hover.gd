@@ -6,7 +6,6 @@ var meshes_rest_position : Vector3
 var target_position : Vector3
 func _ready():
 	meshes_rest_position = meshes.global_position
-	print(meshes_rest_position)
 func hover():
 	target_position = Vector3(meshes.global_position.x, (meshes_rest_position.y + hover_amount), meshes.global_position.z)
 func unhover():

@@ -8,7 +8,6 @@ var target_rotation : Vector3
 var current_hover_object
 var new_hover_object
 	
-var mouse = Vector2()
 const DIST = 1000
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,9 +22,13 @@ func check_mouse_position(mouse:Vector2):
 	params.to = end
 	
 	var raycast_result = space.intersect_ray(params)
-	
+	if 
 	if raycast_result.is_empty()==false:
 		new_hover_object = raycast_result.collider.get_parent()
+		if current_hover_object  != new_hover_object:
+			if current_hover_object and current_hover_object.has_method("unhover"):
+					current_hover_object.unhover()
+					current_hover_object = null
 		current_hover_object = new_hover_object
 		if new_hover_object and new_hover_object.has_method("hover"):
 			new_hover_object.hover()
@@ -35,7 +38,7 @@ func check_mouse_position(mouse:Vector2):
 				current_hover_object = null
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	check_mouse_position(get_viewport().get_mouse_position())
 		
 	if Input.is_action_just_pressed("move_up"):
