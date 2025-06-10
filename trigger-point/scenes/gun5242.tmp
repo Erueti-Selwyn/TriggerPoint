@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://ceb6ofvqj7cmc"]
 
-[ext_resource type="Script" path="res://scripts/hover.gd" id="1_dgpo4"]
+[ext_resource type="Script" path="res://scenes/hover.gd" id="1_dgpo4"]
 [ext_resource type="Material" uid="uid://3lch7v5shrtq" path="res://materials/basic_gun_material.tres" id="1_osj7j"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_p4iel"]
@@ -32,6 +32,7 @@ size = Vector3(0.10083, 0.243652, 1.12207)
 [node name="gun" type="Node3D" node_paths=PackedStringArray("meshes")]
 script = ExtResource("1_dgpo4")
 meshes = NodePath("mesh")
+lerp_speed = 100.0
 
 [node name="mesh" type="Node3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)

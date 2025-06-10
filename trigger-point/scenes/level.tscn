@@ -1,6 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=13 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_n4l56"]
+[ext_resource type="PackedScene" uid="uid://ceb6ofvqj7cmc" path="res://scenes/gun.tscn" id="2_b7xvn"]
+[ext_resource type="PackedScene" uid="uid://8atn3drcbqn" path="res://scenes/item.tscn" id="3_nlqmw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fhc4a"]
 albedo_color = Color(0.377919, 0.377919, 0.377919, 1)
@@ -30,6 +32,7 @@ sky_material = SubResource("ProceduralSkyMaterial_qt43v")
 [sub_resource type="Environment" id="Environment_c2ie3"]
 background_mode = 2
 sky = SubResource("Sky_c3pm3")
+ssao_enabled = true
 
 [node name="level" type="Node3D"]
 
@@ -61,18 +64,19 @@ mesh = SubResource("BoxMesh_eanyj")
 skeleton = NodePath("../..")
 
 [node name="Label3D" type="Label3D" parent="environment/Scoreboard"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.524977, -0.224112, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.251728, -0.224112, 0)
 text = "0        0"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_c2ie3")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="WorldEnvironment"]
-transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 1.29795, 0)
-light_energy = 5.364
-light_indirect_energy = 8.111
-light_volumetric_fog_energy = 5.04
-light_size = 0.647
+transform = Transform3D(1, 0, 0, 0, -0.0511507, 0.998691, 0, -0.998691, -0.0511507, 0, 1.29795, -0.134119)
+light_size = 0.505
+shadow_enabled = true
+shadow_blur = 0.7
+distance_fade_begin = 0.0
+distance_fade_shadow = 463.74
 
 [node name="player" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.757, 0.778, 0)
@@ -84,3 +88,15 @@ camera_lerp_speed = 7
 
 [node name="Camera3D" type="Camera3D" parent="player"]
 transform = Transform3D(-0.000203653, -0.0998334, 0.995004, 0, 0.995004, 0.0998334, -1, 2.03314e-05, -0.000202636, 0, 0, 0)
+
+[node name="gun" parent="." instance=ExtResource("2_b7xvn")]
+transform = Transform3D(1.39849, 0, -0.542437, 0, 1.5, 0, 0.542437, 0, 1.39849, -0.29, -0.452, 0.068)
+
+[node name="item" parent="." instance=ExtResource("3_nlqmw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7671, -0.430131, 1.07481)
+
+[node name="item2" parent="." instance=ExtResource("3_nlqmw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7671, -0.430131, -0.00810206)
+
+[node name="item3" parent="." instance=ExtResource("3_nlqmw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7671, -0.430131, -0.95162)
