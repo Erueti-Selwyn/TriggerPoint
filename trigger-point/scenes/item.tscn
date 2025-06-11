@@ -1,6 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://8atn3drcbqn"]
+[gd_scene load_steps=8 format=3 uid="uid://8atn3drcbqn"]
 
-[ext_resource type="Script" path="res://scripts/hover.gd" id="1_i0pgf"]
+[ext_resource type="Script" path="res://scripts/item.gd" id="1_i0pgf"]
+[ext_resource type="Script" path="res://scripts/hover.gd" id="2_5r1j7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r5sgw"]
+size = Vector3(0.201721, 0.271667, 0.202759)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nvbgp"]
 albedo_color = Color(0.441374, 0.10406, 0.491223, 1)
@@ -16,26 +20,23 @@ albedo_color = Color(0.454524, 0.454524, 0.454524, 1)
 material = SubResource("StandardMaterial3D_pye23")
 size = Vector3(0.1, 0.1, 0.1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_r5sgw"]
-size = Vector3(0.201721, 0.271667, 0.202759)
-
-[node name="item" type="Node3D" node_paths=PackedStringArray("meshes")]
+[node name="item" type="StaticBody3D" groups=["item"]]
 script = ExtResource("1_i0pgf")
-meshes = NodePath("meshes")
 
-[node name="meshes" type="Node3D" parent="."]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="meshes"]
-mesh = SubResource("BoxMesh_f4xhm")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="meshes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.117162, 0)
-mesh = SubResource("BoxMesh_pr4ta")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000396729, 0.0342102, 0.000915527)
 shape = SubResource("BoxShape3D_r5sgw")
+
+[node name="mesh" type="Node3D" parent="." node_paths=PackedStringArray("meshes", "parent")]
+script = ExtResource("2_5r1j7")
+meshes = NodePath(".")
+parent = NodePath("..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh"]
+mesh = SubResource("BoxMesh_f4xhm")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.117162, 0)
+mesh = SubResource("BoxMesh_pr4ta")
+skeleton = NodePath("")
