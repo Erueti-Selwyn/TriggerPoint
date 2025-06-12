@@ -17,7 +17,11 @@ func _physics_process(delta):
 	else:
 		target_position = meshes_rest_position
 	if target_position:
-		if parent.has_method("gun_hover"):
-			parent.gun_hover(target_position)
+		if parent.has_method("get_hover_status"):
+			if parent.get_hover_status():
+				meshes.global_position = meshes.global_position.lerp(target_position, clamp(delta * lerp_speed, 0.0, 1.0))
+			else:
+				meshes.global_position = meshes.global_position.lerp(parent.global_position, clamp(delta * lerp_speed, 0.0, 1.0))
+
 		else:
 			meshes.global_position = meshes.global_position.lerp(target_position, clamp(delta * lerp_speed, 0.0, 1.0))

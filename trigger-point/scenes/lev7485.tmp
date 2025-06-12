@@ -127,7 +127,7 @@ shadow_blur = 0.7
 distance_fade_begin = 0.0
 distance_fade_shadow = 463.74
 
-[node name="player" type="Node3D" parent="." node_paths=PackedStringArray("debug_label_1", "debug_label_2", "debug_label_3", "camera", "held_item_pos", "gun_node", "item_pos_1", "item_pos_2", "item_pos_3")]
+[node name="player" type="Node3D" parent="." node_paths=PackedStringArray("debug_label_1", "debug_label_2", "debug_label_3", "camera", "held_item_pos", "gun_node", "item_pos_1", "item_pos_2", "item_pos_3", "shoot_enemy_pos", "shoot_self_pos")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.46047, 0.551631, 0)
 script = ExtResource("1_n4l56")
 debug_label_1 = NodePath("Control/HBoxContainer/VBoxContainer/Label")
@@ -139,10 +139,12 @@ rotation_up = Vector3(-0.1, 1.571, 0)
 camera_lerp_speed = 7
 item_lerp_speed = 0.1
 held_item_pos = NodePath("HeldItemPos")
-gun_node = NodePath("shotgun_basic")
+gun_node = NodePath("../shotgun_basic")
 item_pos_1 = NodePath("../ItemPos1")
 item_pos_2 = NodePath("../ItemPos2")
 item_pos_3 = NodePath("../ItemPos3")
+shoot_enemy_pos = NodePath("GunShootEnemyPos")
+shoot_self_pos = NodePath("GunShootSelfPos")
 
 [node name="Camera3D" type="Camera3D" parent="player"]
 transform = Transform3D(-0.000203653, -0.0998334, 0.995004, 0, 0.995004, 0.0998334, -1, 2.03314e-05, -0.000202636, 0, 0, 0)
@@ -174,10 +176,16 @@ layout_mode = 2
 text = "Test"
 
 [node name="HeldItemPos" type="Node3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56104, -0.504808, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56104, -0.323774, 0)
 
-[node name="shotgun_basic" parent="player" groups=["gun"] instance=ExtResource("4_u86ou")]
-transform = Transform3D(-6.22869e-08, -1.42496, -0.468502, 1.5, -6.55671e-08, 8.29045e-16, -2.04789e-08, -0.468502, 1.42496, -1.64874, -0.974043, 0)
+[node name="GunShootEnemyPos" type="Node3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34253, -0.323774, 0)
+
+[node name="GunShootSelfPos" type="Node3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0591, -0.323774, 0)
+
+[node name="shotgun_basic" parent="." groups=["gun"] instance=ExtResource("4_u86ou")]
+transform = Transform3D(-5.53601e-08, -1.26649, -0.80374, 1.5, -6.55671e-08, 0, -3.51326e-08, -0.80374, 1.26649, -0.562461, -0.454402, 0.117487)
 
 [node name="ItemPos1" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.52749, -1.2002)
