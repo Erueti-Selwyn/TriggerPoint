@@ -17,9 +17,16 @@ var potion_scene = preload("res://scenes/item.tscn")
 @export var item_lerp_speed : float
 @export var held_item_pos : Node3D
 @export var gun_node : Node
+@export var shoot_self_transform : Node3D
+@export var shoot_enemy_transform : Node3D
+var shoot_target_transform : Node3D
 @export var item_pos_1 : Node3D
 @export var item_pos_2 : Node3D
 @export var item_pos_3 : Node3D
+
+var ammo_left : int
+
+var item_pos_array : Array
 var target_rotation : Vector3
 var current_hover_object : Node
 var previous_hover_mesh : Node
@@ -39,6 +46,10 @@ func _ready() -> void:
 	is_shooting = false
 	target_rotation = rotation_up
 	inventory.append({"name": "gun", "id": gun_node,"in_hand": false})
+	item_pos_array.append(item_pos_1)
+	item_pos_array.append(item_pos_2)
+	item_pos_array.append(item_pos_3)
+	print(item_pos_array)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -62,16 +73,20 @@ func _process(_delta: float) -> void:
 	
 func _physics_process(delta: float) -> void:
 	camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
+	if is_shooting:
+		gun_node.global_position = gun_node.global_position.lerp(shoot_target_transform.global_position, item_lerp_speed)
+		gun_node.rotation = gun_node.rotation.lerp(shoot_target_transform.rotation, item_lerp_speed)
+	else:
+		for item in inventory:
+			if item["in_hand"] == true:
+				var current_held_item = item["id"]
+				if current_held_item.has_method("cant_hover"):
+					current_held_item.cant_hover()
+				toggle_child_collision(current_held_item, true)
+				current_held_item.global_position = current_held_item.global_position.lerp(held_item_pos.global_position, item_lerp_speed)
+				current_held_item.rotation = current_held_item.rotation.lerp(Vector3(0,0,0), item_lerp_speed)
 	for item in inventory:
-		if item["in_hand"] == true:
-			var current_held_item = item["id"]
-			if current_held_item.has_method("cant_hover"):
-				current_held_item.cant_hover()
-			toggle_child_collision(current_held_item, true)
-			current_held_item.global_position = current_held_item.global_position.lerp(held_item_pos.global_position, item_lerp_speed)
-			current_held_item.rotation = current_held_item.rotation.lerp(Vector3(0,0,0), item_lerp_speed)
-	for item in inventory:
-		if item["in_hand"] == false and item.has("name") and item["name"] == "gun":
+		if is_shooting == false and item["in_hand"] == false and item.has("name") and item["name"] == "gun":
 			var item_not_in_hand = item["id"]
 			if item_not_in_hand.has_method("can_hover"):
 				item_not_in_hand.can_hover()
@@ -82,26 +97,11 @@ func _physics_process(delta: float) -> void:
 				item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_return_location, item_lerp_speed)
 				item_not_in_hand.rotation = item_not_in_hand.rotation.lerp(item_return_rotation, item_lerp_speed)
 		if item["in_hand"] == false and item.has("inventory_slot") and item["inventory_slot"]:
-			if item.has("inventory_slot") and item["inventory_slot"] == 1:
-				var item_not_in_hand = item["id"]
-				if item_not_in_hand.has_method("can_hover"):
-					item_not_in_hand.can_hover()
-				toggle_child_collision(item_not_in_hand, false)
-				item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_pos_1.global_position, item_lerp_speed)
-			if item.has("inventory_slot") and item["inventory_slot"] == 2:
-				var item_not_in_hand = item["id"]
-				if item_not_in_hand.has_method("can_hover"):
-					item_not_in_hand.can_hover()
-				toggle_child_collision(item_not_in_hand, false)
-				item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_pos_2.global_position, item_lerp_speed)
-			if item.has("inventory_slot") and item["inventory_slot"] == 3:
-				var item_not_in_hand = item["id"]
-				if item_not_in_hand.has_method("can_hover"):
-					item_not_in_hand.can_hover()
-				for child in item_not_in_hand.get_children():
-					if child is CollisionShape3D:
-						child.disabled = false
-				item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_pos_3.global_position, item_lerp_speed)
+			var item_not_in_hand = item["id"]
+			if item_not_in_hand.has_method("can_hover"):
+				item_not_in_hand.can_hover()
+			toggle_child_collision(item_not_in_hand, false)
+			item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_pos_array[item["inventory_slot"]-1].global_position, item_lerp_speed)
 
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
@@ -162,8 +162,10 @@ func click():
 		for item in inventory:
 			if item.has("name") and item["name"] == "gun" and item.has("in_hand") and item["in_hand"] == true: 
 				if current_hover_object.is_in_group("enemy_button"):
+					shoot_target_transform = shoot_enemy_transform
 					is_shooting = true
 				elif current_hover_object.is_in_group("self_button"):
+					shoot_target_transform = shoot_self_transform
 					is_shooting = true
 
 func drop_item():
