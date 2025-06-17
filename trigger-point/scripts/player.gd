@@ -8,6 +8,7 @@ extends Node3D
 
 # ASSETS
 var potion_scene = preload("res://scenes/item.tscn")
+var blood_splatter_particle = preload("res://scenes/blood_splatter_particle.tscn")
 # ASSETS
 
 @export var camera : Node3D
@@ -24,7 +25,10 @@ var shoot_target_transform : Node3D
 @export var item_pos_2 : Node3D
 @export var item_pos_3 : Node3D
 
-var ammo_left : int
+var max_ammo_in_chamber : int
+var loaded_bullets_array : Array
+var blank_shots : int
+var live_shots : int
 
 var item_pos_array : Array
 var target_rotation : Vector3
@@ -43,6 +47,8 @@ const DIST = 1000
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	max_ammo_in_chamber = 6
+	reload()
 	is_shooting = false
 	target_rotation = rotation_up
 	inventory.append({"name": "gun", "id": gun_node,"in_hand": false})
@@ -53,6 +59,10 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	live_shots = loaded_bullets_array.count(true)
+	blank_shots = loaded_bullets_array.count(false)
+	debug_label_2.text = ("loaded bullets: " + str(loaded_bullets_array))
+	debug_label_3.text = ("Bullet Count - LIVE : " + str(live_shots) + " - BLANK : " + str(blank_shots) + " - is_shooting : " + str(is_shooting))
 	check_mouse_position(get_viewport().get_mouse_position())
 	
 	if Input.is_action_just_pressed("move_up"):
@@ -71,6 +81,8 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("escape"):
 		drop_item()
 	
+	if Input.is_action_just_pressed("reload"):
+		reload()
 func _physics_process(delta: float) -> void:
 	camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
 	if is_shooting:
@@ -117,7 +129,7 @@ func check_mouse_position(mouse:Vector2):
 	params.to = end
 	
 	var raycast_result = space.intersect_ray(params)
-	if raycast_result.is_empty()==false:
+	if raycast_result.is_empty()==false and is_shooting == false:
 		current_hover_mesh = find_hover_script(raycast_result.collider)
 		current_hover_object = raycast_result.collider
 		if previous_hover_mesh  != current_hover_mesh:
@@ -161,14 +173,43 @@ func click():
 					item["in_hand"] = true
 		for item in inventory:
 			if item.has("name") and item["name"] == "gun" and item.has("in_hand") and item["in_hand"] == true: 
-				if current_hover_object.is_in_group("enemy_button"):
-					shoot_target_transform = shoot_enemy_transform
-					is_shooting = true
-				elif current_hover_object.is_in_group("self_button"):
-					shoot_target_transform = shoot_self_transform
-					is_shooting = true
+				if loaded_bullets_array.size() > 0:
+					if current_hover_object.is_in_group("enemy_button"):
+						shoot(shoot_enemy_transform)
+					elif current_hover_object.is_in_group("self_button"):
+						shoot(shoot_self_transform)
 
 func drop_item():
+	is_shooting = false
 	for item in inventory:
 		if item["in_hand"] == true:
 			item["in_hand"] = false
+
+func shoot(target : Node3D):
+	is_shooting = true
+	shoot_target_transform = target
+	# Checks if bullet was live or blank
+	await get_tree().create_timer(1).timeout
+	if loaded_bullets_array[0] == true:
+		print("shot live")
+		var blood = blood_splatter_particle.instantiate()
+		add_child(blood)
+		blood.global_position = target.global_position
+		blood.emitting = true
+	else:
+		print("shot blank")
+	loaded_bullets_array.remove_at(0)
+	# Waits for animation to finish
+	# Add animation later
+	await get_tree().create_timer(1).timeout
+	is_shooting = false
+
+func reload():
+	if is_shooting == false:
+		loaded_bullets_array = []
+		for i in range(max_ammo_in_chamber):
+			var rand = randi_range(1, 2)
+			if rand == 1:
+				loaded_bullets_array.append(true)
+			else:
+				loaded_bullets_array.append(false)

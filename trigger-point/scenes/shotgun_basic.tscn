@@ -15,7 +15,7 @@ size = Vector3(0.1, 0.1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_e8t5k"]
 material = SubResource("StandardMaterial3D_hlgio")
-size = Vector3(0.1, 0.3, 0.1)
+size = Vector3(0.075, 0.3, 0.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_v2up0"]
 material = ExtResource("2_n5lfe")
