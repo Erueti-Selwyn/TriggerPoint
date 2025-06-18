@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_n4l56"]
-[ext_resource type="Script" path="res://scripts/hover.gd" id="4_41lvv"]
+[ext_resource type="PackedScene" uid="uid://5t6fyl18fw6r" path="res://scenes/enemy.tscn" id="4_hgh7a"]
 [ext_resource type="PackedScene" uid="uid://dqeky53dj2eb4" path="res://scenes/shotgun_basic.tscn" id="4_u86ou"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6bif5"]
@@ -56,10 +56,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.713442, -0.500362, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000854492, -0.00134277, 7.62939e-05)
 shape = SubResource("BoxShape3D_6bif5")
 
-[node name="mesh" type="Node3D" parent="Buttons/Self" node_paths=PackedStringArray("meshes", "parent")]
-script = ExtResource("4_41lvv")
-meshes = NodePath(".")
-parent = NodePath("..")
+[node name="mesh" type="Node3D" parent="Buttons/Self"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Buttons/Self/mesh"]
 mesh = SubResource("BoxMesh_1u31m")
@@ -72,10 +69,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.28778, -0.500362, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000854492, -0.00134277, 7.62939e-05)
 shape = SubResource("BoxShape3D_6bif5")
 
-[node name="mesh" type="Node3D" parent="Buttons/Enemy" node_paths=PackedStringArray("meshes", "parent")]
-script = ExtResource("4_41lvv")
-meshes = NodePath(".")
-parent = NodePath("..")
+[node name="mesh" type="Node3D" parent="Buttons/Enemy"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Buttons/Enemy/mesh"]
 mesh = SubResource("BoxMesh_1u31m")
@@ -196,3 +190,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.228817, -0.52749, -1.2002)
 
 [node name="ItemPos3" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.531447, -0.52749, -1.2002)
+
+[node name="enemy" parent="." instance=ExtResource("4_hgh7a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34313, 0.519592, 0)

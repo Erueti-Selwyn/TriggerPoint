@@ -9,6 +9,7 @@ extends Node3D
 # ASSETS
 var potion_scene = preload("res://scenes/item.tscn")
 var blood_splatter_particle = preload("res://scenes/blood_splatter_particle.tscn")
+var bullet_scene = preload("res://scenes/bullet.tscn")
 # ASSETS
 
 @export var camera : Node3D
@@ -42,11 +43,15 @@ var inventory : Array = []
 var item_count : int
 
 var is_shooting : bool
+var turn_number : int
+var is_players_turn : bool
+# For Mouse Hovering
 const DIST = 1000
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	is_players_turn = true
 	max_ammo_in_chamber = 6
 	reload()
 	is_shooting = false
@@ -83,6 +88,8 @@ func _process(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("reload"):
 		reload()
+
+
 func _physics_process(delta: float) -> void:
 	camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
 	if is_shooting:
@@ -115,10 +122,12 @@ func _physics_process(delta: float) -> void:
 			toggle_child_collision(item_not_in_hand, false)
 			item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_pos_array[item["inventory_slot"]-1].global_position, item_lerp_speed)
 
+
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			click()
+
 
 func check_mouse_position(mouse:Vector2):
 	var space = get_world_3d().direct_space_state
@@ -145,6 +154,7 @@ func check_mouse_position(mouse:Vector2):
 				previous_hover_mesh = null
 				current_hover_object = null
 
+
 func find_hover_script(node):
 	if node.has_method("hover"):
 		return node
@@ -154,13 +164,15 @@ func find_hover_script(node):
 			return hover_node
 	return null
 
-func toggle_child_collision(object, condition):
+
+func toggle_child_collision(object : Node, condition : bool):
 	for child in object.get_children():
 					if child is CollisionShape3D:
 						child.disabled = condition
 
+
 func click():
-	if current_hover_object:
+	if current_hover_object and is_shooting == false:
 		if current_hover_object.is_in_group("gun"):
 			for item in inventory:
 				if item.has("name") and item["name"] == "gun":
@@ -179,13 +191,16 @@ func click():
 					elif current_hover_object.is_in_group("self_button"):
 						shoot(shoot_self_transform)
 
+
 func drop_item():
 	is_shooting = false
 	for item in inventory:
 		if item["in_hand"] == true:
 			item["in_hand"] = false
 
+
 func shoot(target : Node3D):
+	is_players_turn = false
 	is_shooting = true
 	shoot_target_transform = target
 	# Checks if bullet was live or blank
@@ -194,7 +209,7 @@ func shoot(target : Node3D):
 		print("shot live")
 		var blood = blood_splatter_particle.instantiate()
 		add_child(blood)
-		blood.global_position = target.global_position
+		blood.global_position = Vector3(target.global_position.x, target.global_position.y + 0.2, target.global_position.z)
 		blood.emitting = true
 	else:
 		print("shot blank")
@@ -204,8 +219,10 @@ func shoot(target : Node3D):
 	await get_tree().create_timer(1).timeout
 	is_shooting = false
 
+
 func reload():
 	if is_shooting == false:
+		is_players_turn = false
 		loaded_bullets_array = []
 		for i in range(max_ammo_in_chamber):
 			var rand = randi_range(1, 2)
@@ -213,3 +230,31 @@ func reload():
 				loaded_bullets_array.append(true)
 			else:
 				loaded_bullets_array.append(false)
+		show_loaded_bullets()
+
+
+func show_loaded_bullets():
+	for i in range(loaded_bullets_array.size()):
+		var item_number = float(i)
+		if loaded_bullets_array[i] == true:
+			var bullet = bullet_scene.instantiate()
+			add_child(bullet)
+			print(inventory)
+			var mesh = bullet.get_node("MeshInstance3D")
+			var base_mat = mesh.get_active_material(0)
+			var mat = base_mat.duplicate()
+			mat.albedo_color = Color(1, 0, 0)
+			mesh.set_surface_override_material(0, mat)
+			bullet.global_position = Vector3(held_item_pos.global_position.x, held_item_pos.global_position.y, held_item_pos.global_position.z - (item_number/4))
+		else:
+			var bullet = bullet_scene.instantiate()
+			add_child(bullet)
+			print(inventory)
+			var mesh = bullet.get_node("MeshInstance3D")
+			var base_mat = mesh.get_active_material(0)
+			var mat = base_mat.duplicate()
+			mat.albedo_color = Color(0, 0, 1)
+			mesh.set_surface_override_material(0, mat)
+			bullet.global_position = Vector3(held_item_pos.global_position.x, held_item_pos.global_position.y, held_item_pos.global_position.z - (item_number/4))
+	await get_tree().create_timer(3).timeout
+	is_players_turn = true
