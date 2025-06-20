@@ -4,6 +4,7 @@ extends Node3D
 @export var debug_label_1 : Label
 @export var debug_label_2 : Label
 @export var debug_label_3 : Label
+@export var debug_label_4 : Label
 # DEBUG STUFF
 
 # ASSETS
@@ -19,7 +20,7 @@ var bullet_scene = preload("res://scenes/bullet.tscn")
 @export var item_lerp_speed : float
 @export var held_item_pos : Node3D
 @export var gun_node : Node
-@export var shoot_self_transform : Node3D
+@export var shoot_player_transform : Node3D
 @export var shoot_enemy_transform : Node3D
 var shoot_target_transform : Node3D
 @export var item_pos_1 : Node3D
@@ -51,7 +52,7 @@ const DIST = 1000
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	is_players_turn = true
+	start_player_turn()
 	max_ammo_in_chamber = 6
 	reload()
 	is_shooting = false
@@ -68,6 +69,7 @@ func _process(_delta: float) -> void:
 	blank_shots = loaded_bullets_array.count(false)
 	debug_label_2.text = ("loaded bullets: " + str(loaded_bullets_array))
 	debug_label_3.text = ("Bullet Count - LIVE : " + str(live_shots) + " - BLANK : " + str(blank_shots) + " - is_shooting : " + str(is_shooting))
+	debug_label_4.text = ("is_players_turn: " + str(is_players_turn) + " - is_shooting: " + str(is_shooting))
 	check_mouse_position(get_viewport().get_mouse_position())
 	
 	if Input.is_action_just_pressed("move_up"):
@@ -138,7 +140,7 @@ func check_mouse_position(mouse:Vector2):
 	params.to = end
 	
 	var raycast_result = space.intersect_ray(params)
-	if raycast_result.is_empty()==false and is_shooting == false:
+	if raycast_result.is_empty()==false and is_shooting == false and is_players_turn == true:
 		current_hover_mesh = find_hover_script(raycast_result.collider)
 		current_hover_object = raycast_result.collider
 		if previous_hover_mesh  != current_hover_mesh:
@@ -172,7 +174,7 @@ func toggle_child_collision(object : Node, condition : bool):
 
 
 func click():
-	if current_hover_object and is_shooting == false:
+	if current_hover_object and is_shooting == false and is_players_turn == true:
 		if current_hover_object.is_in_group("gun"):
 			for item in inventory:
 				if item.has("name") and item["name"] == "gun":
@@ -187,9 +189,9 @@ func click():
 			if item.has("name") and item["name"] == "gun" and item.has("in_hand") and item["in_hand"] == true: 
 				if loaded_bullets_array.size() > 0:
 					if current_hover_object.is_in_group("enemy_button"):
-						shoot(shoot_enemy_transform)
-					elif current_hover_object.is_in_group("self_button"):
-						shoot(shoot_self_transform)
+						player_shoot("enemy", shoot_enemy_transform)
+					elif current_hover_object.is_in_group("player_button"):
+						player_shoot("player", shoot_player_transform)
 
 
 func drop_item():
@@ -199,30 +201,71 @@ func drop_item():
 			item["in_hand"] = false
 
 
-func shoot(target : Node3D):
-	is_players_turn = false
+func player_shoot(target_name : String, player_shoot_target : Node3D):
+	drop_item()
+	# Checks if turn continues
+	var is_live_bullet = await shoot_gun(player_shoot_target)
+	if target_name == "player":
+		if is_live_bullet == true:
+			print("player shot themself")
+			end_players_turn()
+			start_enemy_turn()
+		else:
+			print("player blanked themself")
+	if target_name == "enemy":
+		if is_live_bullet == true:
+			print("player shot enemy")
+		else:
+			print("player blanked enemy")
+		end_players_turn()
+		start_enemy_turn()
+
+
+func enemy_shoot(target_name : String, enemy_shoot_target : Node3D):
+	var is_live_bullet = await shoot_gun(enemy_shoot_target)
+	if target_name == "enemy":
+		if is_live_bullet == true:
+			print("enemy shot itself")
+			start_player_turn()
+		else:
+			print("enemy blanked itself")
+			start_enemy_turn()
+	if target_name == "player":
+		if is_live_bullet == true:
+			print("enemy shot player")
+		else:
+			print("enemy blanked player")
+		start_player_turn()
+
+func shoot_gun(target : Node3D):
+	print("gun shoots")
 	is_shooting = true
 	shoot_target_transform = target
 	# Checks if bullet was live or blank
 	await get_tree().create_timer(1).timeout
+	var is_live_bullets
 	if loaded_bullets_array[0] == true:
-		print("shot live")
+		gun_node.play_sound_shot()
+		end_players_turn()
 		var blood = blood_splatter_particle.instantiate()
 		add_child(blood)
-		blood.global_position = Vector3(target.global_position.x, target.global_position.y + 0.2, target.global_position.z)
+		blood.global_position = Vector3(target.global_position.x, target.global_position.y + 0.4, target.global_position.z)
 		blood.emitting = true
+		is_live_bullets = true
 	else:
-		print("shot blank")
+		gun_node.play_sound_click()
+		is_live_bullets = false
 	loaded_bullets_array.remove_at(0)
 	# Waits for animation to finish
 	# Add animation later
 	await get_tree().create_timer(1).timeout
+	gun_node.play_sound_cock()
 	is_shooting = false
+	return(is_live_bullets)
 
 
 func reload():
 	if is_shooting == false:
-		is_players_turn = false
 		loaded_bullets_array = []
 		for i in range(max_ammo_in_chamber):
 			var rand = randi_range(1, 2)
@@ -231,30 +274,53 @@ func reload():
 			else:
 				loaded_bullets_array.append(false)
 		show_loaded_bullets()
+		start_player_turn()
 
 
 func show_loaded_bullets():
+	var bullet_obj_array : Array
 	for i in range(loaded_bullets_array.size()):
 		var item_number = float(i)
 		if loaded_bullets_array[i] == true:
 			var bullet = bullet_scene.instantiate()
 			add_child(bullet)
-			print(inventory)
 			var mesh = bullet.get_node("MeshInstance3D")
 			var base_mat = mesh.get_active_material(0)
 			var mat = base_mat.duplicate()
 			mat.albedo_color = Color(1, 0, 0)
 			mesh.set_surface_override_material(0, mat)
 			bullet.global_position = Vector3(held_item_pos.global_position.x, held_item_pos.global_position.y, held_item_pos.global_position.z - (item_number/4))
+			bullet_obj_array.append(bullet)
 		else:
 			var bullet = bullet_scene.instantiate()
 			add_child(bullet)
-			print(inventory)
 			var mesh = bullet.get_node("MeshInstance3D")
 			var base_mat = mesh.get_active_material(0)
 			var mat = base_mat.duplicate()
 			mat.albedo_color = Color(0, 0, 1)
 			mesh.set_surface_override_material(0, mat)
 			bullet.global_position = Vector3(held_item_pos.global_position.x, held_item_pos.global_position.y, held_item_pos.global_position.z - (item_number/4))
+			bullet_obj_array.append(bullet)
 	await get_tree().create_timer(3).timeout
+	print(bullet_obj_array)
+	start_player_turn()
+
+
+func start_player_turn():
 	is_players_turn = true
+
+
+func end_players_turn():
+	is_players_turn = false
+
+
+func start_enemy_turn():
+	await get_tree().create_timer(1).timeout
+	var rand = randi_range(1, 2)
+	if loaded_bullets_array.size() > 0:
+		if rand == 1:
+			# Enemy shoots self
+			enemy_shoot("enemy", shoot_enemy_transform)
+		elif rand == 2:
+			# Enemy shoots you
+			enemy_shoot("player", shoot_player_transform)

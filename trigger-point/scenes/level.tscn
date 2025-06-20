@@ -49,7 +49,7 @@ volumetric_fog_density = 0.3132
 
 [node name="Buttons" type="Node3D" parent="."]
 
-[node name="Self" type="StaticBody3D" parent="Buttons" groups=["self_button"]]
+[node name="Self" type="StaticBody3D" parent="Buttons" groups=["player_button"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.713442, -0.500362, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Buttons/Self"]
@@ -121,12 +121,13 @@ shadow_blur = 0.7
 distance_fade_begin = 0.0
 distance_fade_shadow = 463.74
 
-[node name="player" type="Node3D" parent="." node_paths=PackedStringArray("debug_label_1", "debug_label_2", "debug_label_3", "camera", "held_item_pos", "gun_node", "shoot_self_transform", "shoot_enemy_transform", "item_pos_1", "item_pos_2", "item_pos_3")]
+[node name="player" type="Node3D" parent="." node_paths=PackedStringArray("debug_label_1", "debug_label_2", "debug_label_3", "debug_label_4", "camera", "held_item_pos", "gun_node", "shoot_player_transform", "shoot_enemy_transform", "item_pos_1", "item_pos_2", "item_pos_3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53788, 0.709774, 0)
 script = ExtResource("1_n4l56")
 debug_label_1 = NodePath("Control/HBoxContainer/VBoxContainer/Label")
 debug_label_2 = NodePath("Control/HBoxContainer/VBoxContainer/Label2")
 debug_label_3 = NodePath("Control/HBoxContainer/VBoxContainer/Label3")
+debug_label_4 = NodePath("Control/HBoxContainer/VBoxContainer/Label4")
 camera = NodePath("Camera3D")
 rotation_down = Vector3(-0.802328, 1.5708, -4.5217e-08)
 rotation_up = Vector3(-0.1, 1.571, 0)
@@ -134,7 +135,7 @@ camera_lerp_speed = 7
 item_lerp_speed = 0.1
 held_item_pos = NodePath("HeldItemPos")
 gun_node = NodePath("shotgun_basic")
-shoot_self_transform = NodePath("ShootSelfPos")
+shoot_player_transform = NodePath("ShootPlayerPos")
 shoot_enemy_transform = NodePath("ShootEnemyPos")
 item_pos_1 = NodePath("../ItemPos1")
 item_pos_2 = NodePath("../ItemPos2")
@@ -142,6 +143,9 @@ item_pos_3 = NodePath("../ItemPos3")
 
 [node name="Camera3D" type="Camera3D" parent="player"]
 transform = Transform3D(-0.000203653, -0.0998334, 0.995004, 0, 0.995004, 0.0998334, -1, 2.03314e-05, -0.000202636, 0, 0, 0)
+
+[node name="AudioListener3D" type="AudioListener3D" parent="player/Camera3D"]
+transform = Transform3D(-0.000203653, 1.81899e-12, -1, -0.0998334, 0.995004, 2.03314e-05, 0.995004, 0.0998334, -0.000202636, 0, 0, 0)
 
 [node name="Control" type="Control" parent="player"]
 layout_mode = 3
@@ -170,13 +174,16 @@ text = "Test"
 layout_mode = 2
 text = "Test"
 
+[node name="Label4" type="Label" parent="player/Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
 [node name="HeldItemPos" type="Node3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85879, -0.505, 0)
 
 [node name="shotgun_basic" parent="player" groups=["gun"] instance=ExtResource("4_u86ou")]
 transform = Transform3D(-4.1572e-08, -0.951057, -0.309017, 1, -4.37114e-08, 0, -1.35076e-08, -0.309017, 0.951057, -1.88322, -1.15957, 0)
 
-[node name="ShootSelfPos" type="Node3D" parent="player"]
+[node name="ShootPlayerPos" type="Node3D" parent="player"]
 transform = Transform3D(-1.44542e-08, -0.962142, 0.272549, -4.20566e-08, 0.272549, 0.962142, -1, 2.44449e-09, -4.44039e-08, -0.238717, -0.586385, 0)
 
 [node name="ShootEnemyPos" type="Node3D" parent="player"]
