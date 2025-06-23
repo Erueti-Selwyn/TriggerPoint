@@ -1,6 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=20 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_n4l56"]
+[ext_resource type="Material" uid="uid://caifagdwplekp" path="res://materials/light_glow_material.tres" id="1_ul5kl"]
+[ext_resource type="Material" uid="uid://cwf16nuwia0pi" path="res://materials/light_off_material.tres" id="2_5vhkd"]
 [ext_resource type="PackedScene" uid="uid://5t6fyl18fw6r" path="res://scenes/enemy.tscn" id="4_hgh7a"]
 [ext_resource type="PackedScene" uid="uid://dqeky53dj2eb4" path="res://scenes/shotgun_basic.tscn" id="4_u86ou"]
 
@@ -34,6 +36,14 @@ albedo_color = Color(0.695503, 0.695503, 0.695503, 1)
 material = SubResource("StandardMaterial3D_y5ny2")
 size = Vector3(0.4, 1, 1.25)
 
+[sub_resource type="BoxMesh" id="BoxMesh_cdjr3"]
+material = ExtResource("1_ul5kl")
+size = Vector3(0.1, 0.1, 4.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dy2m4"]
+material = ExtResource("2_5vhkd")
+size = Vector3(0.1, 0.1, 4.1)
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qt43v"]
 
 [sub_resource type="Sky" id="Sky_c3pm3"]
@@ -41,6 +51,7 @@ sky_material = SubResource("ProceduralSkyMaterial_qt43v")
 
 [sub_resource type="Environment" id="Environment_c2ie3"]
 background_mode = 2
+background_energy_multiplier = 0.7
 sky = SubResource("Sky_c3pm3")
 ssao_enabled = true
 volumetric_fog_density = 0.3132
@@ -110,6 +121,14 @@ skeleton = NodePath("../..")
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.251728, -0.313023, 0)
 text = "0        0"
 
+[node name="player_turn_indicator" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.21661, -0.544179, 0)
+mesh = SubResource("BoxMesh_cdjr3")
+
+[node name="enemy_turn_indicator" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.74148, -0.544, 0)
+mesh = SubResource("BoxMesh_dy2m4")
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_c2ie3")
 
@@ -145,7 +164,7 @@ item_pos_3 = NodePath("../ItemPos3")
 transform = Transform3D(-0.000203653, -0.0998334, 0.995004, 0, 0.995004, 0.0998334, -1, 2.03314e-05, -0.000202636, 0, 0, 0)
 
 [node name="AudioListener3D" type="AudioListener3D" parent="player/Camera3D"]
-transform = Transform3D(-0.000203653, 1.81899e-12, -1, -0.0998334, 0.995004, 2.03314e-05, 0.995004, 0.0998334, -0.000202636, 0, 0, 0)
+current = true
 
 [node name="Control" type="Control" parent="player"]
 layout_mode = 3

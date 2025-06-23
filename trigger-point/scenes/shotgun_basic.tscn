@@ -1,10 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://dqeky53dj2eb4"]
 
 [ext_resource type="Script" path="res://scripts/gun.gd" id="1_5mget"]
-[ext_resource type="AudioStream" uid="uid://cpvq2chi20c0q" path="res://sound/empty_gun_shot.wav" id="2_j2hdh"]
 [ext_resource type="Material" uid="uid://3lch7v5shrtq" path="res://materials/basic_gun_material.tres" id="2_n5lfe"]
 [ext_resource type="Script" path="res://scripts/hover.gd" id="2_r6cfk"]
-[ext_resource type="AudioStream" uid="uid://bbawx6wuic8oq" path="res://sound/shotgun.wav" id="3_v7j4c"]
+[ext_resource type="AudioStream" uid="uid://wg8wpdwd52tp" path="res://sound/empty_trigger.wav" id="2_ymbx4"]
+[ext_resource type="AudioStream" uid="uid://brhmceet2qaaf" path="res://sound/single-pistol-gunshot.wav" id="3_5a085"]
 [ext_resource type="AudioStream" uid="uid://biop4yiiloc14" path="res://sound/shotgun_cocking.wav" id="4_d3vsv"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_77q44"]
@@ -43,13 +43,22 @@ audio_player_shot = NodePath("AudioStreamPlayer3DShot")
 audio_player_shotgun_cocking = NodePath("AudioStreamPlayer3DCocking")
 
 [node name="AudioStreamPlayer3DEmpty" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("2_j2hdh")
+stream = ExtResource("2_ymbx4")
+pitch_scale = 0.39
+panning_strength = 0.0
 
 [node name="AudioStreamPlayer3DShot" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("3_v7j4c")
+stream = ExtResource("3_5a085")
+volume_db = -30.0
+pitch_scale = 0.7
+panning_strength = 0.0
 
 [node name="AudioStreamPlayer3DCocking" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("4_d3vsv")
+volume_db = -20.0
+max_db = 0.0
+pitch_scale = 0.7
+panning_strength = 0.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00107193, -0.0529937, -0.0724259)

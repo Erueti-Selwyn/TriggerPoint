@@ -123,7 +123,8 @@ func _physics_process(delta: float) -> void:
 				item_not_in_hand.can_hover()
 			toggle_child_collision(item_not_in_hand, false)
 			item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_pos_array[item["inventory_slot"]-1].global_position, item_lerp_speed)
-
+	
+	
 
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
@@ -279,9 +280,9 @@ func reload():
 
 func show_loaded_bullets():
 	var bullet_obj_array : Array
-	for i in range(loaded_bullets_array.size()):
-		var item_number = float(i)
-		if loaded_bullets_array[i] == true:
+	for item in range(loaded_bullets_array.size()):
+		var item_number = float(item)
+		if loaded_bullets_array[item] == true:
 			var bullet = bullet_scene.instantiate()
 			add_child(bullet)
 			var mesh = bullet.get_node("MeshInstance3D")
@@ -302,7 +303,8 @@ func show_loaded_bullets():
 			bullet.global_position = Vector3(held_item_pos.global_position.x, held_item_pos.global_position.y, held_item_pos.global_position.z - (item_number/4))
 			bullet_obj_array.append(bullet)
 	await get_tree().create_timer(3).timeout
-	print(bullet_obj_array)
+	for item in bullet_obj_array:
+		item.queue_free()
 	start_player_turn()
 
 
