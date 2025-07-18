@@ -8,14 +8,15 @@ extends Node3D
 # DEBUG STUFF
 
 # ASSETS
-var potion_scene = preload("res://scenes/item.tscn")
+var potion_scene = preload("res://scenes/item/item.tscn")
+var peek_item_scene = preload("res://scenes/item/peek_item.tscn")
 var blood_splatter_particle = preload("res://scenes/blood_splatter_particle.tscn")
 var bullet_scene = preload("res://scenes/bullet.tscn")
 # ASSETS
 
 @export var camera : Node3D
-@export var rotation_down : Vector3
-@export var rotation_up : Vector3
+@export var rotation_look_up : Vector3
+@export var rotation_look_down : Vector3
 @export var camera_lerp_speed : int
 @export var item_lerp_speed : float
 @export var held_item_pos : Node3D
@@ -26,6 +27,15 @@ var shoot_target_transform : Node3D
 @export var item_pos_1 : Node3D
 @export var item_pos_2 : Node3D
 @export var item_pos_3 : Node3D
+@export var item_pos_4 : Node3D
+@export var live_bullet_pos : Node3D
+@export var blank_bullet_pos : Node3D
+
+@export var player_turn_light : MeshInstance3D
+@export var enemy_turn_light : MeshInstance3D
+
+@onready var light_on_mat = preload("res://materials/light_glow_material.tres")
+@onready var light_off_mat = preload("res://materials/light_off_material.tres")
 
 var max_ammo_in_chamber : int
 var loaded_bullets_array : Array
@@ -43,24 +53,35 @@ var held_item : Node
 var inventory : Array = []
 var item_count : int
 
-var is_shooting : bool
 var turn_number : int
 var is_players_turn : bool
 # For Mouse Hovering
 const DIST = 1000
 
+enum GameState {WAITING, PLAYERTURN, ENEMYTURN, SHOOTING, PLAYERITEM, ENEMYITEM, RELOADING, SHOPING, GAMEOVER}
+const GameStateNames = {
+	GameState.WAITING: "WAITING",
+	GameState.PLAYERTURN: "PLAYERTURN",
+	GameState.ENEMYTURN: "ENEMYTURN",
+	GameState.SHOOTING: "SHOOTING",
+	GameState.PLAYERITEM: "PLAYERITEM",
+	GameState.ENEMYITEM: "ENEMYITEM",
+	GameState.RELOADING: "RELOADING",
+	GameState.SHOPING: "SHOPING",
+	GameState.GAMEOVER: "GAMEOVER",
+}
+var game_state : GameState
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	start_player_turn()
-	max_ammo_in_chamber = 6
+	game_state = GameState.WAITING
 	reload()
-	is_shooting = false
-	target_rotation = rotation_up
-	inventory.append({"name": "gun", "id": gun_node,"in_hand": false})
+	target_rotation = rotation_look_up
+	inventory.append({"name": "gun", "id": gun_node,"in_hand": false, "original_pos": gun_node.global_position, "original_rot": gun_node.rotation})
 	item_pos_array.append(item_pos_1)
 	item_pos_array.append(item_pos_2)
 	item_pos_array.append(item_pos_3)
+	item_pos_array.append(item_pos_4)
 	print(item_pos_array)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -68,21 +89,26 @@ func _process(_delta: float) -> void:
 	live_shots = loaded_bullets_array.count(true)
 	blank_shots = loaded_bullets_array.count(false)
 	debug_label_2.text = ("loaded bullets: " + str(loaded_bullets_array))
-	debug_label_3.text = ("Bullet Count - LIVE : " + str(live_shots) + " - BLANK : " + str(blank_shots) + " - is_shooting : " + str(is_shooting))
-	debug_label_4.text = ("is_players_turn: " + str(is_players_turn) + " - is_shooting: " + str(is_shooting))
+	debug_label_3.text = ("Bullet Count - LIVE : " + str(live_shots) + " - BLANK : " + str(blank_shots))
+	debug_label_4.text = ("Game State: " + GameStateNames[game_state])
 	check_mouse_position(get_viewport().get_mouse_position())
 	
 	if Input.is_action_just_pressed("move_up"):
-		target_rotation = rotation_up
+		target_rotation = rotation_look_up
 	elif Input.is_action_just_pressed("move_down"):
-		target_rotation = rotation_down
+		target_rotation = rotation_look_down
 	if Input.is_action_just_pressed("add_item"):
-		if inventory.size() <= 3:
-			var new_item = potion_scene.instantiate()
+		if inventory.size() <= item_pos_array.size() and game_state == GameState.PLAYERTURN:
+			var rand = randi_range(1, 2)
+			var new_item
+			if rand == 1:
+				new_item = potion_scene.instantiate()
+			else:
+				new_item = peek_item_scene.instantiate()
 			var level_node = get_tree().get_current_scene()
 			level_node.add_child(new_item)
 			item_count = inventory.size()
-			inventory.append({"id": new_item, "type": "purple", "in_hand": false, "inventory_slot": item_count})
+			inventory.append({"id": new_item, "type": "purple", "in_hand": false, "inventory_slot": item_count, "original_pos": new_item.global_position, "original_rot": new_item.rotation})
 	debug_label_1.text = str(inventory)
 	
 	if Input.is_action_just_pressed("escape"):
@@ -94,7 +120,7 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
-	if is_shooting:
+	if game_state == GameState.SHOOTING:
 		gun_node.global_position = gun_node.global_position.lerp(shoot_target_transform.global_position, item_lerp_speed)
 		gun_node.rotation = gun_node.rotation.lerp(shoot_target_transform.rotation, item_lerp_speed)
 	else:
@@ -107,24 +133,32 @@ func _physics_process(delta: float) -> void:
 				current_held_item.global_position = current_held_item.global_position.lerp(held_item_pos.global_position, item_lerp_speed)
 				current_held_item.rotation = current_held_item.rotation.lerp(Vector3(0,0,0), item_lerp_speed)
 	for item in inventory:
-		if is_shooting == false and item["in_hand"] == false and item.has("name") and item["name"] == "gun":
+		if game_state != GameState.SHOOTING and item["in_hand"] == false and item.has("name") and item["name"] == "gun":
 			var item_not_in_hand = item["id"]
 			if item_not_in_hand.has_method("can_hover"):
 				item_not_in_hand.can_hover()
 				toggle_child_collision(item_not_in_hand, false)
-			if item_not_in_hand is Node and item_not_in_hand.has_method("get_rest_pos") and item_not_in_hand.has_method("get_rest_rot"):
-				var item_return_location = item_not_in_hand.get_rest_pos()
-				var item_return_rotation = item_not_in_hand.get_rest_rot()
+			if item_not_in_hand is Node:
+				var item_return_location = item["original_pos"]
+				var item_return_rotation = item["original_rot"]
 				item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_return_location, item_lerp_speed)
 				item_not_in_hand.rotation = item_not_in_hand.rotation.lerp(item_return_rotation, item_lerp_speed)
 		if item["in_hand"] == false and item.has("inventory_slot") and item["inventory_slot"]:
 			var item_not_in_hand = item["id"]
+			var item_return_rotation = item["original_rot"]
 			if item_not_in_hand.has_method("can_hover"):
 				item_not_in_hand.can_hover()
 			toggle_child_collision(item_not_in_hand, false)
 			item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_pos_array[item["inventory_slot"]-1].global_position, item_lerp_speed)
-	
-	
+			item_not_in_hand.rotation = item_not_in_hand.rotation.lerp(item_return_rotation, item_lerp_speed)
+
+	if game_state == GameState.PLAYERTURN:
+		player_turn_light.mesh.surface_set_material(0, light_on_mat)
+		enemy_turn_light.mesh.surface_set_material(0, light_off_mat)
+	if game_state == GameState.ENEMYTURN:
+		enemy_turn_light.mesh.surface_set_material(0, light_on_mat)
+		player_turn_light.mesh.surface_set_material(0, light_off_mat)
+
 
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
@@ -141,7 +175,7 @@ func check_mouse_position(mouse:Vector2):
 	params.to = end
 	
 	var raycast_result = space.intersect_ray(params)
-	if raycast_result.is_empty()==false and is_shooting == false and is_players_turn == true:
+	if raycast_result.is_empty() == false and game_state == GameState.PLAYERTURN:
 		current_hover_mesh = find_hover_script(raycast_result.collider)
 		current_hover_object = raycast_result.collider
 		if previous_hover_mesh  != current_hover_mesh:
@@ -175,7 +209,7 @@ func toggle_child_collision(object : Node, condition : bool):
 
 
 func click():
-	if current_hover_object and is_shooting == false and is_players_turn == true:
+	if current_hover_object and game_state != GameState.SHOOTING and game_state == GameState.PLAYERTURN:
 		if current_hover_object.is_in_group("gun"):
 			for item in inventory:
 				if item.has("name") and item["name"] == "gun":
@@ -196,7 +230,6 @@ func click():
 
 
 func drop_item():
-	is_shooting = false
 	for item in inventory:
 		if item["in_hand"] == true:
 			item["in_hand"] = false
@@ -208,17 +241,10 @@ func player_shoot(target_name : String, player_shoot_target : Node3D):
 	var is_live_bullet = await shoot_gun(player_shoot_target)
 	if target_name == "player":
 		if is_live_bullet == true:
-			print("player shot themself")
-			end_players_turn()
 			start_enemy_turn()
 		else:
-			print("player blanked themself")
+			game_state = GameState.PLAYERTURN
 	if target_name == "enemy":
-		if is_live_bullet == true:
-			print("player shot enemy")
-		else:
-			print("player blanked enemy")
-		end_players_turn()
 		start_enemy_turn()
 
 
@@ -227,7 +253,7 @@ func enemy_shoot(target_name : String, enemy_shoot_target : Node3D):
 	if target_name == "enemy":
 		if is_live_bullet == true:
 			print("enemy shot itself")
-			start_player_turn()
+			game_state = GameState.PLAYERTURN
 		else:
 			print("enemy blanked itself")
 			start_enemy_turn()
@@ -236,18 +262,17 @@ func enemy_shoot(target_name : String, enemy_shoot_target : Node3D):
 			print("enemy shot player")
 		else:
 			print("enemy blanked player")
-		start_player_turn()
+		game_state = GameState.PLAYERTURN
 
 func shoot_gun(target : Node3D):
 	print("gun shoots")
-	is_shooting = true
+	game_state = GameState.SHOOTING
 	shoot_target_transform = target
 	# Checks if bullet was live or blank
 	await get_tree().create_timer(1).timeout
 	var is_live_bullets
 	if loaded_bullets_array[0] == true:
 		gun_node.play_sound_shot()
-		end_players_turn()
 		var blood = blood_splatter_particle.instantiate()
 		add_child(blood)
 		blood.global_position = Vector3(target.global_position.x, target.global_position.y + 0.4, target.global_position.z)
@@ -261,12 +286,13 @@ func shoot_gun(target : Node3D):
 	# Add animation later
 	await get_tree().create_timer(1).timeout
 	gun_node.play_sound_cock()
-	is_shooting = false
 	return(is_live_bullets)
 
 
 func reload():
-	if is_shooting == false:
+	if game_state != GameState.SHOOTING:
+		game_state = GameState.RELOADING
+		max_ammo_in_chamber = randi_range(4,6)
 		loaded_bullets_array = []
 		for i in range(max_ammo_in_chamber):
 			var rand = randi_range(1, 2)
@@ -275,14 +301,16 @@ func reload():
 			else:
 				loaded_bullets_array.append(false)
 		show_loaded_bullets()
-		start_player_turn()
 
 
 func show_loaded_bullets():
+	var current_live_bullet_count : int = 0
+	var current_blank_bullet_count : int = 0
 	var bullet_obj_array : Array
+	# Shows loaded bullets in order
 	for item in range(loaded_bullets_array.size()):
-		var item_number = float(item)
 		if loaded_bullets_array[item] == true:
+			current_live_bullet_count += 1
 			var bullet = bullet_scene.instantiate()
 			add_child(bullet)
 			var mesh = bullet.get_node("MeshInstance3D")
@@ -290,9 +318,11 @@ func show_loaded_bullets():
 			var mat = base_mat.duplicate()
 			mat.albedo_color = Color(1, 0, 0)
 			mesh.set_surface_override_material(0, mat)
-			bullet.global_position = Vector3(held_item_pos.global_position.x, held_item_pos.global_position.y, held_item_pos.global_position.z - (item_number/4))
+			bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y + 0.1, live_bullet_pos.global_position.z - (float(current_live_bullet_count)/4))
+			bullet.rotation = Vector3(0, 0, deg_to_rad(90))
 			bullet_obj_array.append(bullet)
 		else:
+			current_blank_bullet_count += 1
 			var bullet = bullet_scene.instantiate()
 			add_child(bullet)
 			var mesh = bullet.get_node("MeshInstance3D")
@@ -300,23 +330,20 @@ func show_loaded_bullets():
 			var mat = base_mat.duplicate()
 			mat.albedo_color = Color(0, 0, 1)
 			mesh.set_surface_override_material(0, mat)
-			bullet.global_position = Vector3(held_item_pos.global_position.x, held_item_pos.global_position.y, held_item_pos.global_position.z - (item_number/4))
+			bullet.global_position = Vector3(blank_bullet_pos.global_position.x, blank_bullet_pos.global_position.y + 0.1, blank_bullet_pos.global_position.z + (float(current_blank_bullet_count)/4))
+			bullet.rotation = Vector3(0, 0, deg_to_rad(90))
 			bullet_obj_array.append(bullet)
+	
 	await get_tree().create_timer(3).timeout
 	for item in bullet_obj_array:
 		item.queue_free()
-	start_player_turn()
+	game_state = GameState.PLAYERTURN
 
 
-func start_player_turn():
-	is_players_turn = true
-
-
-func end_players_turn():
-	is_players_turn = false
 
 
 func start_enemy_turn():
+	game_state = GameState.ENEMYTURN
 	await get_tree().create_timer(1).timeout
 	var rand = randi_range(1, 2)
 	if loaded_bullets_array.size() > 0:

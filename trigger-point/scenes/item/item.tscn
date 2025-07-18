@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://8atn3drcbqn"]
 
-[ext_resource type="Script" path="res://scripts/item.gd" id="1_i0pgf"]
-[ext_resource type="Script" path="res://scripts/hover.gd" id="2_5r1j7"]
+[ext_resource type="Script" path="res://scripts/item.gd" id="1_1lber"]
+[ext_resource type="Script" path="res://scripts/hover.gd" id="2_kvk62"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_r5sgw"]
 size = Vector3(0.201721, 0.271667, 0.202759)
@@ -21,14 +21,14 @@ material = SubResource("StandardMaterial3D_pye23")
 size = Vector3(0.1, 0.1, 0.1)
 
 [node name="item" type="StaticBody3D" groups=["item"]]
-script = ExtResource("1_i0pgf")
+script = ExtResource("1_1lber")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000396729, 0.0342102, 0.000915527)
 shape = SubResource("BoxShape3D_r5sgw")
 
 [node name="mesh" type="Node3D" parent="." node_paths=PackedStringArray("meshes", "parent")]
-script = ExtResource("2_5r1j7")
+script = ExtResource("2_kvk62")
 meshes = NodePath(".")
 parent = NodePath("..")
 

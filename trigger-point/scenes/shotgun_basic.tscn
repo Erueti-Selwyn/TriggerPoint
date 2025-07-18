@@ -35,9 +35,8 @@ size = Vector3(0.05, 0.05, 0.1)
 material = ExtResource("2_n5lfe")
 size = Vector3(0.03, 0.1, 0.1)
 
-[node name="shotgun_basic" type="StaticBody3D" node_paths=PackedStringArray("meshes", "audio_player_empty", "audio_player_shot", "audio_player_shotgun_cocking")]
+[node name="shotgun_basic" type="StaticBody3D" node_paths=PackedStringArray("audio_player_empty", "audio_player_shot", "audio_player_shotgun_cocking")]
 script = ExtResource("1_5mget")
-meshes = NodePath("mesh")
 audio_player_empty = NodePath("AudioStreamPlayer3DEmpty")
 audio_player_shot = NodePath("AudioStreamPlayer3DShot")
 audio_player_shotgun_cocking = NodePath("AudioStreamPlayer3DCocking")
