@@ -121,76 +121,84 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	# Changes the rotation of camera to target rotation
 	camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
-	if game_state == GameState.SHOOTING:
-		gun_node.global_position = gun_node.global_position.lerp(shoot_target_transform.global_position, item_lerp_speed)
-		gun_node.rotation = gun_node.rotation.lerp(shoot_target_transform.rotation, item_lerp_speed)
-	else:
-		for item in inventory:
-			if item["in_hand"] == true:
-				var current_held_item = item["id"]
-				if current_held_item.has_method("cant_hover"):
-					current_held_item.cant_hover()
-				toggle_child_collision(current_held_item, true)
-				current_held_item.global_position = current_held_item.global_position.lerp(held_item_pos.global_position, item_lerp_speed)
-				current_held_item.rotation = current_held_item.rotation.lerp(Vector3(0,0,0), item_lerp_speed)
+	# Creates a var 
+	var item_in_hand
 	for item in inventory:
-		if game_state != GameState.SHOOTING and item["in_hand"] == false and item.has("name") and item["name"] == "gun":
-			var item_not_in_hand = item["id"]
-			if item_not_in_hand.has_method("can_hover"):
-				item_not_in_hand.can_hover()
-				toggle_child_collision(item_not_in_hand, false)
-			if item_not_in_hand is Node:
+		if item.get("in_hand", false) == true:
+			item_in_hand = item
+			break
+	# Putting gun at shooting position when shooting
+	if game_state == GameState.SHOOTING:
+		move_item_lerp(gun_node, shoot_target_transform.global_position, shoot_target_transform.rotation, item_lerp_speed)
+	else:
+		# Makes item in hand go to held item position
+		if item_in_hand:
+			var item_in_hand_id = item_in_hand["id"]
+			toggle_child_collision(item_in_hand_id, true)
+			move_item_lerp(item_in_hand_id, held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
+	for item in inventory:
+		# Returns gun to middle position on table
+		if game_state != GameState.SHOOTING and not item["in_hand"] and item.has("name") and item["name"] == "gun":
+			var gun_not_in_hand = item["id"]
+			toggle_child_collision(gun_not_in_hand, false)
+			# Make sure id is a node
+			if gun_not_in_hand is Node:
 				var item_return_location = item["original_pos"]
 				var item_return_rotation = item["original_rot"]
-				item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_return_location, item_lerp_speed)
-				item_not_in_hand.rotation = item_not_in_hand.rotation.lerp(item_return_rotation, item_lerp_speed)
-		if item["in_hand"] == false and item.has("inventory_slot") and item["inventory_slot"]:
+				# Moves gun to center
+				move_item_lerp(gun_not_in_hand, item_return_location, item_return_rotation, item_lerp_speed)
+		# Returns inventory items to the specified slot
+		if not item["in_hand"] and item.has("inventory_slot") and item["inventory_slot"]:
 			var item_not_in_hand = item["id"]
 			var item_return_rotation = item["original_rot"]
-			if item_not_in_hand.has_method("can_hover"):
-				item_not_in_hand.can_hover()
-			toggle_child_collision(item_not_in_hand, false)
-			item_not_in_hand.global_position = item_not_in_hand.global_position.lerp(item_pos_array[item["inventory_slot"]-1].global_position, item_lerp_speed)
-			item_not_in_hand.rotation = item_not_in_hand.rotation.lerp(item_return_rotation, item_lerp_speed)
+			# Make sure id is a node
+			if item_not_in_hand is Node:
+				toggle_child_collision(item_not_in_hand, false)
+				move_item_lerp(item_not_in_hand, item_pos_array[item["inventory_slot"]-1].global_position, item_return_rotation, item_lerp_speed)
 
+	# Changes material of light bar to show whos turn it is
 	if game_state == GameState.PLAYERTURN:
 		player_turn_light.mesh.surface_set_material(0, light_on_mat)
 		enemy_turn_light.mesh.surface_set_material(0, light_off_mat)
 	if game_state == GameState.ENEMYTURN:
 		enemy_turn_light.mesh.surface_set_material(0, light_on_mat)
 		player_turn_light.mesh.surface_set_material(0, light_off_mat)
-	for item in inventory:
-		if item.has("name") and item["name"] == "gun":
-			if item["in_hand"] == true and loaded_bullets_array.size() > 0:
-				shoot_player_label.visible = true
-				shoot_enemy_label.visible = true
-				shoot_player_label.text = "Shoot \nSelf"
-				shoot_enemy_label.text = "Shoot \nEnemy"
-				if game_state == GameState.PLAYERTURN and current_hover_object:
-					if current_hover_object.is_in_group("player_button"):
-						shoot_player_label.modulate = Color("ffffff")
-					else:
-						shoot_player_label.modulate = Color("adadad")
-					if current_hover_object.is_in_group("enemy_button"):
-						shoot_enemy_label.modulate = Color("ffffff")
-					else:
-						shoot_enemy_label.modulate = Color("adadad")
-				else:
-					shoot_player_label.modulate = Color("adadad")
-					shoot_enemy_label.modulate = Color("adadad")
-			else:
-				shoot_player_label.visible = false
-				shoot_enemy_label.visible = false
-		elif item.has("name") and item["name"] == "item":
-			if item["in_hand"] == true:
-				shoot_player_label.visible = true
-				shoot_enemy_label.visible = true
-				shoot_player_label.text = "Use item\non Self"
-				shoot_enemy_label.text = "Use item\non Enemy"
-			else:
-				shoot_player_label.visible = false
-				shoot_enemy_label.visible = false
+
+	# Changes the colour of the text on the table when hovering
+	if game_state == GameState.PLAYERTURN and current_hover_object:
+		if current_hover_object.is_in_group("player_button"):
+			shoot_player_label.modulate = Color("ffffff")
+		else:
+			shoot_player_label.modulate = Color("adadad")
+		if current_hover_object.is_in_group("enemy_button"):
+			shoot_enemy_label.modulate = Color("ffffff")
+		else:
+			shoot_enemy_label.modulate = Color("adadad")
+	else:
+		shoot_player_label.modulate = Color("adadad")
+		shoot_enemy_label.modulate = Color("adadad")
+
+	# Changes text on table depending on what is being held
+	if item_in_hand and item_in_hand["name"] == "gun" and loaded_bullets_array.size() > 0:
+		shoot_player_label.visible = true
+		shoot_enemy_label.visible = true
+		shoot_player_label.text = "Shoot \nSelf"
+		shoot_enemy_label.text = "Shoot \nEnemy"
+	elif item_in_hand and item_in_hand["name"] == "item":
+		shoot_player_label.visible = true
+		shoot_enemy_label.visible = true
+		shoot_player_label.text = "Use item\non Self"
+		shoot_enemy_label.text = "Use item\non Enemy"
+	else:
+		shoot_player_label.visible = false
+		shoot_enemy_label.visible = false
+
+func move_item_lerp(item_node: Node, pos: Vector3, rot: Vector3, speed:float):
+	item_node.global_position = item_node.global_position.lerp(pos, speed)
+	item_node.rotation = item_node.rotation.lerp(rot, speed)
+
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -300,7 +308,7 @@ func shoot_gun(target : Node3D):
 	game_state = GameState.SHOOTING
 	shoot_target_transform = target
 	# Checks if bullet was live or blank
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(2).timeout
 	var is_live_bullets
 	if loaded_bullets_array[0] == true:
 		gun_node.play_sound_shot()
