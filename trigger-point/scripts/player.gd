@@ -23,6 +23,8 @@ var bullet_scene = preload("res://scenes/bullet.tscn")
 @export var gun_node : Node
 @export var shoot_player_transform : Node3D
 @export var shoot_enemy_transform : Node3D
+@export var shoot_player_label : Label3D
+@export var shoot_enemy_label : Label3D
 var shoot_target_transform : Node3D
 @export var item_pos_1 : Node3D
 @export var item_pos_2 : Node3D
@@ -108,7 +110,7 @@ func _process(_delta: float) -> void:
 			var level_node = get_tree().get_current_scene()
 			level_node.add_child(new_item)
 			item_count = inventory.size()
-			inventory.append({"id": new_item, "type": "purple", "in_hand": false, "inventory_slot": item_count, "original_pos": new_item.global_position, "original_rot": new_item.rotation})
+			inventory.append({"name": "item","id": new_item, "type": "purple", "in_hand": false, "inventory_slot": item_count, "original_pos": new_item.global_position, "original_rot": new_item.rotation})
 	debug_label_1.text = str(inventory)
 	
 	if Input.is_action_just_pressed("escape"):
@@ -158,8 +160,37 @@ func _physics_process(delta: float) -> void:
 	if game_state == GameState.ENEMYTURN:
 		enemy_turn_light.mesh.surface_set_material(0, light_on_mat)
 		player_turn_light.mesh.surface_set_material(0, light_off_mat)
-
-
+	for item in inventory:
+		if item.has("name") and item["name"] == "gun":
+			if item["in_hand"] == true and loaded_bullets_array.size() > 0:
+				shoot_player_label.visible = true
+				shoot_enemy_label.visible = true
+				shoot_player_label.text = "Shoot \nSelf"
+				shoot_enemy_label.text = "Shoot \nEnemy"
+				if game_state == GameState.PLAYERTURN and current_hover_object:
+					if current_hover_object.is_in_group("player_button"):
+						shoot_player_label.modulate = Color("ffffff")
+					else:
+						shoot_player_label.modulate = Color("adadad")
+					if current_hover_object.is_in_group("enemy_button"):
+						shoot_enemy_label.modulate = Color("ffffff")
+					else:
+						shoot_enemy_label.modulate = Color("adadad")
+				else:
+					shoot_player_label.modulate = Color("adadad")
+					shoot_enemy_label.modulate = Color("adadad")
+			else:
+				shoot_player_label.visible = false
+				shoot_enemy_label.visible = false
+		elif item.has("name") and item["name"] == "item":
+			if item["in_hand"] == true:
+				shoot_player_label.visible = true
+				shoot_enemy_label.visible = true
+				shoot_player_label.text = "Use item\non Self"
+				shoot_enemy_label.text = "Use item\non Enemy"
+			else:
+				shoot_player_label.visible = false
+				shoot_enemy_label.visible = false
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
