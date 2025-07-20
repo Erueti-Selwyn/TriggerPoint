@@ -178,6 +178,7 @@ rotation_look_up = Vector3(-0.1, 1.571, 0)
 rotation_look_down = Vector3(-0.7475, 1.57107, -0.000167499)
 camera_lerp_speed = 7
 item_lerp_speed = 0.05
+gun_lerp_speed = 0.1
 held_item_pos = NodePath("PosNodes/HeldItemPos")
 gun_node = NodePath("shotgun_basic")
 shoot_player_transform = NodePath("PosNodes/ShootPlayerPos")
@@ -253,10 +254,10 @@ visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85879, -0.505, 0)
 
 [node name="LiveBulletPos" type="Node3D" parent="player/PosNodes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85879, -1.09609, 1.75927)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85879, -1.11668, 1.75927)
 
 [node name="BlankBulletPos" type="Node3D" parent="player/PosNodes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.859, -1.096, -1.759)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.859, -1.11668, -1.759)
 
 [node name="ShootPlayerPos" type="Node3D" parent="player/PosNodes"]
 transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.332145, 0.943228, -1, 2.44449e-09, -4.44039e-08, -0.238717, -0.551603, 0)

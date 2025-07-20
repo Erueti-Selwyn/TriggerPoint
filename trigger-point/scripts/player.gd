@@ -12,6 +12,7 @@ var one_health_item_scene = preload("res://scenes/item/one_health_item.tscn")
 var peek_item_scene = preload("res://scenes/item/peek_item.tscn")
 var shuffle_item_scene = preload("res://scenes/item/shuffle_item.tscn")
 var double_damage_item_scene = preload("res://scenes/item/double_damage_item.tscn")
+var remove_bullet_item_scene = preload("res://scenes/item/remove_bullet_item.tscn")
 var blood_splatter_particle = preload("res://scenes/blood_splatter_particle.tscn")
 var bullet_scene = preload("res://scenes/bullet.tscn")
 # ASSETS
@@ -21,6 +22,7 @@ var bullet_scene = preload("res://scenes/bullet.tscn")
 @export var rotation_look_down : Vector3
 @export var camera_lerp_speed : int
 @export var item_lerp_speed : float
+@export var gun_lerp_speed : float
 @export var held_item_pos : Node3D
 @export var gun_node : Node
 @export var shoot_player_transform : Node3D
@@ -62,6 +64,8 @@ var max_ammo_in_chamber : int
 var loaded_bullets_array : Array
 var blank_shots : int
 var live_shots : int
+var used_shells : int
+var used_shells_array : Array
 
 var target_rotation : Vector3
 var current_hover_object : Node
@@ -92,7 +96,7 @@ var game_state : GameState
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	item_scene_array = [one_health_item_scene, peek_item_scene, shuffle_item_scene, double_damage_item_scene]
+	item_scene_array = [one_health_item_scene, peek_item_scene, shuffle_item_scene, double_damage_item_scene, remove_bullet_item_scene]
 	game_state = GameState.WAITING
 	current_bullet_damage = 1
 	damage = current_bullet_damage
@@ -109,10 +113,10 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	live_shots = loaded_bullets_array.count(true)
 	blank_shots = loaded_bullets_array.count(false)
-	debug_label_1.text = str(inventory)
-	debug_label_2.text = ("loaded bullets: " + str(loaded_bullets_array))
-	debug_label_3.text = ("Bullet Count - LIVE : " + str(live_shots) + " - BLANK : " + str(blank_shots))
-	debug_label_4.text = ("Game State: " + GameStateNames[game_state])
+	#debug_label_1.text = str(inventory)
+	#debug_label_2.text = ("loaded bullets: " + str(loaded_bullets_array))
+	#debug_label_3.text = ("Bullet Count - LIVE : " + str(live_shots) + " - BLANK : " + str(blank_shots))
+	#debug_label_4.text = ("Game State: " + GameStateNames[game_state])
 	current_damage_label.text = ("Damage: " + str(damage))
 	if player_health <= 0 and not game_state == GameState.GAMEOVER:
 		player_health = 0
@@ -134,8 +138,8 @@ func _process(_delta: float) -> void:
 		target_rotation = rotation_look_up
 	elif Input.is_action_just_pressed("move_down"):
 		target_rotation = rotation_look_down
-	if Input.is_action_just_pressed("add_item"):
-		create_item()
+	#if Input.is_action_just_pressed("add_item"):
+	#	create_item()
 	if Input.is_action_just_pressed("escape"):
 		drop_item()
 	if Input.is_action_just_pressed("reload"):
@@ -188,7 +192,7 @@ func _physics_process(delta: float) -> void:
 			break
 	# Putting gun at shooting position when shooting
 	if game_state == GameState.SHOOTING:
-		gun_node.move_to(shoot_target_transform.global_position, shoot_target_transform.rotation, item_lerp_speed)
+		gun_node.move_to(shoot_target_transform.global_position, shoot_target_transform.rotation, gun_lerp_speed)
 	else:
 		# Makes item in hand go to held item position
 		if is_instance_valid(held_item) and held_item.in_hand:
@@ -275,9 +279,10 @@ func click():
 			for item in inventory:
 				if is_instance_valid(item) and item.in_hand:
 					game_state = GameState.USINGITEM
-					await item.use(self)
+					if not await item.use(self) == false:
+						destroy_item(item)
 					game_state = GameState.PLAYERTURN
-					destroy_item(item)
+					
 
 func drop_item():
 	for item in inventory:
@@ -312,7 +317,7 @@ func shoot_gun(target_name : String, target_node : Node3D):
 	game_state = GameState.SHOOTING
 	shoot_target_transform = target_node
 	# Checks if bullet was live or blank
-	await get_tree().create_timer(2, false).timeout
+	await get_tree().create_timer(1.5, false).timeout
 	var is_live_bullets
 	if loaded_bullets_array[0] == true:
 		gun_node.play_sound_shot()
@@ -335,6 +340,20 @@ func shoot_gun(target_name : String, target_node : Node3D):
 	# Add animation later
 	await get_tree().create_timer(1, false).timeout
 	gun_node.play_sound_cock()
+	var bullet = bullet_scene.instantiate()
+	add_child(bullet)
+	var mesh = bullet.get_node("MeshInstance3D")
+	var base_mat = mesh.get_active_material(0)
+	var mat = base_mat.duplicate()
+	if is_live_bullets:
+		mat.albedo_color = Color(1, 0, 0)
+	else:
+		mat.albedo_color = Color(0, 0, 1)
+	mesh.set_surface_override_material(0, mat)
+	bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y + 0.1, live_bullet_pos.global_position.z - (float(used_shells)/6))
+	bullet.rotation = Vector3(0, 0, deg_to_rad(90))
+	used_shells_array.append(bullet)
+	used_shells += 1
 	return(is_live_bullets)
 
 
@@ -367,7 +386,7 @@ func show_loaded_bullets():
 			var mat = base_mat.duplicate()
 			mat.albedo_color = Color(1, 0, 0)
 			mesh.set_surface_override_material(0, mat)
-			bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y + 0.1, live_bullet_pos.global_position.z - (float(current_live_bullet_count)/4))
+			bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y + 0.1, live_bullet_pos.global_position.z - (float(current_live_bullet_count)/6))
 			bullet.rotation = Vector3(0, 0, deg_to_rad(90))
 			bullet_obj_array.append(bullet)
 		else:
@@ -379,7 +398,7 @@ func show_loaded_bullets():
 			var mat = base_mat.duplicate()
 			mat.albedo_color = Color(0, 0, 1)
 			mesh.set_surface_override_material(0, mat)
-			bullet.global_position = Vector3(blank_bullet_pos.global_position.x, blank_bullet_pos.global_position.y + 0.1, blank_bullet_pos.global_position.z + (float(current_blank_bullet_count)/4))
+			bullet.global_position = Vector3(blank_bullet_pos.global_position.x, blank_bullet_pos.global_position.y + 0.1, blank_bullet_pos.global_position.z + (float(current_blank_bullet_count)/6))
 			bullet.rotation = Vector3(0, 0, deg_to_rad(90))
 			bullet_obj_array.append(bullet)
 	
