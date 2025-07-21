@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=20 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_n4l56"]
 [ext_resource type="Material" uid="uid://caifagdwplekp" path="res://materials/light_glow_material.tres" id="1_ul5kl"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dqeky53dj2eb4" path="res://scenes/shotgun_basic.tscn" id="4_u86ou"]
 [ext_resource type="PackedScene" uid="uid://nhela11xflxu" path="res://scenes/win_lose_screen.tscn" id="5_6jxoa"]
 [ext_resource type="PackedScene" uid="uid://boembsc3j8hr8" path="res://scenes/pause_menu.tscn" id="6_m3c2i"]
+[ext_resource type="PackedScene" uid="uid://caymdms4gu6ay" path="res://models/Dealing Table.gltf" id="8_36kv0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6bif5"]
 size = Vector3(0.397217, 0.400635, 0.555557)
@@ -18,15 +19,6 @@ albedo_color = Color(0.377919, 0.377919, 0.377919, 1)
 material = SubResource("StandardMaterial3D_fhc4a")
 flip_faces = true
 size = Vector3(10, 3.5, 8)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4r8r"]
-albedo_color = Color(0.33363, 0.186561, 0.0174108, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_b6db7"]
-material = SubResource("StandardMaterial3D_e4r8r")
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_x3wjk"]
-data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y5ny2"]
 albedo_color = Color(0.695503, 0.695503, 0.695503, 1)
@@ -112,26 +104,6 @@ font_size = 26
 mesh = SubResource("BoxMesh_2s6tp")
 skeleton = NodePath("../..")
 
-[node name="Table" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(3, 0, 0, 0, 0.2, 0, 0, 0, 4, -0.253035, -0.62749, 0)
-mesh = SubResource("BoxMesh_b6db7")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="environment/Table"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Table/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_x3wjk")
-
-[node name="TableLeg1" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(0.2, 0, 0, 0, 2, 0, 0, 0, 0.2, 1.14633, -1.62309, -1.87408)
-mesh = SubResource("BoxMesh_b6db7")
-skeleton = NodePath("../..")
-
-[node name="TableLeg2" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(0.2, 0, 0, 0, 2, 0, 0, 0, 0.2, 1.14633, -1.62309, 1.87731)
-mesh = SubResource("BoxMesh_b6db7")
-skeleton = NodePath("../..")
-
 [node name="Scoreboard" type="MeshInstance3D" parent="environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.334499, 1.60219, 0)
 mesh = SubResource("BoxMesh_eanyj")
@@ -148,12 +120,15 @@ text = "0
 "
 
 [node name="player_turn_indicator" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.21661, -0.544179, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.65, 0.0022018, -0.56523, 0)
 mesh = SubResource("BoxMesh_cdjr3")
 
 [node name="enemy_turn_indicator" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.74148, -0.544, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.65, -0.4587, -0.565, 0)
 mesh = SubResource("BoxMesh_dy2m4")
+
+[node name="Dealing Table" parent="environment" instance=ExtResource("8_36kv0")]
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, -0.225915, -2.26254, 0.00559485)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_c2ie3")
@@ -167,7 +142,7 @@ distance_fade_begin = 0.0
 distance_fade_shadow = 463.74
 
 [node name="player" type="Node3D" parent="." node_paths=PackedStringArray("debug_label_1", "debug_label_2", "debug_label_3", "debug_label_4", "camera", "held_item_pos", "gun_node", "shoot_player_transform", "shoot_enemy_transform", "item_pos_1", "item_pos_2", "item_pos_3", "item_pos_4", "live_bullet_pos", "blank_bullet_pos", "win_lose_screen", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53788, 0.589191, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.70125, 0.589191, 0)
 script = ExtResource("1_n4l56")
 debug_label_1 = NodePath("GUI/HBoxContainer/VBoxContainer/Debug1")
 debug_label_2 = NodePath("GUI/HBoxContainer/VBoxContainer/Debug2")
@@ -200,10 +175,11 @@ shoot_player_label = NodePath("../DiegeticUI/Self/ShootYourselfLabel")
 shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")
 
 [node name="shotgun_basic" parent="player" groups=["gun"] instance=ExtResource("4_u86ou")]
-transform = Transform3D(-4.1572e-08, -0.951057, -0.309017, 1, -4.37114e-08, 0, -1.35076e-08, -0.309017, 0.951057, -1.88322, -1.03899, 0)
+transform = Transform3D(-4.1572e-08, -0.951057, -0.309017, 1, -4.37114e-08, 0, -1.35076e-08, -0.309017, 0.951057, -2.60807, -1.03899, 0)
 
 [node name="Camera3D" type="Camera3D" parent="player"]
-transform = Transform3D(-0.000203653, -0.0998334, 0.995004, 0, 0.995004, 0.0998334, -1, 2.03314e-05, -0.000202636, 0, 0, 0)
+transform = Transform3D(-0.000203653, -0.0998334, 0.995004, 0, 0.995004, 0.0998334, -1, 2.03314e-05, -0.000202636, 0, 0.176598, 0)
+fov = 60.0
 
 [node name="AudioListener3D" type="AudioListener3D" parent="player/Camera3D"]
 current = true
@@ -263,7 +239,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.859, -1.11668, -1.759)
 transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.332145, 0.943228, -1, 2.44449e-09, -4.44039e-08, -0.238717, -0.551603, 0)
 
 [node name="ShootEnemyPos" type="Node3D" parent="player/PosNodes"]
-transform = Transform3D(9.61455e-08, 0.904187, -0.427137, 6.60682e-08, 0.427137, 0.904187, 1, -1.15154e-07, -1.86707e-08, -3.36363, -0.46249, 0.00628603)
+transform = Transform3D(9.61455e-08, 0.904187, -0.427137, 6.60682e-08, 0.427137, 0.904187, 1, -1.15154e-07, -1.86707e-08, -3.94821, -0.248106, 0.00628603)
 
 [node name="ItemPosNodes" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.785526, -0.52749, 1.0555)
@@ -280,4 +256,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000474036, 0.00049001, -1.6
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000474036, 0.00049001, -2.1115)
 
 [node name="enemy" parent="." instance=ExtResource("4_hgh7a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34313, 0.569011, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.49147, 0.569011, 0)
