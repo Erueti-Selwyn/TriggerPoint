@@ -67,33 +67,33 @@ font_size = 10
 
 [node name="level" type="Node3D"]
 
-[node name="Buttons" type="Node3D" parent="."]
+[node name="DiegeticUI" type="Node3D" parent="."]
 
-[node name="Self" type="StaticBody3D" parent="Buttons" groups=["player_button"]]
+[node name="Self" type="StaticBody3D" parent="DiegeticUI" groups=["player_button"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.395934, -0.500362, 0)
 
-[node name="ShootYourselfLabel" type="Label3D" parent="Buttons/Self"]
+[node name="ShootYourselfLabel" type="Label3D" parent="DiegeticUI/Self"]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0, 0)
 modulate = Color(0.678431, 0.678431, 0.678431, 1)
 text = "Shoot 
 Yourself"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Buttons/Self"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DiegeticUI/Self"]
 shape = SubResource("BoxShape3D_6bif5")
 
-[node name="Enemy" type="StaticBody3D" parent="Buttons" groups=["enemy_button"]]
+[node name="Enemy" type="StaticBody3D" parent="DiegeticUI" groups=["enemy_button"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.28778, -0.500362, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Buttons/Enemy"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DiegeticUI/Enemy"]
 shape = SubResource("BoxShape3D_6bif5")
 
-[node name="ShootEnemyLabel" type="Label3D" parent="Buttons/Enemy"]
+[node name="ShootEnemyLabel" type="Label3D" parent="DiegeticUI/Enemy"]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0, 0)
 modulate = Color(0.678431, 0.678431, 0.678431, 1)
 text = "Shoot 
 Enemy"
 
-[node name="ItemDescriptionLabel" type="Label3D" parent="Buttons"]
+[node name="ItemDescriptionLabel" type="Label3D" parent="DiegeticUI"]
 transform = Transform3D(-0.0139622, -0.999903, 0, -4.37071e-08, 6.10308e-10, 1, -0.999903, 0.0139622, -4.37114e-08, 0.910208, -0.5, 0)
 text = "Item
 Description"
@@ -101,7 +101,7 @@ font_size = 18
 autowrap_mode = 3
 width = 160.0
 
-[node name="CurrentDamage" type="Label3D" parent="Buttons"]
+[node name="CurrentDamage" type="Label3D" parent="DiegeticUI"]
 transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, 1, -1, 4.37114e-08, -4.37114e-08, -0.299191, -0.5, -1.26773)
 text = "Damage: 1"
 font_size = 26
@@ -190,14 +190,14 @@ item_pos_4 = NodePath("../ItemPosNodes/ItemPos4")
 live_bullet_pos = NodePath("PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("PosNodes/BlankBulletPos")
 win_lose_screen = NodePath("WinLoseScreen")
-current_damage_label = NodePath("../Buttons/CurrentDamage")
-held_item_description_label = NodePath("../Buttons/ItemDescriptionLabel")
+current_damage_label = NodePath("../DiegeticUI/CurrentDamage")
+held_item_description_label = NodePath("../DiegeticUI/ItemDescriptionLabel")
 player_score_label = NodePath("../environment/Scoreboard/PlayerScore")
 enemy_score_label = NodePath("../environment/Scoreboard/EnemyScore")
 player_turn_light = NodePath("../environment/player_turn_indicator")
 enemy_turn_light = NodePath("../environment/enemy_turn_indicator")
-shoot_player_label = NodePath("../Buttons/Self/ShootYourselfLabel")
-shoot_enemy_label = NodePath("../Buttons/Enemy/ShootEnemyLabel")
+shoot_player_label = NodePath("../DiegeticUI/Self/ShootYourselfLabel")
+shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")
 
 [node name="shotgun_basic" parent="player" groups=["gun"] instance=ExtResource("4_u86ou")]
 transform = Transform3D(-4.1572e-08, -0.951057, -0.309017, 1, -4.37114e-08, 0, -1.35076e-08, -0.309017, 0.951057, -1.88322, -1.03899, 0)
