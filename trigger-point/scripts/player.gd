@@ -277,7 +277,7 @@ func click():
 				player_shoot("player", shoot_player_transform)
 		elif current_hover_object.is_in_group("player_button") or current_hover_object.is_in_group("enemy_button"):
 			for item in inventory:
-				if is_instance_valid(item) and item.in_hand:
+				if is_instance_valid(item) and item.in_hand and item.type == "item":
 					game_state = GameState.USINGITEM
 					if not await item.use(self) == false:
 						destroy_item(item)
