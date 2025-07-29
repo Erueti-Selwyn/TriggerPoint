@@ -1,8 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=20 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_n4l56"]
 [ext_resource type="Material" uid="uid://caifagdwplekp" path="res://materials/light_glow_material.tres" id="1_ul5kl"]
 [ext_resource type="Material" uid="uid://cwf16nuwia0pi" path="res://materials/light_off_material.tres" id="2_5vhkd"]
+[ext_resource type="PackedScene" uid="uid://c5ibfkkncqgof" path="res://models/Dealing Table.glb" id="3_hdh8s"]
 [ext_resource type="PackedScene" uid="uid://5t6fyl18fw6r" path="res://scenes/enemy.tscn" id="4_hgh7a"]
 [ext_resource type="PackedScene" uid="uid://dqeky53dj2eb4" path="res://scenes/shotgun_basic.tscn" id="4_u86ou"]
 [ext_resource type="PackedScene" uid="uid://nhela11xflxu" path="res://scenes/win_lose_screen.tscn" id="5_6jxoa"]
@@ -18,15 +19,6 @@ albedo_color = Color(0.377919, 0.377919, 0.377919, 1)
 material = SubResource("StandardMaterial3D_fhc4a")
 flip_faces = true
 size = Vector3(10, 3.5, 8)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4r8r"]
-albedo_color = Color(0.33363, 0.186561, 0.0174108, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_b6db7"]
-material = SubResource("StandardMaterial3D_e4r8r")
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_x3wjk"]
-data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y5ny2"]
 albedo_color = Color(0.695503, 0.695503, 0.695503, 1)
@@ -112,26 +104,6 @@ font_size = 26
 mesh = SubResource("BoxMesh_2s6tp")
 skeleton = NodePath("../..")
 
-[node name="Table" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(3, 0, 0, 0, 0.2, 0, 0, 0, 4, -0.253035, -0.62749, 0)
-mesh = SubResource("BoxMesh_b6db7")
-skeleton = NodePath("../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="environment/Table"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Table/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_x3wjk")
-
-[node name="TableLeg1" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(0.2, 0, 0, 0, 2, 0, 0, 0, 0.2, 1.14633, -1.62309, -1.87408)
-mesh = SubResource("BoxMesh_b6db7")
-skeleton = NodePath("../..")
-
-[node name="TableLeg2" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(0.2, 0, 0, 0, 2, 0, 0, 0, 0.2, 1.14633, -1.62309, 1.87731)
-mesh = SubResource("BoxMesh_b6db7")
-skeleton = NodePath("../..")
-
 [node name="Scoreboard" type="MeshInstance3D" parent="environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.334499, 1.60219, 0)
 mesh = SubResource("BoxMesh_eanyj")
@@ -155,6 +127,9 @@ mesh = SubResource("BoxMesh_cdjr3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.74148, -0.544, 0)
 mesh = SubResource("BoxMesh_dy2m4")
 
+[node name="Dealing Table" parent="environment" instance=ExtResource("3_hdh8s")]
+transform = Transform3D(0.405, 0, 0, 0, 0.405, 0, 0, 0, 0.405, 0, -2.1131, 0)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_c2ie3")
 
@@ -167,7 +142,7 @@ distance_fade_begin = 0.0
 distance_fade_shadow = 463.74
 
 [node name="player" type="Node3D" parent="." node_paths=PackedStringArray("debug_label_1", "debug_label_2", "debug_label_3", "debug_label_4", "camera", "held_item_pos", "gun_node", "shoot_player_transform", "shoot_enemy_transform", "item_pos_1", "item_pos_2", "item_pos_3", "item_pos_4", "live_bullet_pos", "blank_bullet_pos", "win_lose_screen", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53788, 0.589191, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.75445, 0.589191, 0)
 script = ExtResource("1_n4l56")
 debug_label_1 = NodePath("GUI/HBoxContainer/VBoxContainer/Debug1")
 debug_label_2 = NodePath("GUI/HBoxContainer/VBoxContainer/Debug2")
@@ -204,6 +179,7 @@ transform = Transform3D(-4.1572e-08, -0.951057, -0.309017, 1, -4.37114e-08, 0, -
 
 [node name="Camera3D" type="Camera3D" parent="player"]
 transform = Transform3D(-0.000203653, -0.0998334, 0.995004, 0, 0.995004, 0.0998334, -1, 2.03314e-05, -0.000202636, 0, 0, 0)
+fov = 60.0
 
 [node name="AudioListener3D" type="AudioListener3D" parent="player/Camera3D"]
 current = true
