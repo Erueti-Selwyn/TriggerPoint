@@ -29,6 +29,7 @@ var bullet_scene = preload("res://scenes/bullet.tscn")
 @export var shoot_enemy_transform : Node3D
 
 var shoot_target_transform : Node3D
+@export var item_pos_nodes : Node3D
 @export var item_pos_1 : Node3D
 @export var item_pos_2 : Node3D
 @export var item_pos_3 : Node3D
@@ -51,6 +52,9 @@ var shoot_target_transform : Node3D
 @onready var light_off_mat = preload("res://materials/light_off_material.tres")
 
 @onready var item_pos_array : Array [Node3D]
+
+# Table Animation
+@export var dealing_table : Node3D
 
 var item_scene_array : Array
 
@@ -180,7 +184,8 @@ func _process(_delta: float) -> void:
 	else:
 		shoot_player_label.visible = false
 		shoot_enemy_label.visible = false
-
+	if dealing_table.item_right_global_pos:
+		item_pos_nodes.global_position = dealing_table.item_right_global_pos
 
 func _physics_process(delta: float) -> void:
 	# Changes the rotation of camera to target rotation
@@ -409,6 +414,7 @@ func show_loaded_bullets():
 
 
 func create_item():
+	dealing_table.item_open_left()
 	var inv_has_null : bool = false
 	for item in inventory:
 		if item == null:
@@ -431,6 +437,8 @@ func create_item():
 		else:
 			new_item.inventory_slot = inventory.size()
 			inventory.append(new_item)
+		await get_tree().create_timer(4, false).timeout
+		dealing_table.item_close_left()
 
 
 func destroy_item(item_node : Node):
