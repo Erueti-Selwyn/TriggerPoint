@@ -11,7 +11,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	item_right_global_pos = item_right.position
-	print(item_right_global_pos)
 
 func item_open_left():
 	anim_player.play("Item Open Left")
