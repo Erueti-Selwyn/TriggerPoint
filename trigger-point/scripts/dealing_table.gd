@@ -12,15 +12,23 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	item_right_global_pos = item_right.position
 
-func item_open_left():
-	anim_player.play("Item Open Left")
-func item_close_left():
-	anim_player.play("Item Close Left")
-func item_open_right():
-	anim_player.play("Item Open Right")
-func item_close_right():
-	anim_player.play("Item Close Right")
+func item_clear_player():
+	anim_player.play("Item Clear Player")
+func item_reclear_player():
+	anim_player.play("Item Reclear Player")
+func item_close_player():
+	anim_player.play("Item Close Player")
+func item_open_player():
+	anim_player.play("Item Open Player")
+func item_clear_enemy():
+	anim_player.play("Item Clear Enemy")
+func item_reclear_enemy():
+	anim_player.play("Item Reclear Enemy")
+func item_close_enemy():
+	anim_player.play("Item Close Enemy")
+func item_open_enemy():
+	anim_player.play("Item Open Enemy")
 func gun_open():
 	anim_player.play("Gun Open")
 func gun_close():
-	anim_player.play("GunClose")
+	anim_player.play("Gun Close")

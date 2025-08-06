@@ -422,7 +422,7 @@ func show_loaded_bullets():
 
 
 func create_item():
-	dealing_table.item_open_left()
+	dealing_table.item_open_player()
 	var inv_has_null : bool = false
 	for item in inventory:
 		if item == null:
@@ -446,7 +446,7 @@ func create_item():
 			new_item.inventory_slot = inventory.size()
 			inventory.append(new_item)
 		await get_tree().create_timer(4, false).timeout
-		dealing_table.item_close_left()
+		dealing_table.item_close_player()
 
 
 func destroy_item(item_node : Node):

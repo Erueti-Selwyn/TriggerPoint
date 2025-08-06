@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_n4l56"]
 [ext_resource type="Material" uid="uid://caifagdwplekp" path="res://materials/light_glow_material.tres" id="1_ul5kl"]
 [ext_resource type="Material" uid="uid://cwf16nuwia0pi" path="res://materials/light_off_material.tres" id="2_5vhkd"]
-[ext_resource type="PackedScene" uid="uid://4mohflj1k1bn" path="res://scenes/dealing_table.tscn" id="3_0vlyx"]
+[ext_resource type="PackedScene" uid="uid://cgxkrtave52pq" path="res://models/Dealing Table.tscn" id="3_kv3p8"]
 [ext_resource type="PackedScene" uid="uid://5t6fyl18fw6r" path="res://scenes/enemy.tscn" id="4_hgh7a"]
 [ext_resource type="PackedScene" uid="uid://dqeky53dj2eb4" path="res://scenes/shotgun_basic.tscn" id="4_u86ou"]
 [ext_resource type="PackedScene" uid="uid://nhela11xflxu" path="res://scenes/win_lose_screen.tscn" id="5_6jxoa"]
@@ -128,8 +128,8 @@ mesh = SubResource("BoxMesh_cdjr3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.043, -0.544, 0)
 mesh = SubResource("BoxMesh_dy2m4")
 
-[node name="Dealing Table" parent="environment" instance=ExtResource("3_0vlyx")]
-transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, -2.08062, 0)
+[node name="Dealing Table" parent="environment" instance=ExtResource("3_kv3p8")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, -2.08601, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_c2ie3")
