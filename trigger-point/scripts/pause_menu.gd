@@ -6,7 +6,7 @@ func _ready():
 
 
 func _process(_delta):
-	if Input.is_action_just_pressed("esc"):
+	if Input.is_action_just_pressed("p"):
 		if get_tree().paused:
 			visible = false
 			get_tree().paused = false

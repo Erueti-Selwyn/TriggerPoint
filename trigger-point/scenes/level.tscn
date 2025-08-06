@@ -145,10 +145,10 @@ distance_fade_shadow = 463.74
 [node name="player" type="Node3D" parent="." node_paths=PackedStringArray("debug_label_1", "debug_label_2", "debug_label_3", "debug_label_4", "camera", "held_item_pos", "gun_node", "shoot_player_transform", "shoot_enemy_transform", "item_pos_nodes", "item_pos_1", "item_pos_2", "item_pos_3", "item_pos_4", "live_bullet_pos", "blank_bullet_pos", "win_lose_screen", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label", "dealing_table")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.75445, 0.589191, 0)
 script = ExtResource("1_n4l56")
-debug_label_1 = NodePath("GUI/HBoxContainer/VBoxContainer/Debug1")
-debug_label_2 = NodePath("GUI/HBoxContainer/VBoxContainer/Debug2")
-debug_label_3 = NodePath("GUI/HBoxContainer/VBoxContainer/Debug3")
-debug_label_4 = NodePath("GUI/HBoxContainer/VBoxContainer/Debug4")
+debug_label_1 = NodePath("CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug1")
+debug_label_2 = NodePath("CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug2")
+debug_label_3 = NodePath("CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug3")
+debug_label_4 = NodePath("CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug4")
 camera = NodePath("Camera3D")
 rotation_look_up = Vector3(-0.1, 1.571, 0)
 rotation_look_down = Vector3(-0.7475, 1.57107, -0.000167499)
@@ -166,7 +166,7 @@ item_pos_3 = NodePath("../ItemPosNodes/ItemPos3")
 item_pos_4 = NodePath("../ItemPosNodes/ItemPos4")
 live_bullet_pos = NodePath("PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("PosNodes/BlankBulletPos")
-win_lose_screen = NodePath("WinLoseScreen")
+win_lose_screen = NodePath("CanvasLayer/GUI/WinLoseScreen")
 current_damage_label = NodePath("../DiegeticUI/CurrentDamage")
 held_item_description_label = NodePath("../DiegeticUI/ItemDescriptionLabel")
 player_score_label = NodePath("../environment/Scoreboard/PlayerScore")
@@ -187,45 +187,50 @@ fov = 60.0
 [node name="AudioListener3D" type="AudioListener3D" parent="player/Camera3D"]
 current = true
 
-[node name="GUI" type="Control" parent="player"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-metadata/_edit_use_anchors_ = true
+[node name="CanvasLayer" type="CanvasLayer" parent="player"]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="player/GUI"]
+[node name="GUI" type="Control" parent="player/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="player/CanvasLayer/GUI"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="player/GUI/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="player/CanvasLayer/GUI/HBoxContainer"]
 layout_mode = 2
 
-[node name="Debug1" type="Label" parent="player/GUI/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test"
-label_settings = SubResource("LabelSettings_iww2h")
-
-[node name="Debug2" type="Label" parent="player/GUI/HBoxContainer/VBoxContainer"]
+[node name="Debug1" type="Label" parent="player/CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Test"
 label_settings = SubResource("LabelSettings_iww2h")
 
-[node name="Debug3" type="Label" parent="player/GUI/HBoxContainer/VBoxContainer"]
+[node name="Debug2" type="Label" parent="player/CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Test"
 label_settings = SubResource("LabelSettings_iww2h")
 
-[node name="Debug4" type="Label" parent="player/GUI/HBoxContainer/VBoxContainer"]
+[node name="Debug3" type="Label" parent="player/CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Test"
 label_settings = SubResource("LabelSettings_iww2h")
 
-[node name="WinLoseScreen" parent="player" instance=ExtResource("5_6jxoa")]
+[node name="Debug4" type="Label" parent="player/CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Test"
+label_settings = SubResource("LabelSettings_iww2h")
 
-[node name="PauseMenu" parent="player" instance=ExtResource("6_m3c2i")]
+[node name="WinLoseScreen" parent="player/CanvasLayer/GUI" instance=ExtResource("5_6jxoa")]
+layout_mode = 1
+
+[node name="PauseMenu" parent="player/CanvasLayer/GUI" instance=ExtResource("6_m3c2i")]
 visible = false
+layout_mode = 1
 
 [node name="PosNodes" type="Node3D" parent="player"]
 
@@ -233,10 +238,10 @@ visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85879, -0.505, 0)
 
 [node name="LiveBulletPos" type="Node3D" parent="player/PosNodes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85879, -1.11668, 1.75927)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85879, -0.960619, 1.3288)
 
 [node name="BlankBulletPos" type="Node3D" parent="player/PosNodes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.859, -1.11668, -1.759)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.859, -0.961, -1.329)
 
 [node name="ShootPlayerPos" type="Node3D" parent="player/PosNodes"]
 transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.332145, 0.943228, -1, 2.44449e-09, -4.44039e-08, -0.238717, -0.551603, 0)

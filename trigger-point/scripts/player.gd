@@ -15,6 +15,7 @@ var double_damage_item_scene = preload("res://scenes/item/double_damage_item.tsc
 var remove_bullet_item_scene = preload("res://scenes/item/remove_bullet_item.tscn")
 var blood_splatter_particle = preload("res://scenes/blood_splatter_particle.tscn")
 var bullet_scene = preload("res://scenes/bullet.tscn")
+var bullet_gravity_scene = preload("res://scenes/bullet_gravity.tscn")
 # ASSETS
 
 @export var camera : Node3D
@@ -117,8 +118,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	live_shots = loaded_bullets_array.count(true)
 	blank_shots = loaded_bullets_array.count(false)
-	#debug_label_1.text = str(inventory)
-	#debug_label_2.text = ("loaded bullets: " + str(loaded_bullets_array))
+	debug_label_1.text = str(used_shells_array)
+	debug_label_2.text = ("loaded bullets: " + str(loaded_bullets_array))
 	#debug_label_3.text = ("Bullet Count - LIVE : " + str(live_shots) + " - BLANK : " + str(blank_shots))
 	#debug_label_4.text = ("Game State: " + GameStateNames[game_state])
 	current_damage_label.text = ("Damage: " + str(damage))
@@ -184,12 +185,14 @@ func _process(_delta: float) -> void:
 	else:
 		shoot_player_label.visible = false
 		shoot_enemy_label.visible = false
-	if dealing_table.item_right_global_pos:
-		item_pos_nodes.global_position = dealing_table.item_right_global_pos
+
 
 func _physics_process(delta: float) -> void:
 	# Changes the rotation of camera to target rotation
-	camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
+	if game_state != GameState.SHOOTING:
+		camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
+	else:
+		camera.rotation = camera.rotation.lerp(rotation_look_up, clamp(delta * camera_lerp_speed, 0.0, 1.0))
 	# Creates a var of the item in hand
 	for item in inventory:
 		if is_instance_valid(item) and item.in_hand:
@@ -214,11 +217,11 @@ func _physics_process(delta: float) -> void:
 			elif item.type == "gun" and not game_state == GameState.SHOOTING:
 				item.move_to(item.original_pos, item.original_rot, item_lerp_speed)
 
-	
 
 func move_item_lerp(item_node: Node, pos: Vector3, rot: Vector3, speed:float):
 	item_node.global_position = item_node.global_position.lerp(pos, speed)
 	item_node.rotation = item_node.rotation.lerp(rot, speed)
+
 
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
@@ -287,7 +290,7 @@ func click():
 					if not await item.use(self) == false:
 						destroy_item(item)
 					game_state = GameState.PLAYERTURN
-					
+
 
 func drop_item():
 	for item in inventory:
@@ -318,6 +321,7 @@ func enemy_shoot(target_name : String, enemy_shoot_target : Node3D):
 	if target_name == "player":
 		start_player_turn()
 
+
 func shoot_gun(target_name : String, target_node : Node3D):
 	game_state = GameState.SHOOTING
 	shoot_target_transform = target_node
@@ -345,7 +349,7 @@ func shoot_gun(target_name : String, target_node : Node3D):
 	# Add animation later
 	await get_tree().create_timer(1, false).timeout
 	gun_node.play_sound_cock()
-	var bullet = bullet_scene.instantiate()
+	var bullet = bullet_gravity_scene.instantiate()
 	add_child(bullet)
 	var mesh = bullet.get_node("MeshInstance3D")
 	var base_mat = mesh.get_active_material(0)
@@ -367,6 +371,10 @@ func reload():
 		game_state = GameState.RELOADING
 		max_ammo_in_chamber = randi_range(4,6)
 		loaded_bullets_array = []
+		for item in used_shells_array:
+			item.queue_free()
+		used_shells_array.clear()
+		used_shells = 0
 		for i in range(max_ammo_in_chamber):
 			var rand = randi_range(1, 2)
 			if rand == 1:
@@ -384,7 +392,7 @@ func show_loaded_bullets():
 	for item in range(loaded_bullets_array.size()):
 		if loaded_bullets_array[item] == true:
 			current_live_bullet_count += 1
-			var bullet = bullet_scene.instantiate()
+			var bullet = bullet_gravity_scene.instantiate()
 			add_child(bullet)
 			var mesh = bullet.get_node("MeshInstance3D")
 			var base_mat = mesh.get_active_material(0)
@@ -396,7 +404,7 @@ func show_loaded_bullets():
 			bullet_obj_array.append(bullet)
 		else:
 			current_blank_bullet_count += 1
-			var bullet = bullet_scene.instantiate()
+			var bullet = bullet_gravity_scene.instantiate()
 			add_child(bullet)
 			var mesh = bullet.get_node("MeshInstance3D")
 			var base_mat = mesh.get_active_material(0)
@@ -447,6 +455,7 @@ func destroy_item(item_node : Node):
 	item_node = null
 	used_item.queue_free()
 
+
 func start_enemy_turn():
 	if game_state != GameState.GAMEOVER:
 		if loaded_bullets_array.size() > 0:
@@ -472,8 +481,10 @@ func start_player_turn():
 func win():
 	win_lose_screen.display_winner(self ,true)
 
+
 func lose():
 	win_lose_screen.display_winner(self, false)
+
 
 func reset_health():
 	player_health = 10
