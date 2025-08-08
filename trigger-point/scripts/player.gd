@@ -21,6 +21,7 @@ var bullet_gravity_scene = preload("res://scenes/bullet_gravity.tscn")
 @export var camera : Node3D
 @export var rotation_look_up : Vector3
 @export var rotation_look_down : Vector3
+@export var rotation_shop : Vector3
 @export var camera_lerp_speed : int
 @export var item_lerp_speed : float
 @export var gun_lerp_speed : float
@@ -81,11 +82,12 @@ var held_item : Node
 var inventory : Array = []
 var item_count : int
 
+var money : int
+
 var turn_number : int
 # For Mouse Hovering
 const DIST = 1000
-
-enum GameState {WAITING, PLAYERTURN, ENEMYTURN, SHOOTING, ENEMYITEM, RELOADING, USINGITEM, SHOPING, GAMEOVER}
+enum GameState {WAITING, PLAYERTURN, ENEMYTURN, SHOOTING, ENEMYITEM, RELOADING, USINGITEM, SHOPPING, GAMEOVER}
 const GameStateNames = {
 	GameState.WAITING: "WAITING",
 	GameState.PLAYERTURN: "PLAYERTURN",
@@ -94,7 +96,7 @@ const GameStateNames = {
 	GameState.ENEMYITEM: "ENEMYITEM",
 	GameState.RELOADING: "RELOADING",
 	GameState.USINGITEM: "USINGITEM",
-	GameState.SHOPING: "SHOPING",
+	GameState.SHOPPING: "SHOPPING",
 	GameState.GAMEOVER: "GAMEOVER",
 }
 var game_state : GameState
@@ -105,8 +107,8 @@ func _ready() -> void:
 	game_state = GameState.WAITING
 	current_bullet_damage = 1
 	damage = current_bullet_damage
-	player_health = 10
-	enemy_health = 10
+	player_health = 5
+	enemy_health = 5
 	item_pos_array = [item_pos_1, item_pos_2, item_pos_3, item_pos_4]
 	reload()
 	target_rotation = rotation_look_up
@@ -123,14 +125,16 @@ func _process(_delta: float) -> void:
 	#debug_label_3.text = ("Bullet Count - LIVE : " + str(live_shots) + " - BLANK : " + str(blank_shots))
 	#debug_label_4.text = ("Game State: " + GameStateNames[game_state])
 	current_damage_label.text = ("Damage: " + str(damage))
-	if player_health <= 0 and not game_state == GameState.GAMEOVER:
+	if player_health <= 0 and not game_state == GameState.SHOPPING:
 		player_health = 0
-		game_state = GameState.GAMEOVER
-		lose()
+		game_state = GameState.SHOPPING
+		money += 5
+		end_round()
 	if enemy_health <= 0 and not game_state == GameState.GAMEOVER:
 		enemy_health = 0
-		game_state = GameState.GAMEOVER
-		win()
+		game_state = GameState.SHOPPING
+		money += 10
+		end_round()
 	player_score_label.text = str(player_health)
 	enemy_score_label.text = str(enemy_health)
 	check_mouse_position(get_viewport().get_mouse_position())
@@ -189,10 +193,12 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	# Changes the rotation of camera to target rotation
-	if game_state != GameState.SHOOTING:
-		camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
-	else:
+	if game_state == GameState.SHOOTING:
 		camera.rotation = camera.rotation.lerp(rotation_look_up, clamp(delta * camera_lerp_speed, 0.0, 1.0))
+	elif game_state == GameState.SHOPPING:
+		camera.rotation = camera.rotation.lerp(rotation_shop, clamp(delta * camera_lerp_speed/3, 0.0, 1.0))
+	else:
+		camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
 	# Creates a var of the item in hand
 	for item in inventory:
 		if is_instance_valid(item) and item.in_hand:
@@ -457,7 +463,7 @@ func destroy_item(item_node : Node):
 
 
 func start_enemy_turn():
-	if game_state != GameState.GAMEOVER:
+	if game_state != GameState.GAMEOVER and game_state != GameState.SHOPPING:
 		if loaded_bullets_array.size() > 0:
 			game_state = GameState.ENEMYTURN
 			await get_tree().create_timer(1, false).timeout
@@ -487,7 +493,12 @@ func lose():
 
 
 func reset_health():
-	player_health = 10
-	enemy_health = 10
+	player_health = 5
+	enemy_health = 5
 	current_bullet_damage = 1
 	damage = current_bullet_damage
+
+
+func end_round():
+	await get_tree().create_timer(2).timeout
+	game_state = GameState.SHOPPING
