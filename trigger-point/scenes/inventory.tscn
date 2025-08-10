@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqk3ys4l1nrag"]
+
+[ext_resource type="Script" path="res://scripts/inventory.gd" id="1_csvbu"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_fe4ad"]
+size = Vector3(0.3, 0.1, 0.3)
+
+[node name="Inventory" type="Node3D"]
+script = ExtResource("1_csvbu")
+
+[node name="Slot1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slot1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_fe4ad")
+
+[node name="Slot2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.7)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slot2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_fe4ad")
+
+[node name="Slot3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slot3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_fe4ad")
+
+[node name="Slot4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slot4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_fe4ad")

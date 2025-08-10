@@ -1,21 +1,16 @@
 extends Node3D
 
 # DEBUG STUFF
-@export var debug_label_1 : Label
-@export var debug_label_2 : Label
 @export var debug_label_3 : Label
 @export var debug_label_4 : Label
 # DEBUG STUFF
 
 # ASSETS
-var one_health_item_scene = preload("res://scenes/item/one_health_item.tscn")
-var peek_item_scene = preload("res://scenes/item/peek_item.tscn")
-var shuffle_item_scene = preload("res://scenes/item/shuffle_item.tscn")
-var double_damage_item_scene = preload("res://scenes/item/double_damage_item.tscn")
-var remove_bullet_item_scene = preload("res://scenes/item/remove_bullet_item.tscn")
 var blood_splatter_particle = preload("res://scenes/blood_splatter_particle.tscn")
 var bullet_scene = preload("res://scenes/bullet.tscn")
 var bullet_gravity_scene = preload("res://scenes/bullet_gravity.tscn")
+var light_on_mat = preload("res://materials/light_glow_material.tres")
+var light_off_mat = preload("res://materials/light_off_material.tres")
 # ASSETS
 
 @export var camera : Node3D
@@ -31,11 +26,6 @@ var bullet_gravity_scene = preload("res://scenes/bullet_gravity.tscn")
 @export var shoot_enemy_transform : Node3D
 
 var shoot_target_transform : Node3D
-@export var item_pos_nodes : Node3D
-@export var item_pos_1 : Node3D
-@export var item_pos_2 : Node3D
-@export var item_pos_3 : Node3D
-@export var item_pos_4 : Node3D
 @export var live_bullet_pos : Node3D
 @export var blank_bullet_pos : Node3D
 
@@ -50,28 +40,10 @@ var shoot_target_transform : Node3D
 @export var shoot_player_label : Label3D
 @export var shoot_enemy_label : Label3D
 
-@onready var light_on_mat = preload("res://materials/light_glow_material.tres")
-@onready var light_off_mat = preload("res://materials/light_off_material.tres")
-
-@onready var item_pos_array : Array [Node3D]
-
+@export var inventory_root: Node3D
 # Table Animation
 @export var dealing_table : Node3D
 
-var item_scene_array : Array
-
-var current_bullet_damage : int
-var damage : int
-
-var player_health : int
-var enemy_health : int
-
-var max_ammo_in_chamber : int
-var loaded_bullets_array : Array
-var blank_shots : int
-var live_shots : int
-var used_shells : int
-var used_shells_array : Array
 
 var target_rotation : Vector3
 var current_hover_object : Node
@@ -79,64 +51,36 @@ var previous_hover_mesh : Node
 var current_hover_mesh : Node
 
 var held_item : Node
-var inventory : Array = []
-var item_count : int
 
-var money : int
-
-var turn_number : int
 # For Mouse Hovering
 const DIST = 1000
-enum GameState {WAITING, PLAYERTURN, ENEMYTURN, SHOOTING, ENEMYITEM, RELOADING, USINGITEM, SHOPPING, GAMEOVER}
-const GameStateNames = {
-	GameState.WAITING: "WAITING",
-	GameState.PLAYERTURN: "PLAYERTURN",
-	GameState.ENEMYTURN: "ENEMYTURN",
-	GameState.SHOOTING: "SHOOTING",
-	GameState.ENEMYITEM: "ENEMYITEM",
-	GameState.RELOADING: "RELOADING",
-	GameState.USINGITEM: "USINGITEM",
-	GameState.SHOPPING: "SHOPPING",
-	GameState.GAMEOVER: "GAMEOVER",
-}
-var game_state : GameState
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	item_scene_array = [one_health_item_scene, peek_item_scene, shuffle_item_scene, double_damage_item_scene, remove_bullet_item_scene]
-	game_state = GameState.WAITING
-	current_bullet_damage = 1
-	damage = current_bullet_damage
-	player_health = 5
-	enemy_health = 5
-	item_pos_array = [item_pos_1, item_pos_2, item_pos_3, item_pos_4]
+	GameManager.game_state = GameManager.GameState.WAITING
+	GameManager.current_bullet_damage = 1
+	GameManager.damage = GameManager.current_bullet_damage
+	GameManager.player_health = GameManager.player_max_health
+	GameManager.enemy_health = GameManager.enemy_max_health
 	reload()
 	target_rotation = rotation_look_up
-	gun_node.inventory_slot = 0
-	inventory.append(gun_node)
-	inventory.resize(5)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	live_shots = loaded_bullets_array.count(true)
-	blank_shots = loaded_bullets_array.count(false)
-	debug_label_1.text = str(used_shells_array)
-	debug_label_2.text = ("loaded bullets: " + str(loaded_bullets_array))
-	#debug_label_3.text = ("Bullet Count - LIVE : " + str(live_shots) + " - BLANK : " + str(blank_shots))
-	#debug_label_4.text = ("Game State: " + GameStateNames[game_state])
-	current_damage_label.text = ("Damage: " + str(damage))
-	if player_health <= 0 and not game_state == GameState.SHOPPING:
-		player_health = 0
-		game_state = GameState.SHOPPING
-		money += 5
+	GameManager.live_bullets = GameManager.loaded_bullets_array.count(true)
+	GameManager.blank_bullets = GameManager.loaded_bullets_array.count(false)
+	current_damage_label.text = ("Damage: " + str(GameManager.current_bullet_damage))
+	if GameManager.player_health <= 0 and not GameManager.game_state == GameManager.GameState.SHOPPING:
+		GameManager.player_health = 0
+		GameManager.player_money += 5
 		end_round()
-	if enemy_health <= 0 and not game_state == GameState.GAMEOVER:
-		enemy_health = 0
-		game_state = GameState.SHOPPING
-		money += 10
+	if GameManager.enemy_health <= 0 and not GameManager.game_state == GameManager.GameState.GAMEOVER:
+		GameManager.enemy_health = 0
+		GameManager.player_money += 10
 		end_round()
-	player_score_label.text = str(player_health)
-	enemy_score_label.text = str(enemy_health)
+	player_score_label.text = str(GameManager.player_health)
+	enemy_score_label.text = str(GameManager.enemy_health)
+	debug_label_3.text = str(held_item)
 	check_mouse_position(get_viewport().get_mouse_position())
 	if is_instance_valid(held_item) and not held_item == gun_node:
 		held_item_description_label.visible = true
@@ -147,22 +91,24 @@ func _process(_delta: float) -> void:
 		target_rotation = rotation_look_up
 	elif Input.is_action_just_pressed("move_down"):
 		target_rotation = rotation_look_down
-	#if Input.is_action_just_pressed("add_item"):
-	#	create_item()
+	if Input.is_action_just_pressed("add_item") and GameManager.game_state == GameManager.GameState.PLAYERTURN:
+		inventory_root.add_random_item()
 	if Input.is_action_just_pressed("escape"):
-		drop_item()
+		gun_node.in_hand = false
+		inventory_root.drop_item()
+		inventory_root.update_item_position()
 	if Input.is_action_just_pressed("reload"):
 		reload()
 	# Changes material of light bar to show whos turn it is
-	if game_state == GameState.PLAYERTURN:
+	if GameManager.game_state == GameManager.GameState.PLAYERTURN:
 		player_turn_light.mesh.surface_set_material(0, light_on_mat)
 		enemy_turn_light.mesh.surface_set_material(0, light_off_mat)
-	if game_state == GameState.ENEMYTURN:
+	if GameManager.game_state == GameManager.GameState.ENEMYTURN:
 		enemy_turn_light.mesh.surface_set_material(0, light_on_mat)
 		player_turn_light.mesh.surface_set_material(0, light_off_mat)
 
 	# Changes the colour of the text on the table when hovering
-	if game_state == GameState.PLAYERTURN and current_hover_object:
+	if GameManager.game_state == GameManager.GameState.PLAYERTURN and current_hover_object:
 		if current_hover_object.is_in_group("player_button"):
 			shoot_player_label.modulate = Color("ffffff")
 		else:
@@ -176,7 +122,7 @@ func _process(_delta: float) -> void:
 		shoot_enemy_label.modulate = Color("adadad")
 
 	# Changes text on table depending on what is being held
-	if is_instance_valid(held_item) and held_item.type == "gun" and loaded_bullets_array.size() > 0:
+	if is_instance_valid(held_item) and held_item.type == "gun" and GameManager.loaded_bullets_array.size() > 0:
 		shoot_player_label.visible = true
 		shoot_enemy_label.visible = true
 		shoot_player_label.text = "Shoot \nSelf"
@@ -193,41 +139,32 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	# Changes the rotation of camera to target rotation
-	if game_state == GameState.SHOOTING:
+	if GameManager.game_state == GameManager.GameState.SHOOTING:
 		camera.rotation = camera.rotation.lerp(rotation_look_up, clamp(delta * camera_lerp_speed, 0.0, 1.0))
-	elif game_state == GameState.SHOPPING:
-		camera.rotation = camera.rotation.lerp(rotation_shop, clamp(delta * camera_lerp_speed/3, 0.0, 1.0))
+	elif GameManager.game_state == GameManager.GameState.SHOPPING:
+		var tween = create_tween()
+		tween.tween_property(camera, "rotation", rotation_shop, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		await tween.finished
 	else:
 		camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
 	# Creates a var of the item in hand
-	for item in inventory:
-		if is_instance_valid(item) and item.in_hand:
-			held_item = item
-			break
-	# Putting gun at shooting position when shooting
-	if game_state == GameState.SHOOTING:
-		gun_node.move_to(shoot_target_transform.global_position, shoot_target_transform.rotation, gun_lerp_speed)
+	if gun_node.in_hand:
+		held_item = gun_node
 	else:
-		# Makes item in hand go to held item position
-		if is_instance_valid(held_item) and held_item.in_hand:
-			toggle_child_collision(held_item, true)
-			held_item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
-	for item in inventory:
-		# Returns items not in hand
-		if is_instance_valid(item) and item is Node3D and not item.in_hand:
-			toggle_child_collision(item, false)
-			if item.type == "item":
-				if item.item_y_offset != null:
-					var target_pos = item_pos_array[item.inventory_slot - 1].global_position
-					item.move_to(target_pos - Vector3(0, item.item_y_offset, 0), item.original_rot, item_lerp_speed)
-			elif item.type == "gun" and not game_state == GameState.SHOOTING:
-				item.move_to(item.original_pos, item.original_rot, item_lerp_speed)
-
-
-func move_item_lerp(item_node: Node, pos: Vector3, rot: Vector3, speed:float):
-	item_node.global_position = item_node.global_position.lerp(pos, speed)
-	item_node.rotation = item_node.rotation.lerp(rot, speed)
-
+		held_item = null
+		for item in inventory_root.inventory:
+			if is_instance_valid(item) and item.in_hand:
+				held_item = item
+				break
+	# Putting gun at shooting position when shooting
+	if GameManager.game_state == GameManager.GameState.SHOOTING:
+		gun_node.move_to(shoot_target_transform.global_position, shoot_target_transform.rotation, gun_lerp_speed)
+	elif gun_node.in_hand:
+		gun_node.move_to(held_item_pos.global_position, Vector3(0, 0, 0), gun_lerp_speed)
+		toggle_child_collision(gun_node, true)
+	else:
+		gun_node.move_to(gun_node.original_pos, gun_node.original_rot, gun_lerp_speed)
+		toggle_child_collision(gun_node, false)
 
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
@@ -244,7 +181,7 @@ func check_mouse_position(mouse:Vector2):
 	params.to = end
 	
 	var raycast_result = space.intersect_ray(params)
-	if raycast_result.is_empty() == false and game_state == GameState.PLAYERTURN:
+	if raycast_result.is_empty() == false and GameManager.game_state == GameManager.GameState.PLAYERTURN:
 		current_hover_mesh = find_hover_script(raycast_result.collider)
 		current_hover_object = raycast_result.collider
 		if previous_hover_mesh  != current_hover_mesh:
@@ -273,46 +210,40 @@ func find_hover_script(node):
 
 func toggle_child_collision(object : Node, condition : bool):
 	for child in object.get_children():
-					if child is CollisionShape3D:
-						child.disabled = condition
+		if child is CollisionShape3D:
+			child.disabled = condition
+			break
 
 
 func click():
-	if current_hover_object and game_state == GameState.PLAYERTURN:
-		if current_hover_object.is_in_group("gun") or current_hover_object.is_in_group("item"):
-			for item in inventory:
-				if current_hover_object == item:
-					drop_item()
-					item.in_hand = true
-		if gun_node.in_hand and loaded_bullets_array.size() > 0: 
+	if current_hover_object and GameManager.game_state == GameManager.GameState.PLAYERTURN:
+		if current_hover_object.is_in_group("gun"):
+			gun_node.in_hand = true
+			inventory_root.drop_item()
+			inventory_root.update_item_position()
+		elif current_hover_object.is_in_group("item"):
+			gun_node.in_hand = false
+			inventory_root.click_item(current_hover_object)
+		if gun_node.in_hand and GameManager.loaded_bullets_array.size() > 0: 
 			if current_hover_object.is_in_group("enemy_button"):
 				player_shoot("enemy", shoot_enemy_transform)
 			elif current_hover_object.is_in_group("player_button"):
 				player_shoot("player", shoot_player_transform)
 		elif current_hover_object.is_in_group("player_button") or current_hover_object.is_in_group("enemy_button"):
-			for item in inventory:
-				if is_instance_valid(item) and item.in_hand:
-					game_state = GameState.USINGITEM
-					if not await item.use(self) == false:
-						destroy_item(item)
-					game_state = GameState.PLAYERTURN
-
-
-func drop_item():
-	for item in inventory:
-		if is_instance_valid(item) and item.in_hand == true:
-			item.in_hand = false
+			inventory_root.use_item()
 
 
 func player_shoot(target_name : String, player_shoot_target : Node3D):
-	drop_item()
+	gun_node.in_hand = false
+	inventory_root.drop_item()
+	inventory_root.update_item_position()
 	# Checks if turn continues
 	var is_live_bullet = await shoot_gun(target_name, player_shoot_target)
 	if target_name == "player":
 		if is_live_bullet == true:
 			start_enemy_turn()
 		else:
-			game_state = GameState.PLAYERTURN
+			GameManager.game_state = GameManager.GameState.PLAYERTURN
 	if target_name == "enemy":
 		start_enemy_turn()
 
@@ -329,12 +260,12 @@ func enemy_shoot(target_name : String, enemy_shoot_target : Node3D):
 
 
 func shoot_gun(target_name : String, target_node : Node3D):
-	game_state = GameState.SHOOTING
+	GameManager.game_state = GameManager.GameState.SHOOTING
 	shoot_target_transform = target_node
 	# Checks if bullet was live or blank
 	await get_tree().create_timer(1.5, false).timeout
 	var is_live_bullets
-	if loaded_bullets_array[0] == true:
+	if GameManager.loaded_bullets_array[0] == true:
 		gun_node.play_sound_shot()
 		var blood = blood_splatter_particle.instantiate()
 		add_child(blood)
@@ -342,15 +273,15 @@ func shoot_gun(target_name : String, target_node : Node3D):
 		blood.emitting = true
 		is_live_bullets = true
 		if target_name == "player":
-			player_health -= damage
+			GameManager.player_health -= GameManager.damage
 		elif target_name == "enemy":
-			enemy_health -= damage
-		current_bullet_damage += 1
-		damage = current_bullet_damage
+			GameManager.enemy_health -= GameManager.damage
+		GameManager.damage += 1
+		GameManager.current_bullet_damage = GameManager.damage
 	else:
 		gun_node.play_sound_click()
 		is_live_bullets = false
-	loaded_bullets_array.remove_at(0)
+	GameManager.loaded_bullets_array.remove_at(0)
 	# Waits for animation to finish
 	# Add animation later
 	await get_tree().create_timer(1, false).timeout
@@ -365,28 +296,28 @@ func shoot_gun(target_name : String, target_node : Node3D):
 	else:
 		mat.albedo_color = Color(0, 0, 1)
 	mesh.set_surface_override_material(0, mat)
-	bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y + 0.1, live_bullet_pos.global_position.z - (float(used_shells)/6))
+	bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y + 0.1, live_bullet_pos.global_position.z - (float(GameManager.used_shells)/6))
 	bullet.rotation = Vector3(0, 0, deg_to_rad(90))
-	used_shells_array.append(bullet)
-	used_shells += 1
+	GameManager.used_shells_array.append(bullet)
+	GameManager.used_shells += 1
 	return(is_live_bullets)
 
 
 func reload():
-	if game_state == GameState.PLAYERTURN or game_state == GameState.WAITING:
-		game_state = GameState.RELOADING
-		max_ammo_in_chamber = randi_range(4,6)
-		loaded_bullets_array = []
-		for item in used_shells_array:
+	if GameManager.game_state == GameManager.GameState.PLAYERTURN or GameManager.game_state == GameManager.GameState.WAITING:
+		GameManager.game_state = GameManager.GameState.RELOADING
+		GameManager.max_bullets_in_chamber = randi_range(4,6)
+		GameManager.loaded_bullets_array = []
+		for item in GameManager.used_shells_array:
 			item.queue_free()
-		used_shells_array.clear()
-		used_shells = 0
-		for i in range(max_ammo_in_chamber):
+		GameManager.used_shells_array.clear()
+		GameManager.used_shells = 0
+		for i in range(GameManager.max_bullets_in_chamber):
 			var rand = randi_range(1, 2)
 			if rand == 1:
-				loaded_bullets_array.append(true)
+				GameManager.loaded_bullets_array.append(true)
 			else:
-				loaded_bullets_array.append(false)
+				GameManager.loaded_bullets_array.append(false)
 		show_loaded_bullets()
 
 
@@ -395,8 +326,8 @@ func show_loaded_bullets():
 	var current_blank_bullet_count : int = 0
 	var bullet_obj_array : Array
 	# Shows loaded bullets in order
-	for item in range(loaded_bullets_array.size()):
-		if loaded_bullets_array[item] == true:
+	for item in range(GameManager.loaded_bullets_array.size()):
+		if GameManager.loaded_bullets_array[item] == true:
 			current_live_bullet_count += 1
 			var bullet = bullet_gravity_scene.instantiate()
 			add_child(bullet)
@@ -427,45 +358,10 @@ func show_loaded_bullets():
 	start_player_turn()
 
 
-func create_item():
-	dealing_table.item_open_player()
-	var inv_has_null : bool = false
-	for item in inventory:
-		if item == null:
-			inv_has_null = true
-	if inventory.size() <= item_pos_array.size() or inv_has_null and game_state == GameState.PLAYERTURN:
-		var rand = randi_range(0, item_scene_array.size() - 1)
-		var new_item
-		new_item = item_scene_array[rand].instantiate()
-		var level_node = get_tree().get_current_scene()
-		level_node.add_child(new_item)
-		var replace_item_slot : int
-		for i in inventory.size():
-			if inventory[i] == null:
-				replace_item_slot = i
-				break
-		if replace_item_slot:
-			inventory.remove_at(replace_item_slot)
-			inventory.insert(replace_item_slot, new_item)
-			new_item.inventory_slot = replace_item_slot
-		else:
-			new_item.inventory_slot = inventory.size()
-			inventory.append(new_item)
-		await get_tree().create_timer(4, false).timeout
-		dealing_table.item_close_player()
-
-
-func destroy_item(item_node : Node):
-	var used_item = item_node
-	inventory[item_node.inventory_slot] = null
-	item_node = null
-	used_item.queue_free()
-
-
 func start_enemy_turn():
-	if game_state != GameState.GAMEOVER and game_state != GameState.SHOPPING:
-		if loaded_bullets_array.size() > 0:
-			game_state = GameState.ENEMYTURN
+	if GameManager.game_state != GameManager.GameState.GAMEOVER and GameManager.game_state != GameManager.GameState.SHOPPING and GameManager.player_health > 0 and GameManager.enemy_health > 0:
+		if GameManager.loaded_bullets_array.size() > 0:
+			GameManager.game_state = GameManager.GameState.ENEMYTURN
 			await get_tree().create_timer(1, false).timeout
 			var rand = randi_range(1, 2)
 			if rand == 1:
@@ -475,13 +371,16 @@ func start_enemy_turn():
 				# Enemy shoots you
 				enemy_shoot("player", shoot_player_transform)
 		else:
-			game_state = GameState.WAITING
+			GameManager.game_state = GameManager.GameState.WAITING
 			reload()
 
 
 func start_player_turn():
-	game_state = GameState.PLAYERTURN
-	create_item()
+	GameManager.game_state = GameManager.GameState.PLAYERTURN
+	dealing_table.item_open_player()
+	await get_tree().create_timer(2.5).timeout
+	inventory_root.add_random_item()
+	dealing_table.item_close_player()
 
 
 func win():
@@ -493,12 +392,12 @@ func lose():
 
 
 func reset_health():
-	player_health = 5
-	enemy_health = 5
-	current_bullet_damage = 1
-	damage = current_bullet_damage
+	GameManager.player_health = GameManager.player_max_health
+	GameManager.enemy_health = GameManager.player_max_health
+	GameManager.damage = 1
+	GameManager.current_bullet_damage = GameManager.damage
 
 
 func end_round():
 	await get_tree().create_timer(2).timeout
-	game_state = GameState.SHOPPING
+	GameManager.game_state = GameManager.GameState.SHOPPING

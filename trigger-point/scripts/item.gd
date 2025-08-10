@@ -18,7 +18,7 @@ func move_to(pos: Vector3, rot: Vector3, speed: float):
 	target_pos = pos
 	target_rot = rot
 	target_speed = speed
-func _process(_delta):
+func _physics_process(_delta):
 	global_position = global_position.lerp(target_pos, target_speed)
 	rotation = rotation.lerp(target_rot, target_speed)
 func get_y_offset():
