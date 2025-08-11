@@ -144,7 +144,25 @@ shadow_blur = 0.7
 distance_fade_begin = 0.0
 distance_fade_shadow = 463.74
 
-[node name="player" type="Node3D" parent="." node_paths=PackedStringArray("debug_label_3", "debug_label_4", "camera", "held_item_pos", "gun_node", "shoot_player_transform", "shoot_enemy_transform", "live_bullet_pos", "blank_bullet_pos", "win_lose_screen", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label", "inventory_root", "dealing_table")]
+[node name="PosNodes" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.75445, 0.589191, 0)
+
+[node name="HeldItemPos" type="Node3D" parent="PosNodes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77801, -0.704374, 0)
+
+[node name="LiveBulletPos" type="Node3D" parent="PosNodes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85879, -0.960619, 1.3288)
+
+[node name="BlankBulletPos" type="Node3D" parent="PosNodes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.859, -0.961, -1.329)
+
+[node name="ShootPlayerPos" type="Node3D" parent="PosNodes"]
+transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.332145, 0.943228, -1, 2.44449e-09, -4.44039e-08, -0.680066, -0.280732, 0)
+
+[node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
+transform = Transform3D(9.61455e-08, 0.904187, -0.427137, 6.60682e-08, 0.427137, 0.904187, 1, -1.15154e-07, -1.86707e-08, -3.36363, -0.46249, 0.00628603)
+
+[node name="player" type="Node3D" parent="." node_paths=PackedStringArray("debug_label_3", "debug_label_4", "camera", "gun_node", "live_bullet_pos", "blank_bullet_pos", "win_lose_screen", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label", "inventory_root", "dealing_table")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.44138, 0.878755, 0)
 script = ExtResource("1_n4l56")
 debug_label_3 = NodePath("CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug3")
@@ -156,10 +174,7 @@ rotation_shop = Vector3(-0.0994838, -1.5708, 0)
 camera_lerp_speed = 7
 item_lerp_speed = 0.05
 gun_lerp_speed = 0.1
-held_item_pos = NodePath("../PosNodes/HeldItemPos")
 gun_node = NodePath("../shotgun_basic")
-shoot_player_transform = NodePath("../PosNodes/ShootPlayerPos")
-shoot_enemy_transform = NodePath("../PosNodes/ShootEnemyPos")
 live_bullet_pos = NodePath("../PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("../PosNodes/BlankBulletPos")
 win_lose_screen = NodePath("CanvasLayer/GUI/WinLoseScreen")
@@ -226,32 +241,17 @@ layout_mode = 1
 visible = false
 layout_mode = 1
 
-[node name="Inventory" parent="." node_paths=PackedStringArray("held_item_pos", "debug_1", "debug_2") instance=ExtResource("8_dsi45")]
+[node name="Inventory" parent="." node_paths=PackedStringArray("held_item_pos", "gun_node", "debug_1", "debug_2") instance=ExtResource("8_dsi45")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.41545, -0.421855, 0)
 held_item_pos = NodePath("../PosNodes/HeldItemPos")
+gun_node = NodePath("../shotgun_basic")
 debug_1 = NodePath("../player/CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug1")
 debug_2 = NodePath("../player/CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug2")
 
 [node name="enemy" parent="." instance=ExtResource("4_hgh7a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34313, 0.569011, 0)
 
-[node name="PosNodes" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.75445, 0.589191, 0)
-
-[node name="HeldItemPos" type="Node3D" parent="PosNodes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77801, -0.704374, 0)
-
-[node name="LiveBulletPos" type="Node3D" parent="PosNodes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85879, -0.960619, 1.3288)
-
-[node name="BlankBulletPos" type="Node3D" parent="PosNodes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.859, -0.961, -1.329)
-
-[node name="ShootPlayerPos" type="Node3D" parent="PosNodes"]
-transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.332145, 0.943228, -1, 2.44449e-09, -4.44039e-08, -0.680066, -0.280732, 0)
-
-[node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
-transform = Transform3D(9.61455e-08, 0.904187, -0.427137, 6.60682e-08, 0.427137, 0.904187, 1, -1.15154e-07, -1.86707e-08, -3.36363, -0.46249, 0.00628603)
-
-[node name="shotgun_basic" parent="." groups=["gun"] instance=ExtResource("4_u86ou")]
+[node name="shotgun_basic" parent="." node_paths=PackedStringArray("shoot_player_transform", "shoot_enemy_transform") groups=["gun"] instance=ExtResource("4_u86ou")]
 transform = Transform3D(-4.1572e-08, -0.951057, -0.309017, 1, -4.37114e-08, 0, -1.35076e-08, -0.309017, 0.951057, 0, -0.45, 0)
+shoot_player_transform = NodePath("../PosNodes/ShootPlayerPos")
+shoot_enemy_transform = NodePath("../PosNodes/ShootEnemyPos")

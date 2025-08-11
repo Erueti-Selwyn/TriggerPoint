@@ -91,3 +91,6 @@ skeleton = NodePath("../MeshInstance3D3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0168823, -0.334374)
 mesh = SubResource("BoxMesh_plhk6")
 skeleton = NodePath("../..")
+
+[node name="barrel_end" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.486405)

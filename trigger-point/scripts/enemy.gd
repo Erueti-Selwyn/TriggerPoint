@@ -3,9 +3,25 @@ extends Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	GameManager.enemy = self
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
+
+
+func start_enemy_turn():
+	if GameManager.player_health > 0 and GameManager.enemy_health > 0:
+		if GameManager.loaded_bullets_array.size() > 0:
+			await get_tree().create_timer(1, false).timeout
+			var rand = randi_range(1, 2)
+			if rand == 1:
+				# Enemy shoots self
+				GameManager.shoot("enemy")
+			elif rand == 2:
+				# Enereamy shoots you
+				GameManager.shoot("player")
+		else:
+			GameManager.game_state = GameManager.GameState.WAITING
+			GameManager.reload()

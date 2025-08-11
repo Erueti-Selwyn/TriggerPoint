@@ -34,6 +34,7 @@ script = ExtResource("1_1jebh")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 2.07834e-13, 0, -5.15143e-14, 1, 0, -2.13163e-14, 0, 1, 0.0410003, 0.0463716, 0.000915527)
 shape = SubResource("BoxShape3D_r5sgw")
+disabled = true
 
 [node name="mesh" type="Node3D" parent="." node_paths=PackedStringArray("meshes", "parent")]
 transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)

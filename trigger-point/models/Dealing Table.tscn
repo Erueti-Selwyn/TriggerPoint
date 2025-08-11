@@ -683,3 +683,4 @@ shape = SubResource("ConcavePolygonShape3D_o7mdx")
 libraries = {
 "": SubResource("AnimationLibrary_odx3g")
 }
+speed_scale = 2.0

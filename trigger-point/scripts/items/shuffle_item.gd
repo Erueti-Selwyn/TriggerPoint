@@ -7,8 +7,8 @@ func _init():
 
 func _ready():
 	get_y_offset()
-func use(player):
-	if player.loaded_bullets_array.size() > 0:
-		player.loaded_bullets_array.shuffle()
+func use():
+	if GameManager.loaded_bullets_array.size() > 0:
+		GameManager.loaded_bullets_array.shuffle()
 	else:
 		return false
