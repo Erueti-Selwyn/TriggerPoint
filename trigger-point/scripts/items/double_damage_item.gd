@@ -7,5 +7,5 @@ func _init():
 
 func _ready():
 	get_y_offset()
-func use(player):
-	player.damage = player.damage * 2
+func use():
+	GameManager.current_bullet_damage = GameManager.current_bullet_damage * 2

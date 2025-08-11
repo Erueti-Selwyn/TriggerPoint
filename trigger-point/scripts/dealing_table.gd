@@ -14,21 +14,41 @@ func _process(_delta: float) -> void:
 
 func item_clear_player():
 	anim_player.play("Item Clear Player")
+	await anim_player.animation_finished
+	return
 func item_reclear_player():
 	anim_player.play("Item Reclear Player")
+	await anim_player.animation_finished
+	return
 func item_close_player():
 	anim_player.play("Item Close Player")
+	await anim_player.animation_finished
+	return
 func item_open_player():
 	anim_player.play("Item Open Player")
+	await anim_player.animation_finished
+	return
 func item_clear_enemy():
 	anim_player.play("Item Clear Enemy")
+	await anim_player.animation_finished
+	return
 func item_reclear_enemy():
 	anim_player.play("Item Reclear Enemy")
+	await anim_player.animation_finished
+	return
 func item_close_enemy():
 	anim_player.play("Item Close Enemy")
+	await anim_player.animation_finished
+	return
 func item_open_enemy():
 	anim_player.play("Item Open Enemy")
+	await anim_player.animation_finished
+	return
 func gun_open():
 	anim_player.play("Gun Open")
+	await anim_player.animation_finished
+	return
 func gun_close():
 	anim_player.play("Gun Close")
+	await anim_player.animation_finished
+	return

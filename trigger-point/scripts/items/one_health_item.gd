@@ -7,5 +7,5 @@ func _init():
 
 func _ready():
 	get_y_offset()
-func use(player):
-	player.player_health += 1
+func use():
+	GameManager.player_health += 1
