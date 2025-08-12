@@ -4,6 +4,11 @@ var bullet_gravity_scene = preload("res://scenes/bullet_gravity.tscn")
 var bullet_scene = preload("res://scenes/bullet.tscn")
 var blood_splatter_particle = preload("res://scenes/blood_splatter_particle.tscn")
 
+var one_health_item_scene = preload("res://scenes/item/one_health_item.tscn")
+var peek_item_scene = preload("res://scenes/item/peek_item.tscn")
+var shuffle_item_scene = preload("res://scenes/item/shuffle_item.tscn")
+var double_damage_item_scene = preload("res://scenes/item/double_damage_item.tscn")
+var remove_bullet_item_scene = preload("res://scenes/item/remove_bullet_item.tscn")
 enum TurnOwner {
 	PLAYER,
 	ENEMY,
@@ -36,14 +41,14 @@ var game_state : GameState
 var turn_owner : TurnOwner
 # Player stats
 var round_number: int = 1
-var player_health: int = 10
-var player_max_health: int = 10
+var player_health: int
+var player_max_health: int = 3
 var player_money: int = 0
 # var player_inventory: Array = [] Maybe Change to this?
 
 # Enemy stats
-var enemy_health: int = 10
-var enemy_max_health: int = 10
+var enemy_health: int
+var enemy_max_health: int = 3
 
 # Game Rules
 var current_bullet_damage: int = 1
@@ -66,6 +71,7 @@ var player:Node3D = null
 var enemy:Node3D = null
 var inventory_root:Node3D = null
 var gun_node:Node3D = null
+var shop_root:Node3D = null
 
 var live_bullet_pos:Node3D = null
 var blank_bullet_pos:Node3D = null
@@ -84,6 +90,7 @@ func end_player_turn():
 
 
 func continue_enemy_turn():
+	enemy.start_enemy_turn()
 	game_state = GameState.DECIDING
 	turn_owner = TurnOwner.ENEMY
 
@@ -99,7 +106,7 @@ func continue_player_turn():
 
 
 func start_shop():
-	game_state = GameState.SHOPPING
+	shop_root.start_shop()
 
 
 func reload():
@@ -150,8 +157,6 @@ func shoot(target:String):
 				end_enemy_turn()
 	inventory_root.drop_item()
 	inventory_root.update_item_position()
-	print(str(gun_node.in_hand))
-
 
 func show_loaded_bullets():
 	var current_live_bullet_count : int = 0

@@ -1,0 +1,78 @@
+[gd_scene load_steps=9 format=3 uid="uid://b24ifdcjn4l3r"]
+
+[ext_resource type="Material" uid="uid://brjcpnth8rmm7" path="res://materials/cardboard_box_material.tres" id="1_8fktg"]
+[ext_resource type="Script" path="res://scenes/shop.gd" id="1_un367"]
+[ext_resource type="Script" path="res://scripts/slot.gd" id="3_ud2ff"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_fh0jl"]
+material = ExtResource("1_8fktg")
+size = Vector3(6, 1.5, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rqdky"]
+material = ExtResource("1_8fktg")
+
+[sub_resource type="BoxMesh" id="BoxMesh_rsdtt"]
+material = ExtResource("1_8fktg")
+
+[sub_resource type="BoxMesh" id="BoxMesh_4xt5f"]
+size = Vector3(0.7, 0.1, 0.7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_543nq"]
+size = Vector3(0.7, 0.6, 0.7)
+
+[node name="shop" type="Node3D"]
+script = ExtResource("1_un367")
+
+[node name="ShopTable" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ShopTable"]
+mesh = SubResource("BoxMesh_fh0jl")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="ShopTable"]
+transform = Transform3D(0.613775, 0, 0.789481, 0, 1, 0, -0.789481, 0, 0.613775, -2.097, -0.25, 1.509)
+mesh = SubResource("BoxMesh_rqdky")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="ShopTable"]
+transform = Transform3D(0.613775, 0, 0.789481, 0, 1, 0, -0.789481, 0, 0.613775, 2.33524, -0.25, 1.424)
+mesh = SubResource("BoxMesh_rsdtt")
+skeleton = NodePath("../..")
+
+[node name="Slot0" type="StaticBody3D" parent="." groups=["shop_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.737, 0)
+script = ExtResource("3_ud2ff")
+
+[node name="Slot0Mesh" type="MeshInstance3D" parent="Slot0"]
+mesh = SubResource("BoxMesh_4xt5f")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Slot0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("BoxShape3D_543nq")
+
+[node name="Slot1" type="StaticBody3D" parent="." groups=["shop_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.737, 0)
+script = ExtResource("3_ud2ff")
+slot_number = 1
+
+[node name="Slot1Mesh" type="MeshInstance3D" parent="Slot1"]
+mesh = SubResource("BoxMesh_4xt5f")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Slot1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("BoxShape3D_543nq")
+
+[node name="Slot2" type="StaticBody3D" parent="." groups=["shop_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.737, 0)
+script = ExtResource("3_ud2ff")
+slot_number = 2
+
+[node name="Slot2Mesh" type="MeshInstance3D" parent="Slot2"]
+mesh = SubResource("BoxMesh_4xt5f")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Slot2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("BoxShape3D_543nq")

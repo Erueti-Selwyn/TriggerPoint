@@ -1,8 +1,7 @@
 extends Node3D
 
 # DEBUG STUFF
-@export var debug_label_3 : Label
-@export var debug_label_4 : Label
+
 # DEBUG STUFF
 
 # ASSETS
@@ -13,7 +12,7 @@ var light_on_mat = preload("res://materials/light_glow_material.tres")
 var light_off_mat = preload("res://materials/light_off_material.tres")
 # ASSETS
 
-@export var camera : Node3D
+var camera: Camera3D = null
 @export var rotation_look_up : Vector3
 @export var rotation_look_down : Vector3
 @export var rotation_shop : Vector3
@@ -37,6 +36,7 @@ var light_off_mat = preload("res://materials/light_off_material.tres")
 @export var shoot_enemy_label : Label3D
 
 @export var inventory_root: Node3D
+@export var shop_root: Node3D
 # Table Animation
 @export var dealing_table : Node3D
 
@@ -49,8 +49,18 @@ var current_hover_mesh : Node
 # For Mouse Hovering
 const DIST = 1000
 
+var debug_label_1: Label = null
+var debug_label_2: Label = null
+var debug_label_3: Label = null
+var debug_label_4: Label = null
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	debug_label_1 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug1
+	debug_label_2 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug2
+	debug_label_3 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug3
+	debug_label_4 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug4
+	camera = $Camera3D
 	GameManager.player = self
 	GameManager.live_bullet_pos = live_bullet_pos
 	GameManager.blank_bullet_pos = blank_bullet_pos
@@ -71,7 +81,7 @@ func _process(_delta: float) -> void:
 		GameManager.player_health = 0
 		GameManager.player_money += 5
 		end_round()
-	if GameManager.enemy_health <= 0 and not GameManager.game_state == GameManager.GameState.GAMEOVER:
+	if GameManager.enemy_health <= 0 and not GameManager.game_state == GameManager.GameState.SHOPPING:
 		GameManager.enemy_health = 0
 		GameManager.player_money += 10
 		end_round()
@@ -214,6 +224,8 @@ func click():
 	):
 		if current_hover_object.is_in_group("gun") or current_hover_object.is_in_group("item"):
 			inventory_root.click_item(current_hover_object)
+		if current_hover_object.is_in_group("shop_item"):
+			shop_root.click_item(current_hover_object)
 		if gun_node.in_hand and GameManager.loaded_bullets_array.size() > 0: 
 			if current_hover_object.is_in_group("enemy_button"):
 				GameManager.shoot("enemy")
@@ -249,4 +261,5 @@ func reset_health():
 
 func end_round():
 	await get_tree().create_timer(2).timeout
-	GameManager.start_shop()
+	if GameManager.game_state != GameManager.GameState.SHOPPING:
+		GameManager.start_shop()
