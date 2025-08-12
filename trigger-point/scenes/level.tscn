@@ -1,14 +1,13 @@
-[gd_scene load_steps=21 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=19 format=3 uid="uid://b7q1eno5y5die"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_n4l56"]
 [ext_resource type="Material" uid="uid://caifagdwplekp" path="res://materials/light_glow_material.tres" id="1_ul5kl"]
 [ext_resource type="Material" uid="uid://cwf16nuwia0pi" path="res://materials/light_off_material.tres" id="2_5vhkd"]
 [ext_resource type="PackedScene" uid="uid://cgxkrtave52pq" path="res://models/Dealing Table.tscn" id="3_kv3p8"]
 [ext_resource type="PackedScene" uid="uid://5t6fyl18fw6r" path="res://scenes/enemy.tscn" id="4_hgh7a"]
+[ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/player.tscn" id="4_tmsby"]
 [ext_resource type="PackedScene" uid="uid://dqeky53dj2eb4" path="res://scenes/shotgun_basic.tscn" id="4_u86ou"]
-[ext_resource type="PackedScene" uid="uid://nhela11xflxu" path="res://scenes/win_lose_screen.tscn" id="5_6jxoa"]
-[ext_resource type="PackedScene" uid="uid://boembsc3j8hr8" path="res://scenes/pause_menu.tscn" id="6_m3c2i"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/inventory.tscn" id="8_dsi45"]
+[ext_resource type="PackedScene" uid="uid://b24ifdcjn4l3r" path="res://scenes/shop.tscn" id="10_0weq0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6bif5"]
 size = Vector3(0.397217, 0.400635, 0.555557)
@@ -19,7 +18,7 @@ albedo_color = Color(0.377919, 0.377919, 0.377919, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_2s6tp"]
 material = SubResource("StandardMaterial3D_fhc4a")
 flip_faces = true
-size = Vector3(14, 3.8, 8)
+size = Vector3(16, 3.8, 8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y5ny2"]
 albedo_color = Color(0.695503, 0.695503, 0.695503, 1)
@@ -54,9 +53,6 @@ fog_light_energy = 0.53
 fog_density = 0.0247
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.08
-
-[sub_resource type="LabelSettings" id="LabelSettings_iww2h"]
-font_size = 10
 
 [node name="level" type="Node3D"]
 
@@ -162,22 +158,10 @@ transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.33214
 [node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(9.61455e-08, 0.904187, -0.427137, 6.60682e-08, 0.427137, 0.904187, 1, -1.15154e-07, -1.86707e-08, -3.36363, -0.46249, 0.00628603)
 
-[node name="player" type="Node3D" parent="." node_paths=PackedStringArray("debug_label_3", "debug_label_4", "camera", "gun_node", "live_bullet_pos", "blank_bullet_pos", "win_lose_screen", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label", "inventory_root", "dealing_table")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.44138, 0.878755, 0)
-script = ExtResource("1_n4l56")
-debug_label_3 = NodePath("CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug3")
-debug_label_4 = NodePath("CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug4")
-camera = NodePath("Camera3D")
-rotation_look_up = Vector3(-0.1, 1.571, 0)
-rotation_look_down = Vector3(-0.7475, 1.57107, -0.000167499)
-rotation_shop = Vector3(-0.0994838, -1.5708, 0)
-camera_lerp_speed = 7
-item_lerp_speed = 0.05
-gun_lerp_speed = 0.1
+[node name="player" parent="." node_paths=PackedStringArray("gun_node", "live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root", "dealing_table") instance=ExtResource("4_tmsby")]
 gun_node = NodePath("../shotgun_basic")
 live_bullet_pos = NodePath("../PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("../PosNodes/BlankBulletPos")
-win_lose_screen = NodePath("CanvasLayer/GUI/WinLoseScreen")
 current_damage_label = NodePath("../DiegeticUI/CurrentDamage")
 held_item_description_label = NodePath("../DiegeticUI/ItemDescriptionLabel")
 player_score_label = NodePath("../environment/Scoreboard/PlayerScore")
@@ -187,66 +171,13 @@ enemy_turn_light = NodePath("../environment/enemy_turn_indicator")
 shoot_player_label = NodePath("../DiegeticUI/Self/ShootYourselfLabel")
 shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")
 inventory_root = NodePath("../Inventory")
+shop_root = NodePath("../shop")
 dealing_table = NodePath("../environment/Dealing Table")
 
-[node name="Camera3D" type="Camera3D" parent="player"]
-transform = Transform3D(-4.37114e-08, -0.0993197, 0.995055, 0, 0.995055, 0.0993197, -1, 4.3414e-09, -4.34953e-08, 0, 0, 0)
-fov = 60.0
-
-[node name="AudioListener3D" type="AudioListener3D" parent="player/Camera3D"]
-current = true
-
-[node name="CanvasLayer" type="CanvasLayer" parent="player"]
-
-[node name="GUI" type="Control" parent="player/CanvasLayer"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="player/CanvasLayer/GUI"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="player/CanvasLayer/GUI/HBoxContainer"]
-layout_mode = 2
-
-[node name="Debug1" type="Label" parent="player/CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test"
-label_settings = SubResource("LabelSettings_iww2h")
-
-[node name="Debug2" type="Label" parent="player/CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test"
-label_settings = SubResource("LabelSettings_iww2h")
-
-[node name="Debug3" type="Label" parent="player/CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test"
-label_settings = SubResource("LabelSettings_iww2h")
-
-[node name="Debug4" type="Label" parent="player/CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test"
-label_settings = SubResource("LabelSettings_iww2h")
-
-[node name="WinLoseScreen" parent="player/CanvasLayer/GUI" instance=ExtResource("5_6jxoa")]
-layout_mode = 1
-
-[node name="PauseMenu" parent="player/CanvasLayer/GUI" instance=ExtResource("6_m3c2i")]
-visible = false
-layout_mode = 1
-
-[node name="Inventory" parent="." node_paths=PackedStringArray("held_item_pos", "gun_node", "debug_1", "debug_2") instance=ExtResource("8_dsi45")]
+[node name="Inventory" parent="." node_paths=PackedStringArray("held_item_pos", "gun_node") instance=ExtResource("8_dsi45")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.41545, -0.421855, 0)
 held_item_pos = NodePath("../PosNodes/HeldItemPos")
 gun_node = NodePath("../shotgun_basic")
-debug_1 = NodePath("../player/CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug1")
-debug_2 = NodePath("../player/CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug2")
 
 [node name="enemy" parent="." instance=ExtResource("4_hgh7a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34313, 0.569011, 0)
@@ -255,3 +186,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34313, 0.569011, 0)
 transform = Transform3D(-4.1572e-08, -0.951057, -0.309017, 1, -4.37114e-08, 0, -1.35076e-08, -0.309017, 0.951057, 0, -0.45, 0)
 shoot_player_transform = NodePath("../PosNodes/ShootPlayerPos")
 shoot_enemy_transform = NodePath("../PosNodes/ShootEnemyPos")
+
+[node name="shop" parent="." instance=ExtResource("10_0weq0")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 7.3166, -1.203, 0)
