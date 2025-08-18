@@ -25,6 +25,7 @@ enum GameState {
 	SHOOTING,
 	RELOADING,
 	USINGITEM,
+	GETTINGITEM,
 	SHOPPING,
 	GAMEOVER,
 }
@@ -34,6 +35,7 @@ const GameStateNames = {
 	GameState.SHOOTING: "SHOOTING",
 	GameState.RELOADING: "RELOADING",
 	GameState.USINGITEM: "USINGITEM",
+	GameState.GETTINGITEM: "GETTINGITEM",
 	GameState.SHOPPING: "SHOPPING",
 	GameState.GAMEOVER: "GAMEOVER",
 }
@@ -42,13 +44,13 @@ var turn_owner : TurnOwner
 # Player stats
 var round_number: int = 1
 var player_health: int
-var player_max_health: int = 3
+var player_max_health: int = 1
 var player_money: int = 0
 # var player_inventory: Array = [] Maybe Change to this?
 
 # Enemy stats
 var enemy_health: int
-var enemy_max_health: int = 3
+var enemy_max_health: int = 1
 
 # Game Rules
 var current_bullet_damage: int = 1
@@ -59,13 +61,23 @@ var bullets_in_chamber: int = 6
 var live_bullets: int = 3
 var blank_bullets: int = 3
 var loaded_bullets_array: Array = []
+enum BulletType {BLANK, LIVE, SLUG, CRIPPLE}
+
 var used_shells : int
 var used_shells_array : Array
 
 # Temporary states
-var round_won: bool = false
+var round_ended: bool = false
 var shop_open: bool = false
 var using_item: bool = false
+
+var one_health_item_level: int = 1
+var peek_item_level: int = 1
+var shuffle_item_level: int = 1
+var double_damage_item_level: int = 1
+var remove_bullet_item_level: int = 1
+
+var receive_item_count: int = 0
 
 var player:Node3D = null
 var enemy:Node3D = null
@@ -76,6 +88,23 @@ var shop_root:Node3D = null
 var live_bullet_pos:Node3D = null
 var blank_bullet_pos:Node3D = null
 var held_item_pos:Node3D = null
+var dealing_box:Node3D = null
+var dealing_table:Node3D = null
+
+var hover_text_colour:Color = Color("ffffff")
+var unhover_text_colour:Color = Color("adadad")
+
+func _process(_delta) -> void:
+	if enemy_health <= 0 and round_ended == false and not player == null:
+		player_money += 10
+		enemy_health = 0
+		round_ended = true
+		end_round()
+	if player_health <= 0 and round_ended == false and not player == null:
+		player_money += 5
+		enemy_health = 0
+		round_ended = true
+		end_round()
 
 func start_round():
 	game_state = GameState.DECIDING
@@ -84,28 +113,33 @@ func start_round():
 
 
 func end_player_turn():
-	game_state = GameState.DECIDING
-	turn_owner = TurnOwner.ENEMY
-	enemy.start_enemy_turn()
+	if round_ended == false:
+		game_state = GameState.DECIDING
+		turn_owner = TurnOwner.ENEMY
+		enemy.start_enemy_turn()
 
 
 func continue_enemy_turn():
-	enemy.start_enemy_turn()
-	game_state = GameState.DECIDING
-	turn_owner = TurnOwner.ENEMY
+	if round_ended == false:
+		enemy.start_enemy_turn()
+		game_state = GameState.DECIDING
+		turn_owner = TurnOwner.ENEMY
 
 
 func end_enemy_turn():
-	game_state = GameState.DECIDING
-	turn_owner = TurnOwner.PLAYER
-	player.start_player_turn()
-	
+	if round_ended == false:
+		game_state = GameState.DECIDING
+		turn_owner = TurnOwner.PLAYER
+		player.start_player_turn()
+		
 func continue_player_turn():
-	game_state = GameState.DECIDING
-	turn_owner = TurnOwner.PLAYER
+	if round_ended == false:
+		game_state = GameState.DECIDING
+		turn_owner = TurnOwner.PLAYER
 
 
 func start_shop():
+	game_state = GameState.SHOPPING
 	shop_root.start_shop()
 
 
@@ -115,18 +149,21 @@ func reload():
 		turn_owner == TurnOwner.PLAYER or 
 		game_state == GameState.WAITING
 	):
-		max_bullets_in_chamber = randi_range(4,6)
 		loaded_bullets_array = []
+		loaded_bullets_array.append(BulletType.LIVE)
+		loaded_bullets_array.append(BulletType.BLANK)
+		max_bullets_in_chamber = randi_range(4,6)
 		for item in used_shells_array:
 			item.queue_free()
 		used_shells_array.clear()
 		used_shells = 0
-		for i in range(max_bullets_in_chamber):
+		for i in range(max_bullets_in_chamber - loaded_bullets_array.size()):
 			var rand = randi_range(1, 2)
 			if rand == 1:
-				loaded_bullets_array.append(true)
+				loaded_bullets_array.append(BulletType.LIVE)
 			else:
-				loaded_bullets_array.append(false)
+				loaded_bullets_array.append(BulletType.BLANK)
+		loaded_bullets_array.shuffle()
 		show_loaded_bullets()
 		game_state = GameState.RELOADING
 		await get_tree().create_timer(2).timeout
@@ -136,15 +173,15 @@ func reload():
 func shoot(target:String):
 	inventory_root.drop_item()
 	inventory_root.update_item_position()
-	var is_live_bullet = loaded_bullets_array[0]
+	var next_bullet = loaded_bullets_array[0]
 	game_state = GameState.SHOOTING
 	await gun_node.shoot(target)
-	if is_live_bullet:
+	if next_bullet == BulletType.LIVE:
 		if turn_owner == TurnOwner.PLAYER:
 			end_player_turn()
 		elif turn_owner == TurnOwner.ENEMY:
 			end_enemy_turn()
-	elif not is_live_bullet:
+	elif next_bullet == BulletType.BLANK:
 		if turn_owner == TurnOwner.PLAYER:
 			if target == "player":
 				continue_player_turn()
@@ -163,7 +200,7 @@ func show_loaded_bullets():
 	var current_blank_bullet_count : int = 0
 	var bullet_obj_array : Array
 	# Shows loaded bullets in order
-	for item in range(GameManager.loaded_bullets_array.size()):
+	for item in range(loaded_bullets_array.size()):
 		var bullet = bullet_gravity_scene.instantiate()
 		add_child(bullet)
 		var mesh = bullet.get_node("MeshInstance3D")
@@ -171,12 +208,12 @@ func show_loaded_bullets():
 		var mat = base_mat.duplicate()
 		bullet.rotation = Vector3(0, 0, deg_to_rad(90))
 		bullet_obj_array.append(bullet)
-		if GameManager.loaded_bullets_array[item] == true:
+		if loaded_bullets_array[item] == BulletType.LIVE:
 			current_live_bullet_count += 1
 			mat.albedo_color = Color(1, 0, 0)
 			mesh.set_surface_override_material(0, mat)
 			bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y + 0.1, live_bullet_pos.global_position.z - (float(current_live_bullet_count)/6))
-		else:
+		elif loaded_bullets_array[item] == BulletType.BLANK:
 			current_blank_bullet_count += 1
 			mat.albedo_color = Color(0, 0, 1)
 			mesh.set_surface_override_material(0, mat)
@@ -185,3 +222,22 @@ func show_loaded_bullets():
 	for item in bullet_obj_array:
 		item.queue_free()
 	bullet_obj_array.resize(0)
+
+
+func end_round():
+	await get_tree().create_timer(2).timeout
+	if GameManager.game_state != GameManager.GameState.SHOPPING:
+		GameManager.start_shop()
+
+
+func toggle_child_collision(object : Node, condition : bool):
+	for child in object.get_children():
+		if child is CollisionShape3D:
+			child.disabled = condition
+
+
+func end_getting_item():
+	await GameManager.dealing_table.item_open_player()
+	GameManager.dealing_box.visible = false
+	await GameManager.dealing_table.item_close_player()
+	GameManager.game_state = GameManager.GameState.DECIDING

@@ -1,6 +1,7 @@
-[gd_scene load_steps=37 format=4 uid="uid://cgxkrtave52pq"]
+[gd_scene load_steps=38 format=4 uid="uid://cgxkrtave52pq"]
 
 [ext_resource type="Script" path="res://scripts/dealing_table.gd" id="1_nr1hn"]
+[ext_resource type="PackedScene" uid="uid://clxcm4s5rutbl" path="res://scenes/box.tscn" id="2_m6dac"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shcf7"]
 
@@ -678,6 +679,10 @@ skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ItemSlotLeft/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_o7mdx")
+
+[node name="Box" parent="ItemSlotLeft" instance=ExtResource("2_m6dac")]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 3.50859, 4.31981, 0)
+visible = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

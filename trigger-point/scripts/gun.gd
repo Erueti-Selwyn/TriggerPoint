@@ -46,7 +46,7 @@ func shoot(target_name:String):
 	# Checks if bullet was live or blank
 	await get_tree().create_timer(1.5, false).timeout
 	var is_live_bullet
-	if GameManager.loaded_bullets_array[0] == true:
+	if GameManager.loaded_bullets_array[0] == GameManager.BulletType.LIVE:
 		play_sound_shot()
 		var blood = GameManager.blood_splatter_particle.instantiate()
 		add_child(blood)
@@ -59,7 +59,7 @@ func shoot(target_name:String):
 			GameManager.enemy_health -= GameManager.damage
 		GameManager.damage += 1
 		GameManager.current_bullet_damage = GameManager.damage
-	else:
+	elif GameManager.loaded_bullets_array[0] == GameManager.BulletType.BLANK:
 		play_sound_click()
 		is_live_bullet = false
 	GameManager.loaded_bullets_array.remove_at(0)
