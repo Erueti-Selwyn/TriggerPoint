@@ -142,13 +142,14 @@ func check_mouse_position(mouse:Vector2):
 	):
 		current_hover_mesh = find_hover_script(raycast_result.collider)
 		current_hover_object = raycast_result.collider
-		if previous_hover_mesh  != current_hover_mesh:
-			if previous_hover_mesh and previous_hover_mesh.has_method("unhover"):
-					previous_hover_mesh.unhover()
-					previous_hover_mesh = null
-		previous_hover_mesh = current_hover_mesh
-		if current_hover_mesh and current_hover_mesh.has_method("hover"):
-			current_hover_mesh.hover()
+		if not GameManager.game_state == GameManager.GameState.GETTINGITEM:
+			if previous_hover_mesh  != current_hover_mesh:
+				if previous_hover_mesh and previous_hover_mesh.has_method("unhover"):
+						previous_hover_mesh.unhover()
+						previous_hover_mesh = null
+			previous_hover_mesh = current_hover_mesh
+			if current_hover_mesh and current_hover_mesh.has_method("hover"):
+				current_hover_mesh.hover()
 	else:
 		if previous_hover_mesh and previous_hover_mesh.has_method("unhover"):
 				previous_hover_mesh.unhover()
@@ -202,7 +203,7 @@ func update_text_labels():
 	current_damage_label.text = ("Damage: " + str(GameManager.current_bullet_damage))
 	player_score_label.text = str(GameManager.player_health)
 	enemy_score_label.text = str(GameManager.enemy_health)
-	debug_label_1.text = str(GameManager.round_ended)
+	debug_label_1.text = str(GameManager.TurnOwnerNames[GameManager.turn_owner])
 	debug_label_2.text = str(GameManager.GameStateNames[GameManager.game_state])
 	debug_label_3.text = str(GameManager.loaded_bullets_array)
 	# Changes the colour of the text on the table when hovering
