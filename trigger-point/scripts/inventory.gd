@@ -47,7 +47,7 @@ func _process(_delta):
 
 func update_item_position():
 	for item in loaded_items:
-		if item.in_hand:
+		if is_instance_valid(item) and item.in_hand:
 			item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
 	for item in inventory:
 		# Returns items not in hand
@@ -87,6 +87,12 @@ func click_item(current_hover_object):
 	if GameManager.game_state == GameManager.GameState.GETTINGITEM and not current_hover_object == gun_node:
 		inventory.insert(current_hover_object.slot_number, new_item)
 		new_item.inventory_slot = current_hover_object.slot_number
+
+		var new_local_transform: Transform3D = current_hover_object.global_transform.affine_inverse() * new_item.global_transform
+		new_item.get_parent().remove_child(new_item)
+		current_hover_object.add_child(new_item)
+		new_item.transform = new_local_transform
+		
 		new_item.in_hand = false
 		new_item = null
 		update_item_position()
