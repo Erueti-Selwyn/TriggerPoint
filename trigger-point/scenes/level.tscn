@@ -158,7 +158,7 @@ transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.33214
 [node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(9.61455e-08, 0.904187, -0.427137, 6.60682e-08, 0.427137, 0.904187, 1, -1.15154e-07, -1.86707e-08, -3.36363, -0.46249, 0.00628603)
 
-[node name="player" parent="." node_paths=PackedStringArray("gun_node", "live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root", "dealing_table") instance=ExtResource("4_tmsby")]
+[node name="player" parent="." node_paths=PackedStringArray("gun_node", "live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_tmsby")]
 gun_node = NodePath("../shotgun_basic")
 live_bullet_pos = NodePath("../PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("../PosNodes/BlankBulletPos")
@@ -172,7 +172,6 @@ shoot_player_label = NodePath("../DiegeticUI/Self/ShootYourselfLabel")
 shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")
 inventory_root = NodePath("../Inventory")
 shop_root = NodePath("../shop")
-dealing_table = NodePath("../environment/Dealing Table")
 
 [node name="Inventory" parent="." node_paths=PackedStringArray("held_item_pos", "gun_node") instance=ExtResource("8_dsi45")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.41545, -0.421855, 0)

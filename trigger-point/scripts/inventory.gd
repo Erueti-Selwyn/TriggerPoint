@@ -9,11 +9,12 @@ const INVENTORY_SIZE:int = 4
 @export var held_item_pos: Node3D
 @export var gun_node: Node3D
 var inventory:Array = [null, null, null, null]
+var loaded_items:Array = []
 var slots_nodes:Array = []
 var item_scene_array:Array = []
 var item_lerp_speed:float = 0.05
 var held_item: Node3D
-
+var new_item:Node3D
 
 func _ready():
 	item_scene_array = [
@@ -45,43 +46,34 @@ func _process(_delta):
 
 
 func update_item_position():
+	for item in loaded_items:
+		if item.in_hand:
+			item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
 	for item in inventory:
 		# Returns items not in hand
 		if is_instance_valid(item) and not item.in_hand:
-			toggle_child_collision(slots_nodes[item.inventory_slot], false)
+			GameManager.toggle_child_collision(slots_nodes[item.inventory_slot], false)
 			item.move_to(slots_nodes[item.inventory_slot].global_position + Vector3(0,0.1,0), item.original_rot, item_lerp_speed)
 		if is_instance_valid(item)and item.in_hand:
-			toggle_child_collision(slots_nodes[item.inventory_slot], true)
+			GameManager.toggle_child_collision(slots_nodes[item.inventory_slot], true)
 			item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
 	if gun_node.in_hand:
-		toggle_child_collision(gun_node, true)
+		GameManager.toggle_child_collision(gun_node, true)
 	else:
-		toggle_child_collision(gun_node, false)
-
-
-func toggle_child_collision(object : Node, condition : bool):
-	for child in object.get_children():
-		if child is CollisionShape3D:
-			child.disabled = condition
+		GameManager.toggle_child_collision(gun_node, false)
 
 
 func add_random_item():
 	if inventory_has_empty_slot():
+		GameManager.receive_item_count -= 1
 		var rand = randi_range(0, item_scene_array.size() - 1)
-		var new_item = item_scene_array[rand].instantiate()
-		
-		var replace_item_slot:int = -1
-		for i in range(inventory.size()):
-			if inventory[i] == null:
-				replace_item_slot = i
-				break
-		if replace_item_slot != -1:
-			new_item.inventory_slot = replace_item_slot
-			inventory[replace_item_slot] = new_item
-			slots_nodes[replace_item_slot].add_child(new_item)
-			slots_nodes[replace_item_slot].item_in_slot = new_item
-			new_item.inventory_slot = replace_item_slot
-			update_item_position()
+		new_item = item_scene_array[rand].instantiate()
+		add_child(new_item)
+		new_item.global_position = GameManager.dealing_box.global_position
+		new_item.rotation = Vector3(0, 0, 0)
+		new_item.in_hand = true
+		loaded_items.append(new_item)
+		update_item_position()
 
 
 func inventory_has_empty_slot():
@@ -92,7 +84,17 @@ func inventory_has_empty_slot():
 
 
 func click_item(current_hover_object):
-	if current_hover_object == gun_node:
+	if GameManager.game_state == GameManager.GameState.GETTINGITEM and not current_hover_object == gun_node:
+		inventory.insert(current_hover_object.slot_number, new_item)
+		new_item.inventory_slot = current_hover_object.slot_number
+		new_item.in_hand = false
+		new_item = null
+		update_item_position()
+		if GameManager.receive_item_count > 0:
+			add_random_item()
+		else:
+			GameManager.end_getting_item()
+	elif current_hover_object == gun_node:
 		drop_item()
 		gun_node.in_hand = true
 		gun_node.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
