@@ -192,6 +192,13 @@ func click():
 	elif current_hover_object and GameManager.game_state == GameManager.GameState.SHOPPING:
 			if current_hover_object.is_in_group("shop_item"):
 				shop_root.click_item(current_hover_object)
+			elif current_hover_object.is_in_group("buy_shop_button"):
+				shop_root.buy_item()
+			elif current_hover_object.is_in_group("leave_shop_button"):
+				shop_root.end_shop()
+			elif current_hover_object.is_in_group("reroll_shop_button"):
+				shop_root.reroll_shop()
+
 	if (
 		current_hover_object and 
 		GameManager.game_state == GameManager.GameState.GETTINGITEM
