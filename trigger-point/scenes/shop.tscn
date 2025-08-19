@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://b24ifdcjn4l3r"]
 
 [ext_resource type="Material" uid="uid://brjcpnth8rmm7" path="res://materials/cardboard_box_material.tres" id="1_8fktg"]
-[ext_resource type="Script" path="res://scenes/shop.gd" id="1_un367"]
+[ext_resource type="Script" path="res://scripts/shop.gd" id="1_un367"]
 [ext_resource type="Script" path="res://scripts/slot.gd" id="3_ud2ff"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_fh0jl"]
@@ -36,7 +36,7 @@ size = Vector3(0.7, 0.6, 0.7)
 [node name="shop" type="Node3D"]
 script = ExtResource("1_un367")
 
-[node name="ShopHeldItem" type="Node3D" parent="."]
+[node name="ShopHeldItemPos" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47358, 0.772743)
 
 [node name="ShopTable" type="Node3D" parent="."]

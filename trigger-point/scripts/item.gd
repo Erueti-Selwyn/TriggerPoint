@@ -1,9 +1,11 @@
 extends Node3D
 class_name Item
 
+var base_model: PackedScene
+var upgraded_model: PackedScene
+
 var in_hand: bool = false
 var is_item: bool = true
-var is_shop_item: bool = false
 @onready var original_pos: Vector3 = global_position
 @onready var original_rot: Vector3 = rotation
 var target_pos: Vector3
@@ -13,6 +15,9 @@ var inventory_slot: int
 var type: String
 var item_type: String
 var item_description: String
+var upgraded_description: String
+var shop_description: String
+var upgrade_price: int = 5
 var item_y_offset: float
 
 
@@ -37,3 +42,7 @@ func get_y_offset():
 			var mesh_bottom = mesh.to_global(aabb.position).y
 			lowest_point = min(lowest_point, mesh_bottom)
 	item_y_offset = lowest_point
+
+
+func load_model():
+	pass

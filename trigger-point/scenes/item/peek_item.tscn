@@ -1,35 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://cjpbdto0cac0u"]
+[gd_scene load_steps=5 format=3 uid="uid://cjpbdto0cac0u"]
 
 [ext_resource type="Script" path="res://scripts/items/peek_item.gd" id="1_fne1m"]
 [ext_resource type="Script" path="res://scripts/hover.gd" id="2_7hmph"]
+[ext_resource type="PackedScene" uid="uid://ckj33qf3munsm" path="res://models/items/base_item/base_peek_model.tscn" id="3_qccq3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_r5sgw"]
 size = Vector3(0.118927, 0.29599, 0.202759)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_eowdb"]
-top_radius = 0.01
-bottom_radius = 0.01
-height = 0.2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_strck"]
-transparency = 1
-albedo_color = Color(1, 1, 1, 0.305882)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_q8ynm"]
-material = SubResource("StandardMaterial3D_strck")
-top_radius = 0.04
-bottom_radius = 0.04
-height = 0.015
-
-[sub_resource type="TorusMesh" id="TorusMesh_0we58"]
-inner_radius = 0.04
-outer_radius = 0.07
-rings = 16
-ring_segments = 8
-
-[node name="peek_item" type="StaticBody3D" groups=["item"]]
+[node name="peek_item" type="StaticBody3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]
 transform = Transform3D(-3.39701e-08, -0.777146, 0.62932, 1, -4.37114e-08, -5.55407e-14, 2.75085e-08, 0.62932, 0.777146, 0, 0, 0)
 script = ExtResource("1_fne1m")
+mesh_node = NodePath("mesh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 2.07834e-13, 0, -5.15143e-14, 1, 0, -2.13163e-14, 0, 1, 0.0410003, 0.0463716, 0.000915527)
@@ -42,17 +23,4 @@ script = ExtResource("2_7hmph")
 meshes = NodePath(".")
 parent = NodePath("..")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.94289e-16, -0.02727, -1.86265e-09)
-mesh = SubResource("CylinderMesh_eowdb")
-skeleton = NodePath("")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh"]
-transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0.117162, 0)
-mesh = SubResource("CylinderMesh_q8ynm")
-skeleton = NodePath("")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="mesh"]
-transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0.117162, 0)
-mesh = SubResource("TorusMesh_0we58")
-skeleton = NodePath("")
+[node name="base_peek_model" parent="mesh" instance=ExtResource("3_qccq3")]
