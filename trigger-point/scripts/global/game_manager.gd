@@ -94,6 +94,14 @@ var dealing_table:Node3D = null
 var hover_text_colour:Color = Color("ffffff")
 var unhover_text_colour:Color = Color("adadad")
 
+@onready var item_scene_array = [
+	GameManager.one_health_item_scene, 
+	GameManager.peek_item_scene, 
+	GameManager.shuffle_item_scene, 
+	GameManager.double_damage_item_scene, 
+	GameManager.remove_bullet_item_scene,
+]
+
 func _process(_delta) -> void:
 	if enemy_health <= 0 and round_ended == false and not player == null:
 		player_money += 10

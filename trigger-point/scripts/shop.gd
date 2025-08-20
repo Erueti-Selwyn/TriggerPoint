@@ -2,7 +2,6 @@ extends Node3D
 
 var shop_slot_nodes:Array = []
 var items_in_shop:Array = []
-var item_scene_array:Array = []
 var new_shop_items_array:Array = []
 var shop_held_item_pos:Node3D = null
 var reroll_button_label:Label3D = null
@@ -11,6 +10,13 @@ var leave_button_label:Label3D = null
 var item_shop_description_label:Label3D = null
 var item_lerp_speed:float = 0.05
 var offset:Vector3 = Vector3(0,0.1,0)
+var item_name_upgrade_dictionary:Dictionary = {
+	"double_damage": GameManager.double_damage_item_level, 
+	"one_health": GameManager.one_health_item_level,
+	"peek": GameManager.peek_item_level,
+	"remove_bullet": GameManager.remove_bullet_item_level,
+	"shuffle": GameManager.shuffle_item_level,
+}
 
 func _ready() -> void:
 	items_in_shop.resize(shop_slot_nodes.size())
@@ -25,17 +31,10 @@ func _ready() -> void:
 		$Slot1,
 		$Slot2,
 	]
-	item_scene_array = [
-		GameManager.one_health_item_scene, 
-		GameManager.peek_item_scene, 
-		GameManager.shuffle_item_scene, 
-		GameManager.double_damage_item_scene, 
-		GameManager.remove_bullet_item_scene,
-	]
 
 
 func start_shop():
-	new_shop_items_array = item_scene_array
+	new_shop_items_array = GameManager.item_scene_array
 	new_shop_items_array.shuffle()
 	var selection = new_shop_items_array.slice(0, shop_slot_nodes.size())
 	for i in shop_slot_nodes.size():
@@ -52,13 +51,14 @@ func create_shop_item(index:int, selection):
 
 func update_item_positions():
 	for item in items_in_shop:
-		if item.in_hand == true:
-			item.move_to(shop_held_item_pos.global_position, Vector3(0,0,0), item_lerp_speed)
-			GameManager.toggle_child_collision(shop_slot_nodes[item.inventory_slot], true)
-			item_shop_description_label.text = item.shop_description
-		else:
-			item.move_to(shop_slot_nodes[item.inventory_slot].global_position + offset, item.original_rot, item_lerp_speed)
-			GameManager.toggle_child_collision(shop_slot_nodes[item.inventory_slot], false)
+		if is_instance_valid(item):
+			if item.in_hand == true:
+				item.move_to(shop_held_item_pos.global_position, Vector3(0,0,0), item_lerp_speed)
+				GameManager.toggle_child_collision(shop_slot_nodes[item.inventory_slot], true)
+				item_shop_description_label.text = item.shop_description
+			else:
+				item.move_to(shop_slot_nodes[item.inventory_slot].global_position + offset, item.original_rot, item_lerp_speed)
+				GameManager.toggle_child_collision(shop_slot_nodes[item.inventory_slot], false)
 
 
 func click_item(slot_clicked):
@@ -70,7 +70,8 @@ func click_item(slot_clicked):
 
 func drop_shop_items():
 	for item in items_in_shop:
-		item.in_hand = false
+		if is_instance_valid(item):
+			item.in_hand = false
 
 
 func reroll_button_hover(is_hovering):
@@ -96,5 +97,7 @@ func leave_button_hover(is_hovering):
 
 func buy_item():
 	for item in items_in_shop:
-		if item.in_hand == true:
-			pass
+		if is_instance_valid(item) and item.in_hand == true:
+			if item_name_upgrade_dictionary[item.item_type] < 2:
+				item_name_upgrade_dictionary[item.item_type] += 1
+				item.queue_free()

@@ -11,19 +11,12 @@ const INVENTORY_SIZE:int = 4
 var inventory:Array = [null, null, null, null]
 var loaded_items:Array = []
 var slots_nodes:Array = []
-var item_scene_array:Array = []
 var item_lerp_speed:float = 0.05
 var held_item: Node3D
 var new_item:Node3D
 
+
 func _ready():
-	item_scene_array = [
-		GameManager.one_health_item_scene, 
-		GameManager.peek_item_scene, 
-		GameManager.shuffle_item_scene, 
-		GameManager.double_damage_item_scene, 
-		GameManager.remove_bullet_item_scene,
-	]
 	slots_nodes = [
 		$Slot0,
 		$Slot1,
@@ -66,8 +59,8 @@ func update_item_position():
 func add_random_item():
 	if inventory_has_empty_slot():
 		GameManager.receive_item_count -= 1
-		var rand = randi_range(0, item_scene_array.size() - 1)
-		new_item = item_scene_array[rand].instantiate()
+		var rand = randi_range(0, GameManager.item_scene_array.size() - 1)
+		new_item = GameManager.item_scene_array[rand].instantiate()
 		add_child(new_item)
 		new_item.global_position = GameManager.dealing_box.global_position
 		new_item.rotation = Vector3(0, 0, 0)
