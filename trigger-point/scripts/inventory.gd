@@ -59,8 +59,8 @@ func update_item_position():
 func add_random_item():
 	if inventory_has_empty_slot():
 		GameManager.receive_item_count -= 1
-		var rand = randi_range(0, GameManager.item_scene_array.size() - 1)
-		new_item = GameManager.item_scene_array[rand].instantiate()
+		var rand = randi_range(0, GameManager.item_scene_dictionary.size() - 1)
+		new_item = GameManager.item_scene_dictionary[GameManager.item_name_array[rand]].instantiate()
 		add_child(new_item)
 		new_item.global_position = GameManager.dealing_box.global_position
 		new_item.rotation = Vector3(0, 0, 0)
@@ -77,7 +77,11 @@ func inventory_has_empty_slot():
 
 
 func click_item(current_hover_object):
-	if GameManager.game_state == GameManager.GameState.GETTINGITEM and not current_hover_object == gun_node:
+	if (
+		GameManager.game_state == GameManager.GameState.GETTINGITEM and 
+		not current_hover_object == gun_node and 
+		inventory[current_hover_object.slot_number] == null
+	):
 		inventory.insert(current_hover_object.slot_number, new_item)
 		new_item.inventory_slot = current_hover_object.slot_number
 
@@ -98,7 +102,7 @@ func click_item(current_hover_object):
 		gun_node.in_hand = true
 		gun_node.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
 		update_item_position()
-	else:
+	elif not GameManager.game_state == GameManager.GameState.GETTINGITEM:
 		drop_item()
 		inventory[current_hover_object.slot_number].in_hand = true
 		update_item_position()

@@ -2,7 +2,7 @@ extends Node3D
 
 var shop_slot_nodes:Array = []
 var items_in_shop:Array = []
-var new_shop_items_array:Array = []
+var new_shop_items_dict:Dictionary = {}
 var shop_held_item_pos:Node3D = null
 var reroll_button_label:Label3D = null
 var buy_button_label:Label3D = null
@@ -10,13 +10,7 @@ var leave_button_label:Label3D = null
 var item_shop_description_label:Label3D = null
 var item_lerp_speed:float = 0.05
 var offset:Vector3 = Vector3(0,0.1,0)
-var item_name_upgrade_dictionary:Dictionary = {
-	"double_damage": GameManager.double_damage_item_level, 
-	"one_health": GameManager.one_health_item_level,
-	"peek": GameManager.peek_item_level,
-	"remove_bullet": GameManager.remove_bullet_item_level,
-	"shuffle": GameManager.shuffle_item_level,
-}
+
 
 func _ready() -> void:
 	items_in_shop.resize(shop_slot_nodes.size())
@@ -34,14 +28,27 @@ func _ready() -> void:
 
 
 func start_shop():
-	new_shop_items_array = GameManager.item_scene_array
+	new_shop_items_dict = GameManager.item_scene_dictionary
+	#for item in new_shop_items_dict:
+		
 	new_shop_items_array.shuffle()
 	var selection = new_shop_items_array.slice(0, shop_slot_nodes.size())
 	for i in shop_slot_nodes.size():
 		create_shop_item(i, selection)
 
+
+func end_shop():
+	for item in items_in_shop:
+		if is_instance_valid(item):
+			item.queue_free()
+	items_in_shop.clear()
+	await GameManager.player.end_shop()
+	GameManager.reload()
+
 func create_shop_item(index:int, selection):
 	var new_item = selection[index].instantiate()
+	new_item.is_shop_item = true
+	new_item.item_level = 2
 	new_item.inventory_slot = index
 	items_in_shop.append(new_item)
 	shop_slot_nodes[index].item_in_slot = new_item
@@ -62,10 +69,11 @@ func update_item_positions():
 
 
 func click_item(slot_clicked):
-	if not slot_clicked.item_in_slot == null:
-		drop_shop_items()
-		slot_clicked.item_in_slot.in_hand = true
-		update_item_positions()
+	if GameManager.game_state == GameManager.GameState.SHOPPING:
+		if not slot_clicked.item_in_slot == null:
+			drop_shop_items()
+			slot_clicked.item_in_slot.in_hand = true
+			update_item_positions()
 
 
 func drop_shop_items():
@@ -98,6 +106,8 @@ func leave_button_hover(is_hovering):
 func buy_item():
 	for item in items_in_shop:
 		if is_instance_valid(item) and item.in_hand == true:
-			if item_name_upgrade_dictionary[item.item_type] < 2:
-				item_name_upgrade_dictionary[item.item_type] += 1
+			if GameManager.item_name_level_dictionary[item.item_type] < 2:
+				GameManager.item_name_level_dictionary[item.item_type] += 1
 				item.queue_free()
+				await get_tree().create_timer(1).timeout
+				end_shop()

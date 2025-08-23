@@ -27,6 +27,7 @@ enum GameState {
 	USINGITEM,
 	GETTINGITEM,
 	SHOPPING,
+	TRANSITIONING,
 	GAMEOVER,
 }
 const GameStateNames = {
@@ -37,8 +38,10 @@ const GameStateNames = {
 	GameState.USINGITEM: "USINGITEM",
 	GameState.GETTINGITEM: "GETTINGITEM",
 	GameState.SHOPPING: "SHOPPING",
+	GameState.TRANSITIONING: "TRANSITIONING",
 	GameState.GAMEOVER: "GAMEOVER",
 }
+
 var game_state : GameState
 var turn_owner : TurnOwner
 # Player stats
@@ -94,13 +97,29 @@ var dealing_table:Node3D = null
 var hover_text_colour:Color = Color("ffffff")
 var unhover_text_colour:Color = Color("adadad")
 
-@onready var item_scene_array = [
-	GameManager.one_health_item_scene, 
-	GameManager.peek_item_scene, 
-	GameManager.shuffle_item_scene, 
-	GameManager.double_damage_item_scene, 
-	GameManager.remove_bullet_item_scene,
+var item_name_array:Array = [
+	"double_damage",
+	"one_health",
+	"peek",
+	"remove_bullet",
+	"shuffle",
 ]
+
+@onready var item_scene_dictionary = {
+	"double_damage": GameManager.double_damage_item_scene, 
+	"one_health": GameManager.one_health_item_scene, 
+	"peek": GameManager.peek_item_scene, 
+	"remove_bullet": GameManager.remove_bullet_item_scene,
+	"shuffle": GameManager.shuffle_item_scene, 
+}
+
+@onready var item_name_level_dictionary:Dictionary = {
+	"double_damage": GameManager.double_damage_item_level, 
+	"one_health": GameManager.one_health_item_level,
+	"peek": GameManager.peek_item_level,
+	"remove_bullet": GameManager.remove_bullet_item_level,
+	"shuffle": GameManager.shuffle_item_level,
+}
 
 func _process(_delta) -> void:
 	if enemy_health <= 0 and round_ended == false and not player == null:
