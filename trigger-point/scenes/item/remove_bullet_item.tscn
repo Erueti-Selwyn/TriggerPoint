@@ -1,26 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://2wa08swjuveh"]
+[gd_scene load_steps=3 format=3 uid="uid://2wa08swjuveh"]
 
 [ext_resource type="Script" path="res://scripts/items/remove_bullet_item.gd" id="1_1jebh"]
 [ext_resource type="Script" path="res://scripts/hover.gd" id="2_ewg30"]
-[ext_resource type="PackedScene" uid="uid://cqqnyshq48o1m" path="res://models/items/base_item/base_remove_bullet_model.tscn" id="3_mvftc"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_r5sgw"]
-size = Vector3(0.118927, 0.29599, 0.202759)
-
-[node name="remove_bullet_item" type="StaticBody3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]
+[node name="remove_bullet_item" type="Node3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]
 transform = Transform3D(-3.39701e-08, -0.777146, 0.62932, 1, -4.37114e-08, -5.55407e-14, 2.75085e-08, 0.62932, 0.777146, 0, 0, 0)
 script = ExtResource("1_1jebh")
 mesh_node = NodePath("mesh")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 2.07834e-13, 0, -5.15143e-14, 1, 0, -2.13163e-14, 0, 1, 0.0410003, 0.0463716, 0.000915527)
-shape = SubResource("BoxShape3D_r5sgw")
-disabled = true
 
 [node name="mesh" type="Node3D" parent="." node_paths=PackedStringArray("meshes", "parent")]
 transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
 script = ExtResource("2_ewg30")
 meshes = NodePath(".")
 parent = NodePath("..")
-
-[node name="base_remove_bullet_model" parent="mesh" instance=ExtResource("3_mvftc")]

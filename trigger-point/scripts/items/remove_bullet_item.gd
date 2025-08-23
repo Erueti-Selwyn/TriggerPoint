@@ -7,24 +7,25 @@ func _init():
 	item_type = "remove_bullet"
 	shop_description = "Removes the next two bullets\ninstead of just one"
 	item_description = "Removes next bullet\n in the chamber"
+	upgraded_description = "Removes the next two bullets\n in the chamber"
 
 
 func _ready():
 	base_model = preload("res://models/items/base_item/base_remove_bullet_model.tscn")
 	upgraded_model = preload("res://models/items/upgraded_item/upgraded_remove_bullet_model.tscn")
+	super()
 	get_y_offset()
 
 
 func use():
 	if GameManager.loaded_bullets_array.size() > 0:
-		print("show bullet")
 		var bullet = GameManager.bullet_gravity_scene.instantiate()
 		var level_node = get_tree().root
 		level_node.add_child(bullet)
 		var mesh = bullet.get_node("MeshInstance3D")
 		var base_mat = mesh.get_active_material(0)
 		var mat = base_mat.duplicate()
-		if GameManager.loaded_bullets_array[0] == true:
+		if GameManager.loaded_bullets_array[0] == GameManager.BulletType.LIVE:
 			mat.albedo_color = Color(1, 0, 0)
 		else:
 			mat.albedo_color = Color(0, 0, 1)

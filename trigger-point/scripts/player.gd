@@ -77,11 +77,7 @@ func _process(_delta: float) -> void:
 	GameManager.blank_bullets = GameManager.loaded_bullets_array.count(GameManager.BulletType.BLANK)
 	update_text_labels()
 	check_mouse_position(get_viewport().get_mouse_position())
-	if is_instance_valid(inventory_root.held_item) and not inventory_root.held_item == gun_node:
-		held_item_description_label.visible = true
-		held_item_description_label.text = inventory_root.held_item.item_description
-	else:
-		held_item_description_label.visible = false
+	
 	if Input.is_action_just_pressed("move_up"):
 		target_rotation = rotation_look_up
 	elif Input.is_action_just_pressed("move_down"):
@@ -93,7 +89,10 @@ func _process(_delta: float) -> void:
 	):
 		inventory_root.add_random_item()
 	if Input.is_action_just_pressed("escape"):
-		inventory_root.drop_item()
+		if GameManager.game_state == GameManager.GameState.SHOPPING:
+			shop_root.drop_shop_items()
+		else:
+			inventory_root.drop_item()
 		inventory_root.update_item_position()
 	if Input.is_action_just_pressed("reload"):
 		GameManager.reload()
@@ -114,7 +113,7 @@ func _physics_process(delta: float) -> void:
 		var tween = create_tween()
 		tween.tween_property(camera, "rotation", rotation_shop, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished
-	else:
+	elif not GameManager.game_state == GameManager.GameState.TRANSITIONING:
 		camera.rotation = camera.rotation.lerp(target_rotation, clamp(delta * camera_lerp_speed, 0.0, 1.0))
 
 
@@ -144,14 +143,14 @@ func check_mouse_position(mouse:Vector2):
 		current_hover_object = raycast_result.collider
 		if not GameManager.game_state == GameManager.GameState.GETTINGITEM:
 			if previous_hover_mesh  != current_hover_mesh:
-				if previous_hover_mesh and previous_hover_mesh.has_method("unhover"):
+				if is_instance_valid(previous_hover_mesh) and previous_hover_mesh.has_method("unhover"):
 						previous_hover_mesh.unhover()
 						previous_hover_mesh = null
 			previous_hover_mesh = current_hover_mesh
-			if current_hover_mesh and current_hover_mesh.has_method("hover"):
+			if is_instance_valid(current_hover_mesh) and current_hover_mesh.has_method("hover"):
 				current_hover_mesh.hover()
 	else:
-		if previous_hover_mesh and previous_hover_mesh.has_method("unhover"):
+		if is_instance_valid(previous_hover_mesh) and previous_hover_mesh.has_method("unhover"):
 				previous_hover_mesh.unhover()
 				previous_hover_mesh = null
 				current_hover_object = null
@@ -232,7 +231,7 @@ func update_text_labels():
 		shoot_enemy_label.modulate = GameManager.unhover_text_colour
 	if (
 		GameManager.game_state == GameManager.GameState.SHOPPING and 
-		current_hover_object
+		is_instance_valid(current_hover_object)
 	):
 		if current_hover_object.is_in_group("reroll_shop_button"):
 			shop_root.reroll_button_hover(true)
@@ -260,6 +259,14 @@ func update_text_labels():
 	else:
 		shoot_player_label.visible = false
 		shoot_enemy_label.visible = false
+	if is_instance_valid(inventory_root.held_item) and not inventory_root.held_item == gun_node:
+		held_item_description_label.visible = true
+		if inventory_root.held_item.item_level == 1:
+			held_item_description_label.text = inventory_root.held_item.item_description
+		elif inventory_root.held_item.item_level == 2:
+			held_item_description_label.text = inventory_root.held_item.upgraded_description
+	else:
+		held_item_description_label.visible = false
 
 
 func start_player_turn():
@@ -272,8 +279,18 @@ func start_player_turn():
 	await GameManager.dealing_table.item_close_player()
 	GameManager.game_state = GameManager.GameState.GETTINGITEM
 	
-	GameManager.receive_item_count = randi_range(1,2)
+	#GameManager.receive_item_count = randi_range(1,2)
+	GameManager.receive_item_count = 2
 	inventory_root.add_random_item()
+
+
+func end_shop():
+	GameManager.game_state = GameManager.GameState.TRANSITIONING
+	var tween = create_tween()
+	tween.tween_property(camera, "rotation", target_rotation, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+	GameManager.game_state = GameManager.GameState.WAITING
+	
 
 
 func win():
