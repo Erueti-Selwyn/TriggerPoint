@@ -1,8 +1,8 @@
 extends Node
 
-var bullet_gravity_scene = preload("res://scenes/bullet_gravity.tscn")
-var bullet_scene = preload("res://scenes/bullet.tscn")
-var blood_splatter_particle = preload("res://scenes/blood_splatter_particle.tscn")
+var bullet_gravity_scene = preload("res://scenes/visual/bullet_gravity.tscn")
+var bullet_scene = preload("res://scenes/visual/bullet.tscn")
+var blood_splatter_particle = preload("res://scenes/visual/blood_splatter_particle.tscn")
 
 var one_health_item_scene = preload("res://scenes/item/one_health_item.tscn")
 var peek_item_scene = preload("res://scenes/item/peek_item.tscn")
@@ -47,13 +47,13 @@ var turn_owner : TurnOwner
 # Player stats
 var round_number: int = 1
 var player_health: int
-var player_max_health: int = 1
+var player_max_health: int = 10
 var player_money: int = 0
 # var player_inventory: Array = [] Maybe Change to this?
 
 # Enemy stats
 var enemy_health: int
-var enemy_max_health: int = 1
+var enemy_max_health: int = 10
 
 # Game Rules
 var current_bullet_damage: int = 1
@@ -86,6 +86,7 @@ var player:Node3D = null
 var enemy:Node3D = null
 var inventory_root:Node3D = null
 var gun_node:Node3D = null
+var shotgun_node:Node3D = null
 var shop_root:Node3D = null
 
 var live_bullet_pos:Node3D = null
@@ -202,7 +203,7 @@ func shoot(target:String):
 	inventory_root.update_item_position()
 	var next_bullet = loaded_bullets_array[0]
 	game_state = GameState.SHOOTING
-	await gun_node.shoot(target)
+	await shotgun_node.shoot("player", target)
 	if next_bullet == BulletType.LIVE:
 		if turn_owner == TurnOwner.PLAYER:
 			end_player_turn()

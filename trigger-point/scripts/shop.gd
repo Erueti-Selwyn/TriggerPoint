@@ -31,10 +31,10 @@ func start_shop():
 	new_shop_items_dict = GameManager.item_scene_dictionary
 	#for item in new_shop_items_dict:
 		
-	new_shop_items_array.shuffle()
-	var selection = new_shop_items_array.slice(0, shop_slot_nodes.size())
-	for i in shop_slot_nodes.size():
-		create_shop_item(i, selection)
+	#new_shop_items_array.shuffle()
+	#var selection = new_shop_items_array.slice(0, shop_slot_nodes.size())
+	#for i in shop_slot_nodes.size():
+	#	create_shop_item(i, selection)
 
 
 func end_shop():

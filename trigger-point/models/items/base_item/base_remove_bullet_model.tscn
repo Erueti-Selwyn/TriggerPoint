@@ -5,21 +5,21 @@ albedo_color = Color(0.473976, 0.473976, 0.473976, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_rn10f"]
 material = SubResource("StandardMaterial3D_qoifs")
-size = Vector3(0.03, 0.2, 0.03)
+size = Vector3(0.075, 0.5, 0.075)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e5qls"]
 albedo_color = Color(0.473976, 0.473976, 0.473976, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_47tfp"]
 material = SubResource("StandardMaterial3D_e5qls")
-size = Vector3(0.03, 0.1, 0.03)
+size = Vector3(0.075, 0.25, 0.075)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kq83e"]
 albedo_color = Color(0.473976, 0.473976, 0.473976, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_gvbfm"]
 material = SubResource("StandardMaterial3D_kq83e")
-size = Vector3(0.03, 0.1, 0.03)
+size = Vector3(0.075, 0.25, 0.075)
 
 [node name="base_remove_bullet_model" type="Node3D"]
 
@@ -29,11 +29,11 @@ mesh = SubResource("BoxMesh_rn10f")
 skeleton = NodePath("")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, -8.88178e-16, 3.55271e-15, -1.77636e-15, 0.432259, 0.901749, 1.77636e-15, -0.901749, 0.432259, 3.33067e-16, 0.084162, -0.0318024)
+transform = Transform3D(1, -8.88178e-16, 3.55271e-15, -1.77636e-15, 0.432259, 0.901749, 1.77636e-15, -0.901749, 0.432259, 0, 0.25, -0.032)
 mesh = SubResource("BoxMesh_47tfp")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 1.77636e-15, -3.9968e-15, -1.77636e-15, 0.49658, -0.867991, 1.77636e-15, 0.867991, 0.49658, 4.44089e-16, 0.124484, -0.0314012)
+transform = Transform3D(1, 1.77636e-15, -3.9968e-15, -1.77636e-15, 0.49658, -0.867991, 1.77636e-15, 0.867991, 0.49658, 0, 0.35, -0.031)
 mesh = SubResource("BoxMesh_gvbfm")
 skeleton = NodePath("../..")

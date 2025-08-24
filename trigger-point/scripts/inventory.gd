@@ -97,7 +97,7 @@ func click_item(current_hover_object):
 			add_random_item()
 		else:
 			GameManager.end_getting_item()
-	elif current_hover_object == gun_node:
+	elif current_hover_object.is_in_group("gun"):
 		drop_item()
 		gun_node.in_hand = true
 		gun_node.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)

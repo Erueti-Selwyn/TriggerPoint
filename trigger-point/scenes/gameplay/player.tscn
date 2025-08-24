@@ -1,15 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvtpy0a34dg4c"]
+[gd_scene load_steps=5 format=3 uid="uid://bvtpy0a34dg4c"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_i10gd"]
-[ext_resource type="Shader" path="res://scenes/gameplay/player.gdshader" id="2_8t3jj"]
 [ext_resource type="PackedScene" uid="uid://nhela11xflxu" path="res://scenes/ui/win_lose_screen.tscn" id="2_xb1iw"]
 [ext_resource type="PackedScene" uid="uid://boembsc3j8hr8" path="res://scenes/ui/pause_menu.tscn" id="3_37ssm"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_a7yik"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0i3ds"]
-render_priority = 0
-shader = ExtResource("2_8t3jj")
 
 [sub_resource type="LabelSettings" id="LabelSettings_iww2h"]
 font_size = 10
@@ -22,11 +15,6 @@ camera_lerp_speed = 7
 item_lerp_speed = 0.05
 gun_lerp_speed = 0.1
 win_lose_screen = NodePath("CanvasLayer/GUI/WinLoseScreen")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.117676, -0.993052, 0, 0.993052, -0.117676, 0, 0, 0, 1, -1.08886, 0, 0)
-mesh = SubResource("PlaneMesh_a7yik")
-surface_material_override/0 = SubResource("ShaderMaterial_0i3ds")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-3.82576e-08, -0.388947, 0.92126, -1.29178e-08, 0.92126, 0.388947, -1, 2.97954e-09, -4.02696e-08, 0, 0, 0)
