@@ -21,7 +21,6 @@ var barrel_node: Node3D = null
 
 func _ready() -> void:
 	barrel_node = $barrel_end
-	GameManager.gun_node = self
 
 func move_to(pos: Vector3, rot: Vector3, speed: float):
 	target_pos = pos

@@ -5,16 +5,10 @@ extends Node3D
 # DEBUG STUFF
 
 # ASSETS
-var blood_splatter_particle = preload("res://scenes/blood_splatter_particle.tscn")
-var bullet_scene = preload("res://scenes/bullet.tscn")
-var bullet_gravity_scene = preload("res://scenes/bullet_gravity.tscn")
 var light_on_mat = preload("res://materials/light_glow_material.tres")
 var light_off_mat = preload("res://materials/light_off_material.tres")
-# ASSETS
 
 var camera: Camera3D = null
-@export var rotation_look_up : Vector3
-@export var rotation_look_down : Vector3
 @export var rotation_shop : Vector3
 @export var camera_lerp_speed : int
 @export var item_lerp_speed : float
@@ -68,7 +62,7 @@ func _ready() -> void:
 	GameManager.player_health = GameManager.player_max_health
 	GameManager.enemy_health = GameManager.enemy_max_health
 	GameManager.reload()
-	target_rotation = rotation_look_up
+	target_rotation = camera.rotation
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -77,11 +71,7 @@ func _process(_delta: float) -> void:
 	GameManager.blank_bullets = GameManager.loaded_bullets_array.count(GameManager.BulletType.BLANK)
 	update_text_labels()
 	check_mouse_position(get_viewport().get_mouse_position())
-	
-	if Input.is_action_just_pressed("move_up"):
-		target_rotation = rotation_look_up
-	elif Input.is_action_just_pressed("move_down"):
-		target_rotation = rotation_look_down
+
 	if (
 		Input.is_action_just_pressed("add_item") and 
 		GameManager.game_state == GameManager.GameState.DECIDING and 
@@ -107,9 +97,7 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	# Changes the rotation of camera to target rotation
-	if GameManager.game_state == GameManager.GameState.SHOOTING:
-		camera.rotation = camera.rotation.lerp(rotation_look_up, clamp(delta * camera_lerp_speed, 0.0, 1.0))
-	elif GameManager.game_state == GameManager.GameState.SHOPPING:
+	if GameManager.game_state == GameManager.GameState.SHOPPING:
 		var tween = create_tween()
 		tween.tween_property(camera, "rotation", rotation_shop, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		await tween.finished

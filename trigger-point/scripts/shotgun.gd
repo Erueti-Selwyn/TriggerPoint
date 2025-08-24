@@ -1,0 +1,71 @@
+extends Node3D
+
+@onready var animation_player = $ShotgunMesh/AnimationPlayer
+
+
+func _ready():
+	GameManager.shotgun_node = self
+
+func shoot_self():
+	animation_player.play("GUN SELECT_SELF")
+	await animation_player.animation_finished
+
+
+func shoot_enemy():
+	animation_player.play("GUN SELECT_ENEMY")
+	await animation_player.animation_finished
+
+
+func shoot(shooter_name:String, target_name:String):
+	if shooter_name == "enemy":
+		if target_name == "enemy":
+			print("enemy shoot enemy")
+			GameManager.enemy_health -= GameManager.damage
+		elif target_name == "player":
+			print("enemy shoot player")
+			GameManager.enemy_health -= GameManager.damage
+	elif shooter_name == "player":
+		if target_name == "enemy":
+			await shoot_enemy()
+			print("player shoot enemy")
+			GameManager.player_health -= GameManager.damage
+		elif target_name == "player":
+			await shoot_self()
+			print("player shoot player")
+			GameManager.player_health -= GameManager.damage
+	# Checks if bullet was live or blank
+	var is_live_bullet
+	if GameManager.loaded_bullets_array[0] == GameManager.BulletType.LIVE:
+		#play_sound_shot()
+		#var blood = GameManager.blood_splatter_particle.instantiate()
+		#add_child(blood)
+		#blood.global_position = Vector3(barrel_node.global_position.x, barrel_node.global_position.y + 0.4, barrel_node.global_position.z)
+		#blood.emitting = true
+		is_live_bullet = true
+		
+		GameManager.damage += 1
+		GameManager.current_bullet_damage = GameManager.damage
+	elif GameManager.loaded_bullets_array[0] == GameManager.BulletType.BLANK:
+		#play_sound_click()
+		is_live_bullet = false
+	GameManager.loaded_bullets_array.remove_at(0)
+	# Waits for animation to finish
+	# Add animation later
+	await get_tree().create_timer(1, false).timeout
+	#play_sound_cock()
+	var bullet = GameManager.bullet_gravity_scene.instantiate()
+	var level_node = get_tree().root
+	level_node.add_child(bullet)
+	var mesh = bullet.get_node("MeshInstance3D")
+	var base_mat = mesh.get_active_material(0)
+	var mat = base_mat.duplicate()
+	if is_live_bullet:
+		mat.albedo_color = Color(1, 0, 0)
+	else:
+		mat.albedo_color = Color(0, 0, 1)
+	mesh.set_surface_override_material(0, mat)
+	bullet.global_position = Vector3(GameManager.live_bullet_pos.global_position.x, GameManager.live_bullet_pos.global_position.y + 0.1, GameManager.live_bullet_pos.global_position.z - (float(GameManager.used_shells)/6))
+	bullet.rotation = Vector3(0, 0, deg_to_rad(90))
+	GameManager.used_shells_array.append(bullet)
+	GameManager.used_shells += 1
+	#move_to(original_pos, original_rot, gun_lerp_speed)

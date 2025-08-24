@@ -1,0 +1,68 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqk3ys4l1nrag"]
+
+[ext_resource type="Script" path="res://scripts/inventory.gd" id="1_csvbu"]
+[ext_resource type="Script" path="res://scripts/slot.gd" id="2_wljo2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ofw86"]
+size = Vector3(0.75, 1, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fe4ad"]
+size = Vector3(0.75, 0.25, 0.75)
+
+[node name="Inventory" type="Node3D"]
+script = ExtResource("1_csvbu")
+
+[node name="Slot0" type="StaticBody3D" parent="." groups=["item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 2.873)
+script = ExtResource("2_wljo2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Slot0" groups=["item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+shape = SubResource("BoxShape3D_ofw86")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slot0"]
+visible = false
+mesh = SubResource("BoxMesh_fe4ad")
+skeleton = NodePath("")
+
+[node name="Slot1" type="StaticBody3D" parent="." groups=["item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 1.813)
+script = ExtResource("2_wljo2")
+slot_number = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Slot1" groups=["item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+shape = SubResource("BoxShape3D_ofw86")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slot1"]
+visible = false
+mesh = SubResource("BoxMesh_fe4ad")
+skeleton = NodePath("")
+
+[node name="Slot2" type="StaticBody3D" parent="." groups=["item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -1.81274)
+script = ExtResource("2_wljo2")
+slot_number = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Slot2" groups=["item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+shape = SubResource("BoxShape3D_ofw86")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slot2"]
+visible = false
+mesh = SubResource("BoxMesh_fe4ad")
+skeleton = NodePath("")
+
+[node name="Slot3" type="StaticBody3D" parent="." groups=["item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -2.87344)
+script = ExtResource("2_wljo2")
+slot_number = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Slot3" groups=["item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+shape = SubResource("BoxShape3D_ofw86")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Slot3"]
+visible = false
+mesh = SubResource("BoxMesh_fe4ad")
+skeleton = NodePath("")
