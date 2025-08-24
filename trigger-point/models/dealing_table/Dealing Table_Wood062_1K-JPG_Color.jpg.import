@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmigmotsblv87"
-path.s3tc="res://.godot/imported/Dealing Table_Metal062C_1K-JPG_Metalness-Metal062C_1K-JPG_Roughness.png-acd359c118cd5680778da471b3137b71.s3tc.ctex"
+uid="uid://cfdbce67rk3wj"
+path.s3tc="res://.godot/imported/Dealing Table_Wood062_1K-JPG_Color.jpg-c9ee51df674e07fd57a6bbce3d5dfb84.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "498e23c82ca78a4bcd7ba88e5243b6fc"
+"md5": "99a89187de87f25c6c2683b5885b9caa"
 }
 
 [deps]
 
-source_file="res://models/Dealing Table_Metal062C_1K-JPG_Metalness-Metal062C_1K-JPG_Roughness.png"
-dest_files=["res://.godot/imported/Dealing Table_Metal062C_1K-JPG_Metalness-Metal062C_1K-JPG_Roughness.png-acd359c118cd5680778da471b3137b71.s3tc.ctex"]
+source_file="res://models/dealing_table/Dealing Table_Wood062_1K-JPG_Color.jpg"
+dest_files=["res://.godot/imported/Dealing Table_Wood062_1K-JPG_Color.jpg-c9ee51df674e07fd57a6bbce3d5dfb84.s3tc.ctex"]
 
 [params]
 

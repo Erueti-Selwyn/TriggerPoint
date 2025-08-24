@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xjrbnc5wtto6"
-path.s3tc="res://.godot/imported/SHOTGUN2_SHOTGUN_SHOTGUN_Height.png-ba910e43bc3266a06c7e9e0f5f863ef4.s3tc.ctex"
+uid="uid://dg5cfequa2wcl"
+path.s3tc="res://.godot/imported/Dealing Table_Board.png-29b99b33f85c98fa874b52ab1a3e75df.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "d00c36f647f6210d611da8663332377d"
+"md5": "b838a99c98b6c960c44c103ccb8f8b62"
 }
 
 [deps]
 
-source_file="res://models/SHOTGUN2_SHOTGUN_SHOTGUN_Height.png"
-dest_files=["res://.godot/imported/SHOTGUN2_SHOTGUN_SHOTGUN_Height.png-ba910e43bc3266a06c7e9e0f5f863ef4.s3tc.ctex"]
+source_file="res://models/dealing_table/Dealing Table_Board.png"
+dest_files=["res://.godot/imported/Dealing Table_Board.png-29b99b33f85c98fa874b52ab1a3e75df.s3tc.ctex"]
 
 [params]
 
@@ -23,12 +23,12 @@ compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/normal_map=1
+compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=1
-roughness/src_normal="res://models/SHOTGUN2_SHOTGUN_SHOTGUN_Height.png"
+roughness/mode=0
+roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

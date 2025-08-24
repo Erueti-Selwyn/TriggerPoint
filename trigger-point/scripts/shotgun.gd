@@ -1,5 +1,6 @@
 extends Node3D
-
+var in_hand : bool = false
+var type : String = "gun"
 @onready var animation_player = $ShotgunMesh/AnimationPlayer
 
 
@@ -12,7 +13,7 @@ func shoot_self():
 
 
 func shoot_enemy():
-	animation_player.play("GUN SELECT_ENEMY")
+	animation_player.play("ENEMY SELECT_SELF")
 	await animation_player.animation_finished
 
 

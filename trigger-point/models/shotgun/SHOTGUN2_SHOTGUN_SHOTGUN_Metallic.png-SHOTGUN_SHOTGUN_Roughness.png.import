@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwb54f0yw7mub"
-path.s3tc="res://.godot/imported/SHOTGUN2_SHOTGUN_SHOTGUN_BaseColor.png-cc14a51f1e0cdc422c1b0d62c3cd87ef.s3tc.ctex"
+uid="uid://dc6dpsn2wq7yj"
+path.s3tc="res://.godot/imported/SHOTGUN2_SHOTGUN_SHOTGUN_Metallic.png-SHOTGUN_SHOTGUN_Roughness.png-05180e5844735eb0f955c52b3935e470.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "85bd17e5298aeefc3f5114e6fa3387bb"
+"md5": "5de75ce0a3899ed76c144d7d7c84003b"
 }
 
 [deps]
 
-source_file="res://models/SHOTGUN2_SHOTGUN_SHOTGUN_BaseColor.png"
-dest_files=["res://.godot/imported/SHOTGUN2_SHOTGUN_SHOTGUN_BaseColor.png-cc14a51f1e0cdc422c1b0d62c3cd87ef.s3tc.ctex"]
+source_file="res://models/shotgun/SHOTGUN2_SHOTGUN_SHOTGUN_Metallic.png-SHOTGUN_SHOTGUN_Roughness.png"
+dest_files=["res://.godot/imported/SHOTGUN2_SHOTGUN_SHOTGUN_Metallic.png-SHOTGUN_SHOTGUN_Roughness.png-05180e5844735eb0f955c52b3935e470.s3tc.ctex"]
 
 [params]
 

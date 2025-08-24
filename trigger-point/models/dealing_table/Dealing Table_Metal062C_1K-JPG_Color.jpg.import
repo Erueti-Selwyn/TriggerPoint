@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfdbce67rk3wj"
-path.s3tc="res://.godot/imported/Dealing Table_Wood062_1K-JPG_Color.jpg-aafc08d00e39e02ac4d67930c234c0a9.s3tc.ctex"
+uid="uid://ccjr35y4c5465"
+path.s3tc="res://.godot/imported/Dealing Table_Metal062C_1K-JPG_Color.jpg-5dbcf8fe171ef5df16575f363bb4d6d8.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "99a89187de87f25c6c2683b5885b9caa"
+"md5": "7324f518c7b6e7cc6ed82229c6efd76d"
 }
 
 [deps]
 
-source_file="res://models/Dealing Table_Wood062_1K-JPG_Color.jpg"
-dest_files=["res://.godot/imported/Dealing Table_Wood062_1K-JPG_Color.jpg-aafc08d00e39e02ac4d67930c234c0a9.s3tc.ctex"]
+source_file="res://models/dealing_table/Dealing Table_Metal062C_1K-JPG_Color.jpg"
+dest_files=["res://.godot/imported/Dealing Table_Metal062C_1K-JPG_Color.jpg-5dbcf8fe171ef5df16575f363bb4d6d8.s3tc.ctex"]
 
 [params]
 

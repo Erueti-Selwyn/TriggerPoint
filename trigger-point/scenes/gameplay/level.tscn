@@ -1,15 +1,13 @@
-[gd_scene load_steps=21 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=19 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="Material" uid="uid://caifagdwplekp" path="res://materials/light_glow_material.tres" id="1_n7x4x"]
 [ext_resource type="Material" uid="uid://cwf16nuwia0pi" path="res://materials/light_off_material.tres" id="2_bt411"]
-[ext_resource type="PackedScene" uid="uid://cgxkrtave52pq" path="res://models/Dealing Table.tscn" id="3_di2jx"]
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/gameplay/inventory.tscn" id="5_e4d32"]
 [ext_resource type="PackedScene" uid="uid://5t6fyl18fw6r" path="res://scenes/gameplay/enemy.tscn" id="6_06dal"]
-[ext_resource type="PackedScene" uid="uid://dqeky53dj2eb4" path="res://scenes/visual/shotgun_basic.tscn" id="7_tvd0f"]
 [ext_resource type="PackedScene" uid="uid://b24ifdcjn4l3r" path="res://scenes/gameplay/shop.tscn" id="8_ev4sa"]
 [ext_resource type="PackedScene" uid="uid://u1hon6yqeeyc" path="res://scenes/visual/shotgun_textured.tscn" id="9_dhx86"]
-[ext_resource type="PackedScene" uid="uid://dok1q46eis68o" path="res://dealing_table.tscn" id="10_0r88v"]
+[ext_resource type="PackedScene" uid="uid://dok1q46eis68o" path="res://scenes/visual/dealing_table.tscn" id="10_0r88v"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6bif5"]
 size = Vector3(1, 0.401, 1.5)
@@ -127,9 +125,6 @@ mesh = SubResource("BoxMesh_cdjr3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.95162, 3.9078, 0)
 mesh = SubResource("BoxMesh_dy2m4")
 
-[node name="Dealing Table" parent="environment" instance=ExtResource("3_di2jx")]
-visible = false
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_c2ie3")
 
@@ -168,9 +163,8 @@ transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.33214
 [node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(9.61455e-08, 0.904187, -0.427137, 6.60682e-08, 0.427137, 0.904187, 1, -1.15154e-07, -1.86707e-08, -5.74252, 5.01327, 0.00628603)
 
-[node name="player" parent="." node_paths=PackedStringArray("gun_node", "live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
+[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
 transform = Transform3D(0.999996, -0.0026878, 0, 0.0026878, 0.999996, 0, 0, 0, 1, 7.7, 7.1, 0)
-gun_node = NodePath("../shotgun_basic")
 live_bullet_pos = NodePath("../PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("../PosNodes/BlankBulletPos")
 current_damage_label = NodePath("../DiegeticUI/CurrentDamage")
@@ -184,19 +178,12 @@ shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")
 inventory_root = NodePath("../Inventory")
 shop_root = NodePath("../shop")
 
-[node name="Inventory" parent="." node_paths=PackedStringArray("held_item_pos", "gun_node") instance=ExtResource("5_e4d32")]
+[node name="Inventory" parent="." node_paths=PackedStringArray("held_item_pos") instance=ExtResource("5_e4d32")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.396, 4.02888, 0)
 held_item_pos = NodePath("../PosNodes/HeldItemPos")
-gun_node = NodePath("../shotgun_basic")
 
 [node name="enemy" parent="." instance=ExtResource("6_06dal")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.29639, 6.45486, 0)
-
-[node name="shotgun_basic" parent="." node_paths=PackedStringArray("shoot_player_transform", "shoot_enemy_transform") groups=["gun"] instance=ExtResource("7_tvd0f")]
-transform = Transform3D(-4.1572e-08, -0.951057, -0.309017, 1, -4.37114e-08, 0, -1.35076e-08, -0.309017, 0.951057, 0, -0.45, 0)
-visible = false
-shoot_player_transform = NodePath("../PosNodes/ShootPlayerPos")
-shoot_enemy_transform = NodePath("../PosNodes/ShootEnemyPos")
 
 [node name="shop" parent="." instance=ExtResource("8_ev4sa")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.422, 4.14153, 0)
