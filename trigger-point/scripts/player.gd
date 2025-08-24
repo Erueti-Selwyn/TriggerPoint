@@ -13,7 +13,6 @@ var camera: Camera3D = null
 @export var camera_lerp_speed : int
 @export var item_lerp_speed : float
 @export var gun_lerp_speed : float
-@export var gun_node : Node
 
 @export var live_bullet_pos : Node3D
 @export var blank_bullet_pos : Node3D
@@ -169,7 +168,7 @@ func click():
 	):
 		if current_hover_object.is_in_group("gun") or current_hover_object.is_in_group("item"):
 			inventory_root.click_item(current_hover_object)
-		if gun_node.in_hand and GameManager.loaded_bullets_array.size() > 0: 
+		if GameManager.shotgun_node.in_hand and GameManager.loaded_bullets_array.size() > 0: 
 			if current_hover_object.is_in_group("enemy_button"):
 				GameManager.shoot("enemy")
 			elif current_hover_object.is_in_group("player_button"):
@@ -247,7 +246,7 @@ func update_text_labels():
 	else:
 		shoot_player_label.visible = false
 		shoot_enemy_label.visible = false
-	if is_instance_valid(inventory_root.held_item) and not inventory_root.held_item == gun_node:
+	if is_instance_valid(inventory_root.held_item) and not inventory_root.held_item.is_in_group("gun"):
 		held_item_description_label.visible = true
 		if inventory_root.held_item.item_level == 1:
 			held_item_description_label.text = inventory_root.held_item.item_description
@@ -261,10 +260,10 @@ func start_player_turn():
 	GameManager.dealing_box.visible = false
 	GameManager.game_state = GameManager.GameState.WAITING
 	GameManager.turn_owner = GameManager.TurnOwner.PLAYER
-	GameManager.dealing_table.item_open_player()
-	await get_tree().create_timer(2.5).timeout
+	await GameManager.dealing_table.box_open_player()
+	await get_tree().create_timer(0.2).timeout
 	GameManager.dealing_box.visible = true
-	await GameManager.dealing_table.item_close_player()
+	await GameManager.dealing_table.box_close_player()
 	GameManager.game_state = GameManager.GameState.GETTINGITEM
 	
 	#GameManager.receive_item_count = randi_range(1,2)

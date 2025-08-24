@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dok1q46eis68o"]
-
-[ext_resource type="PackedScene" uid="uid://ct1fc1qi7dqic" path="res://models/Dealing Table.glb" id="1_u1nte"]
-
-[node name="Dealing Table" instance=ExtResource("1_u1nte")]

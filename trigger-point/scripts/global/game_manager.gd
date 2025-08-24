@@ -266,7 +266,8 @@ func toggle_child_collision(object : Node, condition : bool):
 
 func end_getting_item():
 	game_state = GameState.WAITING
-	await GameManager.dealing_table.item_open_player()
+	await GameManager.dealing_table.box_open_player()
+	await get_tree().create_timer(0.2).timeout
 	GameManager.dealing_box.visible = false
-	await GameManager.dealing_table.item_close_player()
+	await GameManager.dealing_table.box_close_player()
 	GameManager.game_state = GameManager.GameState.DECIDING

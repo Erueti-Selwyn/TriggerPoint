@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://caymdms4gu6ay"
-path="res://.godot/imported/Dealing Table.gltf-87ddf52f86d38364bd75c2b2963970c5.scn"
+uid="uid://baaenxblk10hd"
+path="res://.godot/imported/SHOTGUN2.glb-817bf077e6e70f0582d833662cdc2eb4.scn"
 
 [deps]
 
-source_file="res://models/Dealing Table.gltf"
-dest_files=["res://.godot/imported/Dealing Table.gltf-87ddf52f86d38364bd75c2b2963970c5.scn"]
+source_file="res://models/shotgun/SHOTGUN2.glb"
+dest_files=["res://.godot/imported/SHOTGUN2.glb-817bf077e6e70f0582d833662cdc2eb4.scn"]
 
 [params]
 

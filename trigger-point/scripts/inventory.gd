@@ -7,7 +7,6 @@ const INVENTORY_SIZE:int = 4
 
 # Variables
 @export var held_item_pos: Node3D
-@export var gun_node: Node3D
 var inventory:Array = [null, null, null, null]
 var loaded_items:Array = []
 var slots_nodes:Array = []
@@ -28,8 +27,8 @@ func _ready():
 
 
 func _process(_delta):
-	if gun_node.in_hand == true:
-		held_item = gun_node
+	if GameManager.shotgun_node.in_hand == true:
+		held_item = GameManager.shotgun_node
 	else:
 		held_item = null
 		for item in inventory:
@@ -50,10 +49,10 @@ func update_item_position():
 		if is_instance_valid(item)and item.in_hand:
 			GameManager.toggle_child_collision(slots_nodes[item.inventory_slot], true)
 			item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
-	if gun_node.in_hand:
-		GameManager.toggle_child_collision(gun_node, true)
+	if GameManager.shotgun_node.in_hand:
+		GameManager.toggle_child_collision(GameManager.shotgun_node, true)
 	else:
-		GameManager.toggle_child_collision(gun_node, false)
+		GameManager.toggle_child_collision(GameManager.shotgun_node, false)
 
 
 func add_random_item():
@@ -79,7 +78,7 @@ func inventory_has_empty_slot():
 func click_item(current_hover_object):
 	if (
 		GameManager.game_state == GameManager.GameState.GETTINGITEM and 
-		not current_hover_object == gun_node and 
+		not current_hover_object.is_in_group("gun") and 
 		inventory[current_hover_object.slot_number] == null
 	):
 		inventory.insert(current_hover_object.slot_number, new_item)
@@ -99,8 +98,7 @@ func click_item(current_hover_object):
 			GameManager.end_getting_item()
 	elif current_hover_object.is_in_group("gun"):
 		drop_item()
-		gun_node.in_hand = true
-		gun_node.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
+		GameManager.shotgun_node.in_hand = true
 		update_item_position()
 	elif not GameManager.game_state == GameManager.GameState.GETTINGITEM:
 		drop_item()
@@ -120,8 +118,7 @@ func use_item():
 
 
 func drop_item():
-	gun_node.in_hand = false
-	gun_node.reset_pos()
+	GameManager.shotgun_node.in_hand = false
 	for item in inventory:
 		if is_instance_valid(item) and item.in_hand == true:
 			item.in_hand = false
