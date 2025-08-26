@@ -1,19 +1,25 @@
 extends Node3D
 var in_hand : bool = false
 var type : String = "gun"
-@onready var animation_player = $ShotgunMesh/AnimationPlayer
+@onready var animation_player = $SHOTGUNexam/AnimationPlayer
 
 
 func _ready():
 	GameManager.shotgun_node = self
 
+
+func hold():
+	animation_player.play("GUN SELECT")
+	await animation_player.animation_finished
+
+
 func shoot_self():
-	animation_player.play("GUN SELECT_SELF")
+	animation_player.play("SHOOT SELF")
 	await animation_player.animation_finished
 
 
 func shoot_enemy():
-	animation_player.play("ENEMY SELECT_SELF")
+	animation_player.play("SHOOTING ENEMY")
 	await animation_player.animation_finished
 
 

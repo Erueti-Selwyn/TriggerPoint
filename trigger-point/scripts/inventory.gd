@@ -100,6 +100,7 @@ func click_item(current_hover_object):
 		drop_item()
 		GameManager.shotgun_node.in_hand = true
 		update_item_position()
+		await GameManager.shotgun_node.hold()
 	elif not GameManager.game_state == GameManager.GameState.GETTINGITEM:
 		drop_item()
 		inventory[current_hover_object.slot_number].in_hand = true

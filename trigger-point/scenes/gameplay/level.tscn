@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/gameplay/inventory.tscn" id="5_e4d32"]
 [ext_resource type="PackedScene" uid="uid://5t6fyl18fw6r" path="res://scenes/gameplay/enemy.tscn" id="6_06dal"]
+[ext_resource type="PackedScene" uid="uid://cpx7yos24n1m1" path="res://scenes/visual/shotgun_exam.tscn" id="8_a7ot4"]
 [ext_resource type="PackedScene" uid="uid://b24ifdcjn4l3r" path="res://scenes/gameplay/shop.tscn" id="8_ev4sa"]
-[ext_resource type="PackedScene" uid="uid://u1hon6yqeeyc" path="res://scenes/visual/shotgun_textured.tscn" id="9_dhx86"]
 [ext_resource type="PackedScene" uid="uid://dok1q46eis68o" path="res://scenes/visual/dealing_table.tscn" id="10_0r88v"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6bif5"]
@@ -47,7 +47,7 @@ volumetric_fog_enabled = true
 volumetric_fog_density = 0.08
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fci2"]
-albedo_color = Color(0.651377, 0.735409, 0.746827, 1)
+albedo_color = Color(0.291892, 0.363442, 0.373194, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_edvh2"]
 material = SubResource("StandardMaterial3D_0fci2")
@@ -188,11 +188,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.29639, 6.45486, 0)
 [node name="shop" parent="." instance=ExtResource("8_ev4sa")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.422, 4.14153, 0)
 
-[node name="ShotgunTextured" parent="." instance=ExtResource("9_dhx86")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-
 [node name="Dealing Table" parent="." instance=ExtResource("10_0r88v")]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.90576, 0)
 mesh = SubResource("BoxMesh_edvh2")
+
+[node name="ShotgunExam" parent="." instance=ExtResource("8_a7ot4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
