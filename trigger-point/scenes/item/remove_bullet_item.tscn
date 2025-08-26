@@ -1,55 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://2wa08swjuveh"]
+[gd_scene load_steps=3 format=3 uid="uid://2wa08swjuveh"]
 
 [ext_resource type="Script" path="res://scripts/items/remove_bullet_item.gd" id="1_1jebh"]
 [ext_resource type="Script" path="res://scripts/hover.gd" id="2_ewg30"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_r5sgw"]
-size = Vector3(0.118927, 0.29599, 0.202759)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qoifs"]
-albedo_color = Color(0.473976, 0.473976, 0.473976, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_rn10f"]
-material = SubResource("StandardMaterial3D_qoifs")
-size = Vector3(0.03, 0.2, 0.03)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e5qls"]
-albedo_color = Color(0.473976, 0.473976, 0.473976, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_47tfp"]
-material = SubResource("StandardMaterial3D_e5qls")
-size = Vector3(0.03, 0.1, 0.03)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kq83e"]
-albedo_color = Color(0.473976, 0.473976, 0.473976, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_gvbfm"]
-material = SubResource("StandardMaterial3D_kq83e")
-size = Vector3(0.03, 0.1, 0.03)
-
-[node name="remove_bullet_item" type="StaticBody3D" groups=["item"]]
+[node name="remove_bullet_item" type="Node3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]
 transform = Transform3D(-3.39701e-08, -0.777146, 0.62932, 1, -4.37114e-08, -5.55407e-14, 2.75085e-08, 0.62932, 0.777146, 0, 0, 0)
 script = ExtResource("1_1jebh")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 2.07834e-13, 0, -5.15143e-14, 1, 0, -2.13163e-14, 0, 1, 0.0410003, 0.0463716, 0.000915527)
-shape = SubResource("BoxShape3D_r5sgw")
+mesh_node = NodePath("mesh")
 
 [node name="mesh" type="Node3D" parent="." node_paths=PackedStringArray("meshes", "parent")]
 transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
 script = ExtResource("2_ewg30")
 meshes = NodePath(".")
 parent = NodePath("..")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.94289e-16, -0.02727, -1.86265e-09)
-mesh = SubResource("BoxMesh_rn10f")
-skeleton = NodePath("")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh"]
-transform = Transform3D(1, 0, 0, 0, 0.432259, 0.901749, 0, -0.901749, 0.432259, 7.63278e-17, 0.084162, -0.0318024)
-mesh = SubResource("BoxMesh_47tfp")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="mesh"]
-transform = Transform3D(1, 0, 0, 0, 0.49658, -0.867991, 0, 0.867991, 0.49658, 2.04697e-16, 0.124484, -0.0314012)
-mesh = SubResource("BoxMesh_gvbfm")

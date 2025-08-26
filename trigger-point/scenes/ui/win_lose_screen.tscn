@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://nhela11xflxu"]
+
+[ext_resource type="Script" path="res://scripts/win_lose_screen.gd" id="1_3lrky"]
+
+[node name="WinLoseScreen" type="Control" node_paths=PackedStringArray("winner_text")]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3lrky")
+winner_text = NodePath("HBoxContainer/VBoxContainer/WinLose")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="WinLose" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Win/Lose"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Play Again"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

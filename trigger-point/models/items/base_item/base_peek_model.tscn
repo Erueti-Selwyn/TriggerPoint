@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://ckj33qf3munsm"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_eowdb"]
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_strck"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.305882)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_q8ynm"]
+material = SubResource("StandardMaterial3D_strck")
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.038
+
+[sub_resource type="TorusMesh" id="TorusMesh_0we58"]
+inner_radius = 0.1
+outer_radius = 0.175
+rings = 16
+ring_segments = 8
+
+[node name="base_peek_model" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, -1.77636e-15, 1, -2.98023e-08, 1.77636e-15, 2.98023e-08, 1, -1.11022e-16, -0.02727, -2.79397e-09)
+mesh = SubResource("CylinderMesh_eowdb")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 2.98023e-08, -4.37114e-08, -1, -1, -4.37114e-08, -2.98023e-08, -2.22045e-16, 0.35, 7.45058e-09)
+mesh = SubResource("CylinderMesh_q8ynm")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 2.98023e-08, -4.37114e-08, -1, -1, -4.37114e-08, -2.98023e-08, -2.22045e-16, 0.35, 7.45058e-09)
+mesh = SubResource("TorusMesh_0we58")
+skeleton = NodePath("")

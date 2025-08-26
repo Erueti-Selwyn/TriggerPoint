@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://clxcm4s5rutbl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5bnqq"]
+albedo_color = Color(0.172615, 0.0669889, 0.000848665, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nnbjx"]
+material = SubResource("StandardMaterial3D_5bnqq")
+size = Vector3(0.8, 0.4, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cdghn"]
+size = Vector3(0.6, 0.3, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o7vxq"]
+albedo_color = Color(0.172615, 0.0669889, 0.000848665, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avpbk"]
+albedo_color = Color(0, 0, 0, 1)
+roughness = 0.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_fdnaw"]
+lightmap_size_hint = Vector2i(5, 6)
+material = SubResource("StandardMaterial3D_avpbk")
+size = Vector2(0.7, 0.9)
+
+[node name="Box" type="Node3D"]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+operation = 2
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="CSGCombiner3D"]
+mesh = SubResource("BoxMesh_nnbjx")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.059687, 0)
+operation = 2
+mesh = SubResource("BoxMesh_cdghn")
+material = SubResource("StandardMaterial3D_o7vxq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.0622888, 0)
+mesh = SubResource("QuadMesh_fdnaw")

@@ -3,7 +3,7 @@ extends Node3D
 @export var parent : Node
 var meshes_rest_position : Vector3
 @export var lerp_speed : float = 5
-@export var hover_amount : float = 0.15
+@export var hover_amount : float = 0.3
 var is_hovering : bool
 var target_position : Vector3
 func hover():
