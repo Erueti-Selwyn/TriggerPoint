@@ -14,7 +14,7 @@ func _ready():
 	base_model = preload("res://models/items/base_item/base_peek_model.tscn")
 	upgraded_model = preload("res://models/items/upgraded_item/upgraded_peek_model.tscn")
 	super()
-	get_y_offset()
+
 
 func use():
 	if GameManager.loaded_bullets_array.size() > 0:

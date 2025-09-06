@@ -59,7 +59,8 @@ func add_random_item():
 	if inventory_has_empty_slot():
 		GameManager.receive_item_count -= 1
 		var rand = randi_range(0, GameManager.item_scene_dictionary.size() - 1)
-		new_item = GameManager.item_scene_dictionary[GameManager.item_name_array[rand]].instantiate()
+		#new_item = GameManager.item_scene_dictionary[GameManager.item_name_array[rand]].instantiate()
+		new_item = GameManager.item_scene_dictionary[GameManager.item_name_array[1]].instantiate()
 		add_child(new_item)
 		new_item.global_position = GameManager.dealing_box.global_position
 		new_item.rotation = Vector3(0, 0, 0)
@@ -119,7 +120,8 @@ func use_item():
 
 
 func drop_item():
-	GameManager.shotgun_node.in_hand = false
+	if GameManager.shotgun_node.in_hand == true:
+		GameManager.shotgun_node.drop_gun()
 	for item in inventory:
 		if is_instance_valid(item) and item.in_hand == true:
 			item.in_hand = false

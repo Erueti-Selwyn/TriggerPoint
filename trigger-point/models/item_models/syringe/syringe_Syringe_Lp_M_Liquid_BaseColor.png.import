@@ -1,0 +1,38 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://ddtw2mgmjll5i"
+path.s3tc="res://.godot/imported/syringe_Syringe_Lp_M_Liquid_BaseColor.png-9253ec7d8731e3395fa91be982fe2220.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "2cf8ec3f83bfe45d42805acfdd8a9ddb"
+}
+
+[deps]
+
+source_file="res://models/item_models/syringe/syringe_Syringe_Lp_M_Liquid_BaseColor.png"
+dest_files=["res://.godot/imported/syringe_Syringe_Lp_M_Liquid_BaseColor.png-9253ec7d8731e3395fa91be982fe2220.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

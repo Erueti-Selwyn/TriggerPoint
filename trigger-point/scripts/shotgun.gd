@@ -2,6 +2,7 @@ extends Node3D
 var in_hand : bool = false
 var type : String = "gun"
 @onready var animation_player = $SHOTGUNexam/AnimationPlayer
+@onready var collision_shape = $CollisionShape3D
 
 
 func _ready():
@@ -9,17 +10,29 @@ func _ready():
 
 
 func hold():
+	in_hand = true
 	animation_player.play("GUN SELECT")
+	collision_shape.disabled = true
 	await animation_player.animation_finished
+
+func drop_gun():
+	in_hand = false
+	animation_player.play_backwards("GUN SELECT")
+	await animation_player.animation_finished
+	collision_shape.disabled = false
 
 
 func shoot_self():
 	animation_player.play("SHOOT SELF")
 	await animation_player.animation_finished
+	animation_player.play_backwards("GUN SELECT")
+	await animation_player.animation_finished
 
 
 func shoot_enemy():
 	animation_player.play("SHOOTING ENEMY")
+	await animation_player.animation_finished
+	animation_player.play_backwards("GUN SELECT")
 	await animation_player.animation_finished
 
 
