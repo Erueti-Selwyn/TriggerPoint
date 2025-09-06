@@ -1,16 +1,14 @@
-[gd_scene load_steps=20 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=15 format=3 uid="uid://b7q1eno5y5die"]
 
-[ext_resource type="Material" uid="uid://caifagdwplekp" path="res://materials/light_glow_material.tres" id="1_n7x4x"]
-[ext_resource type="Material" uid="uid://cwf16nuwia0pi" path="res://materials/light_off_material.tres" id="2_bt411"]
-[ext_resource type="PackedScene" uid="uid://ckkdeg8mads5t" path="res://models/dealing_table/Dealing Table.tscn" id="3_dqjhf"]
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/gameplay/inventory.tscn" id="5_e4d32"]
 [ext_resource type="PackedScene" uid="uid://5t6fyl18fw6r" path="res://scenes/gameplay/enemy.tscn" id="6_06dal"]
 [ext_resource type="PackedScene" uid="uid://cpx7yos24n1m1" path="res://scenes/visual/shotgun_exam.tscn" id="8_a7ot4"]
 [ext_resource type="PackedScene" uid="uid://b24ifdcjn4l3r" path="res://scenes/gameplay/shop.tscn" id="8_ev4sa"]
+[ext_resource type="PackedScene" uid="uid://ckkdeg8mads5t" path="res://models/dealing_table/Dealing Table.tscn" id="8_jl8fi"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6bif5"]
-size = Vector3(1, 0.401, 1.5)
+size = Vector3(1.56921, 0.401, 2.28174)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y5ny2"]
 albedo_color = Color(0.695503, 0.695503, 0.695503, 1)
@@ -19,46 +17,31 @@ albedo_color = Color(0.695503, 0.695503, 0.695503, 1)
 material = SubResource("StandardMaterial3D_y5ny2")
 size = Vector3(1, 2.5, 3.125)
 
-[sub_resource type="BoxMesh" id="BoxMesh_cdjr3"]
-material = ExtResource("1_n7x4x")
-size = Vector3(0.75, 0.25, 7.5)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fci2"]
+albedo_color = Color(0, 0, 0, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_dy2m4"]
-material = ExtResource("2_bt411")
-size = Vector3(0.75, 0.25, 7.5)
+[sub_resource type="BoxMesh" id="BoxMesh_edvh2"]
+material = SubResource("StandardMaterial3D_0fci2")
+flip_faces = true
+size = Vector3(30, 10, 20)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qt43v"]
+sky_top_color = Color(0.128694, 0.0386417, 0.0150544, 1)
+sky_horizon_color = Color(0.0862745, 0.0326339, 0.00670331, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Sky" id="Sky_c3pm3"]
 sky_material = SubResource("ProceduralSkyMaterial_qt43v")
 
 [sub_resource type="Environment" id="Environment_c2ie3"]
 background_mode = 2
-background_energy_multiplier = 0.7
 sky = SubResource("Sky_c3pm3")
-ssr_enabled = true
-glow_enabled = true
-glow_strength = 1.5
-glow_bloom = 0.11
 fog_light_color = Color(0.458087, 0.492626, 0.546909, 1)
 fog_light_energy = 0.53
 fog_density = 0.0247
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.08
-
-[sub_resource type="FogMaterial" id="FogMaterial_r05ys"]
-density = 8.0
-albedo = Color(0, 0, 0, 1)
-height_falloff = 0.275546
-edge_fade = 0.918958
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fci2"]
-albedo_color = Color(0.291892, 0.363442, 0.373194, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_edvh2"]
-material = SubResource("StandardMaterial3D_0fci2")
-flip_faces = true
-size = Vector3(30, 10, 20)
+volumetric_fog_sky_affect = 0.0
 
 [node name="level" type="Node3D"]
 
@@ -66,14 +49,14 @@ size = Vector3(30, 10, 20)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.417, 0)
 
 [node name="Self" type="StaticBody3D" parent="DiegeticUI" groups=["player_button"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.40759, -0.500362, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.57702, -0.500362, 0)
 
 [node name="ShootYourselfLabel" type="Label3D" parent="DiegeticUI/Self"]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0, 0)
 modulate = Color(0.678431, 0.678431, 0.678431, 1)
 text = "Shoot 
 Yourself"
-font_size = 60
+font_size = 120
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DiegeticUI/Self"]
 shape = SubResource("BoxShape3D_6bif5")
@@ -89,10 +72,10 @@ transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 
 modulate = Color(0.678431, 0.678431, 0.678431, 1)
 text = "Shoot 
 Enemy"
-font_size = 60
+font_size = 120
 
 [node name="ItemDescriptionLabel" type="Label3D" parent="DiegeticUI"]
-transform = Transform3D(-0.0139622, -0.999903, 0, -4.37071e-08, 6.10308e-10, 1, -0.999903, 0.0139622, -4.37114e-08, 2.08648, -0.5, 0)
+transform = Transform3D(-0.0139622, -0.999903, 0, -4.37071e-08, 6.10308e-10, 1, -0.999903, 0.0139622, -4.37114e-08, 3.21115, -0.5, 0)
 text = "Item
 Description"
 font_size = 55
@@ -123,41 +106,25 @@ text = "0
 "
 font_size = 80
 
-[node name="player_turn_indicator" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.95615, 3.90762, 0)
-mesh = SubResource("BoxMesh_cdjr3")
+[node name="room" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.90576, 0)
+mesh = SubResource("BoxMesh_edvh2")
+skeleton = NodePath("../..")
 
-[node name="enemy_turn_indicator" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.95162, 3.9078, 0)
-mesh = SubResource("BoxMesh_dy2m4")
+[node name="Dealing Table" parent="environment" instance=ExtResource("8_jl8fi")]
 
-[node name="Dealing Table" parent="environment" instance=ExtResource("3_dqjhf")]
+[node name="shop" parent="environment" instance=ExtResource("8_ev4sa")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.422, 4.14153, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_c2ie3")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="WorldEnvironment"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.322684, 8.82918, -0.00738534)
-light_energy = 1.2
-light_size = 1.0
-shadow_enabled = true
-distance_fade_begin = 0.0
-distance_fade_shadow = 463.74
-spot_range = 27.619
-spot_angle = 58.95
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="WorldEnvironment"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9.71847, 10.1543, -0.00738534)
-shadow_enabled = true
-shadow_blur = 0.7
-distance_fade_begin = 0.0
-distance_fade_shadow = 463.74
-spot_angle = 50.0
-
-[node name="FogVolume" type="FogVolume" parent="WorldEnvironment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.52093, 3.26703, 0.0847778)
-size = Vector3(2, 0.534058, 6.82776)
-material = SubResource("FogMaterial_r05ys")
+transform = Transform3D(0.971114, -1.04303e-08, 0.238618, -0.238618, -4.24487e-08, 0.971114, -1.19211e-15, -1, -4.37114e-08, 6.71421, 10.1102, 0)
+spot_range = 40.0
+spot_attenuation = 0.8
+spot_angle = 65.0
+spot_angle_attenuation = 0.289781
 
 [node name="PosNodes" type="Node3D" parent="."]
 
@@ -176,7 +143,7 @@ transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.33214
 [node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(9.61455e-08, 0.904187, -0.427137, 6.60682e-08, 0.427137, 0.904187, 1, -1.15154e-07, -1.86707e-08, -5.74252, 5.01327, 0.00628603)
 
-[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "player_turn_light", "enemy_turn_light", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
+[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
 transform = Transform3D(0.999996, -0.0026878, 0, 0.0026878, 0.999996, 0, 0, 0, 1, 7.7, 7.1, 0)
 live_bullet_pos = NodePath("../PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("../PosNodes/BlankBulletPos")
@@ -184,26 +151,17 @@ current_damage_label = NodePath("../DiegeticUI/CurrentDamage")
 held_item_description_label = NodePath("../DiegeticUI/ItemDescriptionLabel")
 player_score_label = NodePath("../environment/Scoreboard/PlayerScore")
 enemy_score_label = NodePath("../environment/Scoreboard/EnemyScore")
-player_turn_light = NodePath("../environment/player_turn_indicator")
-enemy_turn_light = NodePath("../environment/enemy_turn_indicator")
 shoot_player_label = NodePath("../DiegeticUI/Self/ShootYourselfLabel")
 shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")
 inventory_root = NodePath("../Inventory")
-shop_root = NodePath("../shop")
+shop_root = NodePath("../environment/shop")
 
 [node name="Inventory" parent="." node_paths=PackedStringArray("held_item_pos") instance=ExtResource("5_e4d32")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.396, 4.02888, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.396, 4.015, 0)
 held_item_pos = NodePath("../PosNodes/HeldItemPos")
 
 [node name="enemy" parent="." instance=ExtResource("6_06dal")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.29639, 6.45486, 0)
-
-[node name="shop" parent="." instance=ExtResource("8_ev4sa")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.422, 4.14153, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.90576, 0)
-mesh = SubResource("BoxMesh_edvh2")
 
 [node name="ShotgunExam" parent="." instance=ExtResource("8_a7ot4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)

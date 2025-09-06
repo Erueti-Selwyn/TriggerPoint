@@ -4,10 +4,6 @@ extends Node3D
 
 # DEBUG STUFF
 
-# ASSETS
-var light_on_mat = preload("res://materials/light_glow_material.tres")
-var light_off_mat = preload("res://materials/light_off_material.tres")
-
 var camera: Camera3D = null
 @export var rotation_shop : Vector3
 @export var camera_lerp_speed : int
@@ -23,8 +19,6 @@ var camera: Camera3D = null
 @export var held_item_description_label : Label3D
 @export var player_score_label : Label3D
 @export var enemy_score_label : Label3D
-@export var player_turn_light : MeshInstance3D
-@export var enemy_turn_light : MeshInstance3D
 @export var shoot_player_label : Label3D
 @export var shoot_enemy_label : Label3D
 
@@ -85,13 +79,6 @@ func _process(_delta: float) -> void:
 		inventory_root.update_item_position()
 	if Input.is_action_just_pressed("reload"):
 		GameManager.reload()
-	# Changes material of light bar to show whos turn it is
-	if GameManager.turn_owner == GameManager.TurnOwner.PLAYER:
-		player_turn_light.mesh.surface_set_material(0, light_on_mat)
-		enemy_turn_light.mesh.surface_set_material(0, light_off_mat)
-	if GameManager.turn_owner == GameManager.TurnOwner.ENEMY:
-		enemy_turn_light.mesh.surface_set_material(0, light_on_mat)
-		player_turn_light.mesh.surface_set_material(0, light_off_mat)
 
 
 func _physics_process(delta: float) -> void:
@@ -236,8 +223,8 @@ func update_text_labels():
 	if is_instance_valid(inventory_root.held_item) and inventory_root.held_item.type == "gun" and GameManager.loaded_bullets_array.size() > 0:
 		shoot_player_label.visible = true
 		shoot_enemy_label.visible = true
-		shoot_player_label.text = "Shoot \nSelf"
-		shoot_enemy_label.text = "Shoot \nEnemy"
+		shoot_player_label.text = "YOU"
+		shoot_enemy_label.text = "Enemy"
 	elif is_instance_valid(inventory_root.held_item) and inventory_root.held_item.type == "item":
 		shoot_player_label.visible = true
 		shoot_enemy_label.visible = true
