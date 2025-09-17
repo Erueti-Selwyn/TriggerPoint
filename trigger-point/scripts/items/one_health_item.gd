@@ -10,9 +10,8 @@ func _init():
 	upgraded_description = "Heals for\nthree lives"
 
 func _ready():
-	base_model = preload("res://models/items/base_item/base_one_health_model.tscn")
+	base_model = preload("res://models/item_models/syringe/syringe.tscn")
 	upgraded_model = preload("res://models/items/upgraded_item/upgraded_one_health_model.tscn")
 	super()
-	get_y_offset()
 func use():
 	GameManager.player_health += 1
