@@ -58,7 +58,7 @@ func update_item_position():
 func add_random_item():
 	if inventory_has_empty_slot():
 		GameManager.receive_item_count -= 1
-		var rand = randi_range(0, GameManager.item_scene_dictionary.size() - 1)
+		#var rand = randi_range(0, GameManager.item_scene_dictionary.size() - 1)
 		#new_item = GameManager.item_scene_dictionary[GameManager.item_name_array[rand]].instantiate()
 		new_item = GameManager.item_scene_dictionary[GameManager.item_name_array[1]].instantiate()
 		add_child(new_item)
@@ -102,7 +102,7 @@ func click_item(current_hover_object):
 		GameManager.shotgun_node.in_hand = true
 		update_item_position()
 		await GameManager.shotgun_node.hold()
-	elif not GameManager.game_state == GameManager.GameState.GETTINGITEM:
+	elif not GameManager.game_state == GameManager.GameState.GETTINGITEM and is_instance_valid(inventory[current_hover_object.slot_number]):
 		drop_item()
 		inventory[current_hover_object.slot_number].in_hand = true
 		update_item_position()

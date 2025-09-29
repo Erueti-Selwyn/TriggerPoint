@@ -22,35 +22,47 @@ func drop_gun():
 	collision_shape.disabled = false
 
 
-func shoot_self():
+func player_shoot_self():
 	animation_player.play("SHOOT SELF")
 	await animation_player.animation_finished
 	animation_player.play_backwards("GUN SELECT")
 	await animation_player.animation_finished
 
 
-func shoot_enemy():
+func player_shoot_enemy():
 	animation_player.play("SHOOTING ENEMY")
 	await animation_player.animation_finished
 	animation_player.play_backwards("GUN SELECT")
 	await animation_player.animation_finished
 
 
-func shoot(shooter_name:String, target_name:String):
-	if shooter_name == "enemy":
-		if target_name == "enemy":
+func enemy_shoot_self():
+	animation_player.play("ENEMY SELECT_SELF")
+	await animation_player.animation_finished
+
+
+func enemy_shoot_player():
+	animation_player.play("ENEMY SELECT_YOU")
+	await animation_player.animation_finished
+
+
+func shoot(shooter:Node3D, target:Node3D):
+	if shooter == GameManager.enemy:
+		if target == GameManager.enemy:
+			await enemy_shoot_self()
 			print("enemy shoot enemy")
 			GameManager.enemy_health -= GameManager.damage
-		elif target_name == "player":
+		elif target == GameManager.player:
+			await enemy_shoot_player()
 			print("enemy shoot player")
-			GameManager.enemy_health -= GameManager.damage
-	elif shooter_name == "player":
-		if target_name == "enemy":
-			await shoot_enemy()
-			print("player shoot enemy")
 			GameManager.player_health -= GameManager.damage
-		elif target_name == "player":
-			await shoot_self()
+	elif shooter == GameManager.player:
+		if target == GameManager.enemy:
+			await player_shoot_enemy()
+			print("player shoot enemy")
+			GameManager.enemy_health -= GameManager.damage
+		elif target == GameManager.player:
+			await player_shoot_self()
 			print("player shoot player")
 			GameManager.player_health -= GameManager.damage
 	# Checks if bullet was live or blank

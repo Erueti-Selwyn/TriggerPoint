@@ -9,15 +9,6 @@ var peek_item_scene = preload("res://scenes/item/peek_item.tscn")
 var shuffle_item_scene = preload("res://scenes/item/shuffle_item.tscn")
 var double_damage_item_scene = preload("res://scenes/item/double_damage_item.tscn")
 var remove_bullet_item_scene = preload("res://scenes/item/remove_bullet_item.tscn")
-enum TurnOwner {
-	PLAYER,
-	ENEMY,
-}
-
-const TurnOwnerNames = {
-	TurnOwner.PLAYER: "PLAYER",
-	TurnOwner.ENEMY: "ENEMY",
-}
 
 enum GameState {
 	WAITING,
@@ -43,17 +34,17 @@ const GameStateNames = {
 }
 
 var game_state : GameState
-var turn_owner : TurnOwner
+var turn_owner : Node3D
 # Player stats
 var round_number: int = 1
 var player_health: int
-var player_max_health: int = 10
+var player_max_health: int = 5
 var player_money: int = 0
 # var player_inventory: Array = [] Maybe Change to this?
 
 # Enemy stats
 var enemy_health: int
-var enemy_max_health: int = 10
+var enemy_max_health: int = 5
 
 # Game Rules
 var current_bullet_damage: int = 1
@@ -122,6 +113,7 @@ var item_name_array:Array = [
 	"shuffle": GameManager.shuffle_item_level,
 }
 
+
 func _process(_delta) -> void:
 	if enemy_health <= 0 and round_ended == false and not player == null:
 		player_money += 10
@@ -134,36 +126,46 @@ func _process(_delta) -> void:
 		round_ended = true
 		end_round()
 
-func start_round():
-	game_state = GameState.DECIDING
-	turn_owner = TurnOwner.PLAYER
-	player.start_player_turn()
+
+func start_game():
+	game_state = GameState.WAITING
+	current_bullet_damage = 1
+	damage = current_bullet_damage
+	player_health = player_max_health
+	enemy_health = enemy_max_health
+	turn_owner = player
+	reload()
+
+
+func start_turn():
+	turn_owner.start_turn()
 
 
 func end_player_turn():
 	if round_ended == false:
 		game_state = GameState.DECIDING
-		turn_owner = TurnOwner.ENEMY
-		enemy.start_enemy_turn()
+		turn_owner = enemy
+		start_turn()
 
 
 func continue_enemy_turn():
 	if round_ended == false:
 		enemy.start_enemy_turn()
 		game_state = GameState.DECIDING
-		turn_owner = TurnOwner.ENEMY
+		turn_owner = enemy
 
 
 func end_enemy_turn():
 	if round_ended == false:
 		game_state = GameState.DECIDING
-		turn_owner = TurnOwner.PLAYER
-		player.start_player_turn()
-		
+		turn_owner = player
+		start_turn()
+
+
 func continue_player_turn():
 	if round_ended == false:
 		game_state = GameState.DECIDING
-		turn_owner = TurnOwner.PLAYER
+		turn_owner = player
 
 
 func start_shop():
@@ -174,7 +176,7 @@ func start_shop():
 func reload():
 	if (
 		game_state == GameState.DECIDING and 
-		turn_owner == TurnOwner.PLAYER or 
+		turn_owner == player or 
 		game_state == GameState.WAITING
 	):
 		loaded_bullets_array = []
@@ -195,33 +197,34 @@ func reload():
 		show_loaded_bullets()
 		game_state = GameState.RELOADING
 		await get_tree().create_timer(2).timeout
-		player.start_player_turn()
+		start_turn()
 
 
-func shoot(target:String):
+func shoot(shooter:Node3D, target:Node3D):
 	inventory_root.drop_item()
 	inventory_root.update_item_position()
 	var next_bullet = loaded_bullets_array[0]
 	game_state = GameState.SHOOTING
-	await shotgun_node.shoot("player", target)
+	await shotgun_node.shoot(shooter, target)
 	if next_bullet == BulletType.LIVE:
-		if turn_owner == TurnOwner.PLAYER:
+		if turn_owner == player:
 			end_player_turn()
-		elif turn_owner == TurnOwner.ENEMY:
+		elif turn_owner == enemy:
 			end_enemy_turn()
 	elif next_bullet == BulletType.BLANK:
-		if turn_owner == TurnOwner.PLAYER:
-			if target == "player":
+		if turn_owner == player:
+			if target == player:
 				continue_player_turn()
 			else:
 				end_player_turn()
-		elif turn_owner == TurnOwner.ENEMY:
-			if target == "enemy":
+		elif turn_owner == enemy:
+			if target == enemy:
 				continue_enemy_turn()
 			else:
 				end_enemy_turn()
 	inventory_root.drop_item()
 	inventory_root.update_item_position()
+
 
 func show_loaded_bullets():
 	var current_live_bullet_count : int = 0
