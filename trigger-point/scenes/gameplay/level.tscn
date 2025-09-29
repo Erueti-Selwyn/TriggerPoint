@@ -1,5 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=13 format=3 uid="uid://b7q1eno5y5die"]
 
+[ext_resource type="PackedScene" uid="uid://dabo5ahjn3wym" path="res://scenes/gameplay/scoreboard.tscn" id="1_plvog"]
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/gameplay/inventory.tscn" id="5_e4d32"]
 [ext_resource type="PackedScene" uid="uid://5t6fyl18fw6r" path="res://scenes/gameplay/enemy.tscn" id="6_06dal"]
@@ -9,13 +10,6 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6bif5"]
 size = Vector3(1.56921, 0.401, 2.28174)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y5ny2"]
-albedo_color = Color(0.695503, 0.695503, 0.695503, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_eanyj"]
-material = SubResource("StandardMaterial3D_y5ny2")
-size = Vector3(1, 2.5, 3.125)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fci2"]
 albedo_color = Color(0.29219, 0.29219, 0.29219, 1)
@@ -33,7 +27,7 @@ fog_light_color = Color(0.231111, 0.25393, 0.289803, 1)
 volumetric_fog_enabled = true
 
 [sub_resource type="FogMaterial" id="FogMaterial_l38ix"]
-density = 1.5
+density = 3.0
 albedo = Color(0.233925, 0.233925, 0.233925, 1)
 
 [node name="level" type="Node3D"]
@@ -80,24 +74,10 @@ visible = false
 text = "Damage: 1"
 font_size = 50
 
+[node name="Scoreboard" parent="DiegeticUI" instance=ExtResource("1_plvog")]
+transform = Transform3D(0.899062, 0, 0.437822, 0, 1, 0, -0.437822, 0, 0.899062, 0.894213, 1.0708, -5.72375)
+
 [node name="environment" type="Node3D" parent="."]
-
-[node name="Scoreboard" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.334499, 9.70198, 0)
-mesh = SubResource("BoxMesh_eanyj")
-skeleton = NodePath("../..")
-
-[node name="PlayerScore" type="Label3D" parent="environment/Scoreboard"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.5488, -0.313023, 0.698223)
-text = "0
-"
-font_size = 80
-
-[node name="EnemyScore" type="Label3D" parent="environment/Scoreboard"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.549, -0.313, -0.698)
-text = "0
-"
-font_size = 80
 
 [node name="room" type="MeshInstance3D" parent="environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.90576, 0)
@@ -126,14 +106,12 @@ transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.33214
 [node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(9.61455e-08, 0.904187, -0.427137, 6.60682e-08, 0.427137, 0.904187, 1, -1.15154e-07, -1.86707e-08, -5.74252, 5.01327, 0.00628603)
 
-[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "player_score_label", "enemy_score_label", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
+[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
 transform = Transform3D(0.999996, -0.0026878, 0, 0.0026878, 0.999996, 0, 0, 0, 1, 7.7, 7.1, 0)
 live_bullet_pos = NodePath("../PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("../PosNodes/BlankBulletPos")
 current_damage_label = NodePath("../DiegeticUI/CurrentDamage")
 held_item_description_label = NodePath("../DiegeticUI/ItemDescriptionLabel")
-player_score_label = NodePath("../environment/Scoreboard/PlayerScore")
-enemy_score_label = NodePath("../environment/Scoreboard/EnemyScore")
 shoot_player_label = NodePath("../DiegeticUI/Self/ShootYourselfLabel")
 shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")
 inventory_root = NodePath("../Inventory")

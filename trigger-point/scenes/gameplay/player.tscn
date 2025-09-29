@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvtpy0a34dg4c"]
+[gd_scene load_steps=6 format=3 uid="uid://bvtpy0a34dg4c"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_i10gd"]
+[ext_resource type="Script" path="res://scripts/camera.gd" id="2_6d3xt"]
 [ext_resource type="PackedScene" uid="uid://nhela11xflxu" path="res://scenes/ui/win_lose_screen.tscn" id="2_xb1iw"]
 [ext_resource type="PackedScene" uid="uid://boembsc3j8hr8" path="res://scenes/ui/pause_menu.tscn" id="3_37ssm"]
 
@@ -16,11 +17,14 @@ item_lerp_speed = 0.05
 gun_lerp_speed = 0.1
 win_lose_screen = NodePath("CanvasLayer/GUI/WinLoseScreen")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-3.82576e-08, -0.388947, 0.92126, -1.29178e-08, 0.92126, 0.388947, -1, 2.97954e-09, -4.02696e-08, 0, 0, 0)
+[node name="Head" type="Node3D" parent="."]
+script = ExtResource("2_6d3xt")
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+transform = Transform3D(-4.37114e-08, -0.34202, 0.939692, 0, 0.939692, 0.34202, -1, 1.49502e-08, -4.10753e-08, 0, 0, 0)
 fov = 60.0
 
-[node name="AudioListener3D" type="AudioListener3D" parent="Camera3D"]
+[node name="AudioListener3D" type="AudioListener3D" parent="Head/Camera3D"]
 current = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -34,7 +38,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/GUI"]
-visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
