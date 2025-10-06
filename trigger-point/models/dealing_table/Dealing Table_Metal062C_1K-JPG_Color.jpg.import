@@ -2,14 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bt4dfxi2bq21q"
+uid="uid://b5fm0yvor13w2"
 path.s3tc="res://.godot/imported/Dealing Table_Metal062C_1K-JPG_Color.jpg-5dbcf8fe171ef5df16575f363bb4d6d8.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
-}
-generator_parameters={
-"md5": "7324f518c7b6e7cc6ed82229c6efd76d"
 }
 
 [deps]
