@@ -2,14 +2,17 @@
 
 [ext_resource type="Script" path="res://scripts/scoreboard.gd" id="1_56nsn"]
 [ext_resource type="Texture2D" uid="uid://dlu0sbwm84dvu" path="res://assets/2D/StarHealth.png" id="1_b4lfj"]
-[ext_resource type="Shader" uid="uid://o8nstmwwamvd" path="res://materials/shaders/tv_static.tres" id="2_3ti2t"]
+[ext_resource type="Shader" path="res://materials/shaders/tv_static.gdshader" id="2_vti23"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xbwqv"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h3qg7"]
 render_priority = 0
-shader = ExtResource("2_3ti2t")
+shader = ExtResource("2_vti23")
+shader_parameter/pixel_density = 150.0
+shader_parameter/brightness = 0.171
+shader_parameter/flicker_speed = 10.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_k27fg"]
-material = SubResource("ShaderMaterial_xbwqv")
+material = SubResource("ShaderMaterial_h3qg7")
 size = Vector3(4, 2, 1)
 
 [node name="Scoreboard" type="Node3D" node_paths=PackedStringArray("player_health_icons", "enemy_health_icons")]
@@ -18,11 +21,10 @@ player_health_icons = [NodePath("Player/PlayerHealth/Health0"), NodePath("Player
 enemy_health_icons = [NodePath("Enemy/EnemyHealth/Health0"), NodePath("Enemy/EnemyHealth/Health1"), NodePath("Enemy/EnemyHealth/Health2"), NodePath("Enemy/EnemyHealth/Health3"), NodePath("Enemy/EnemyHealth/Health4")]
 
 [node name="ScoreboardMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00880957, 2.38419e-07, -0.00137901)
 mesh = SubResource("BoxMesh_k27fg")
 
 [node name="Enemy" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.5, 0.604282)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.5, 0.51)
 text = "Enemy"
 
 [node name="EnemyHealth" type="Node3D" parent="Enemy"]
@@ -53,7 +55,7 @@ pixel_size = 0.0075
 texture = ExtResource("1_b4lfj")
 
 [node name="Player" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.5, 0.604282)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.5, 0.51)
 text = "Player"
 
 [node name="PlayerHealth" type="Node3D" parent="Player"]
