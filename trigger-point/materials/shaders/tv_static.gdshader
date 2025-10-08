@@ -12,7 +12,7 @@ float hash(vec2 p) {
 }
 
 void fragment() {
-    vec2 uv = SCREEN_UV;
+    vec2 uv = UV;
 
     // lock to square pixel grid
     uv = floor(uv * pixel_density) / pixel_density;
