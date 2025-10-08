@@ -150,7 +150,7 @@ func end_player_turn():
 
 func continue_enemy_turn():
 	if round_ended == false:
-		enemy.start_enemy_turn()
+		enemy.start_turn()
 		game_state = GameState.DECIDING
 		turn_owner = enemy
 
