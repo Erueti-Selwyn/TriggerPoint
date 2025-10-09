@@ -73,18 +73,19 @@ var remove_bullet_item_level: int = 1
 
 var receive_item_count: int = 0
 
-var player:Node3D = null
-var enemy:Node3D = null
-var inventory_root:Node3D = null
-var gun_node:Node3D = null
-var shotgun_node:Node3D = null
-var shop_root:Node3D = null
+var player: Node3D = null
+var enemy: Node3D = null
+var inventory_root: Node3D = null
+var gun_node: Node3D = null
+var shotgun_node: Node3D = null
+var shop_root: Node3D = null
 
-var live_bullet_pos:Node3D = null
-var blank_bullet_pos:Node3D = null
-var held_item_pos:Node3D = null
-var dealing_box:Node3D = null
-var dealing_table:Node3D = null
+var live_bullet_pos: Node3D = null
+var blank_bullet_pos: Node3D = null
+var held_item_pos: Node3D = null
+var dealing_box: Node3D = null
+var dealing_table: Node3D = null
+var camera: Node3D = null
 
 var hover_text_colour:Color = Color("ffffff")
 var unhover_text_colour:Color = Color("adadad")

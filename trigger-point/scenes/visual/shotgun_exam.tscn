@@ -237,8 +237,9 @@ _data = {
 "SHOOTING ENEMY": SubResource("Animation_0eih3")
 }
 
-[node name="ShotgunExam" type="StaticBody3D" groups=["gun"]]
+[node name="ShotgunExam" type="StaticBody3D" node_paths=PackedStringArray("barrel_node") groups=["gun"]]
 script = ExtResource("1_3ume2")
+barrel_node = NodePath("SHOTGUNexam/GUN/Skeleton3D/Cube/BarrelPoint")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.127258, 0.228516)
@@ -270,6 +271,9 @@ bones/1/scale = Vector3(1, 1, 1)
 [node name="Cube" type="MeshInstance3D" parent="SHOTGUNexam/GUN/Skeleton3D"]
 mesh = SubResource("ArrayMesh_46ldx")
 skin = SubResource("Skin_ec1gk")
+
+[node name="BarrelPoint" type="Node3D" parent="SHOTGUNexam/GUN/Skeleton3D/Cube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.322095, 0, 2.51675)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="SHOTGUNexam"]
 libraries = {

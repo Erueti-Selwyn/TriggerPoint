@@ -1,14 +1,12 @@
-[gd_scene load_steps=16 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=14 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="PackedScene" uid="uid://dabo5ahjn3wym" path="res://scenes/gameplay/scoreboard.tscn" id="1_plvog"]
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/gameplay/inventory.tscn" id="5_e4d32"]
-[ext_resource type="PackedScene" uid="uid://cpx7yos24n1m1" path="res://scenes/visual/shotgun_exam.tscn" id="8_a7ot4"]
 [ext_resource type="PackedScene" uid="uid://b24ifdcjn4l3r" path="res://scenes/gameplay/shop.tscn" id="8_ev4sa"]
 [ext_resource type="PackedScene" uid="uid://ctssqpsysreu0" path="res://models/ingame area.glb" id="8_fgbfl"]
 [ext_resource type="PackedScene" uid="uid://ckkdeg8mads5t" path="res://models/dealing_table/Dealing Table.tscn" id="8_jl8fi"]
-[ext_resource type="PackedScene" uid="uid://bxpkfk5j36dgj" path="res://models/enemy.glb" id="9_abds6"]
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="9_q868e"]
+[ext_resource type="PackedScene" uid="uid://b0n613w84vp5h" path="res://scenes/gameplay/enemy.tscn" id="8_llb3g"]
 [ext_resource type="PackedScene" uid="uid://yu4mea588dfy" path="res://scenes/gameplay/shotgunfinal.tscn" id="10_rxli0"]
 
 [sub_resource type="Environment" id="Environment_vch0a"]
@@ -97,8 +95,7 @@ text = "Damage: 1"
 font_size = 50
 
 [node name="Scoreboard" parent="DiegeticUI" instance=ExtResource("1_plvog")]
-transform = Transform3D(0.899062, 0, 0.437822, 0, 1, 0, -0.437822, 0, 0.899062, 0.894213, 1.0708, -5.72375)
-visible = false
+transform = Transform3D(0.659963, 0, 0.751299, 0, 1, 0, -0.751299, 0, 0.659963, 2.318, 1.0708, -6.09018)
 
 [node name="environment" type="Node3D" parent="."]
 
@@ -126,10 +123,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.89566, 4.02555, 3.00418)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.89545, 4.02519, -3.004)
 
 [node name="ShootPlayerPos" type="Node3D" parent="PosNodes"]
-transform = Transform3D(-1.70542e-08, -0.943228, 0.332145, -4.10711e-08, 0.332145, 0.943228, -1, 2.44449e-09, -4.44039e-08, 7.53074, 4.83207, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2401, 5.827, 0)
 
 [node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
-transform = Transform3D(9.61455e-08, 0.904187, -0.427137, 6.60682e-08, 0.427137, 0.904187, 1, -1.15154e-07, -1.86707e-08, -5.74252, 5.01327, 0.00628603)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6991, 7.47431, 0.00628603)
 
 [node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
 transform = Transform3D(0.999996, -0.0026878, 0, 0.0026878, 0.999996, 0, 0, 0, 1, 7.7, 7.1, 0)
@@ -146,12 +143,7 @@ shop_root = NodePath("../environment/shop")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.396, 4.015, 0)
 held_item_pos = NodePath("../PosNodes/HeldItemPos")
 
-[node name="ShotgunExam" parent="." instance=ExtResource("8_a7ot4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-script = null
-
-[node name="Enemy" parent="." instance=ExtResource("9_abds6")]
-transform = Transform3D(-0.7, 0, -1.05697e-07, 0, 0.7, 0, 1.05697e-07, 0, -0.7, -7.13927, -0.239827, 0)
-script = ExtResource("9_q868e")
-
 [node name="SHOTGUNFINAL" parent="." instance=ExtResource("10_rxli0")]
+
+[node name="enemy" parent="." instance=ExtResource("8_llb3g")]
+transform = Transform3D(-0.7, 0, 6.11959e-08, 0, 0.7, 0, -6.11959e-08, 0, -0.7, -7.13927, -0.239827, 0)
