@@ -1,5 +1,6 @@
 extends Node3D
 @export var stupidness : float
+@export var enemy_blood_position: Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -25,3 +26,10 @@ func start_turn():
 		else:
 			GameManager.game_state = GameManager.GameState.WAITING
 			GameManager.reload()
+
+
+func blood_particles():
+	var blood = GameManager.blood_splatter_particle.instantiate()
+	add_child(blood)
+	blood.global_position = enemy_blood_position.global_position
+	blood.emitting = true

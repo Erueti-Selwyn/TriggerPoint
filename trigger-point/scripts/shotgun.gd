@@ -47,40 +47,44 @@ func enemy_shoot_player():
 
 
 func shoot(shooter:Node3D, target:Node3D):
-	if shooter == GameManager.enemy:
-		if target == GameManager.enemy:
-			await enemy_shoot_self()
-			print("enemy shoot enemy")
-			GameManager.enemy_health -= GameManager.damage
-		elif target == GameManager.player:
-			await enemy_shoot_player()
-			print("enemy shoot player")
-			GameManager.player_health -= GameManager.damage
-	elif shooter == GameManager.player:
-		if target == GameManager.enemy:
-			await player_shoot_enemy()
-			print("player shoot enemy")
-			GameManager.enemy_health -= GameManager.damage
-		elif target == GameManager.player:
-			await player_shoot_self()
-			print("player shoot player")
-			GameManager.player_health -= GameManager.damage
-	# Checks if bullet was live or blank
 	var is_live_bullet
 	if GameManager.loaded_bullets_array[0] == GameManager.BulletType.LIVE:
-		#play_sound_shot()
-		#var blood = GameManager.blood_splatter_particle.instantiate()
-		#add_child(blood)
-		#blood.global_position = Vector3(barrel_node.global_position.x, barrel_node.global_position.y + 0.4, barrel_node.global_position.z)
-		#blood.emitting = true
 		is_live_bullet = true
+		GameManager.camera.shake_screen()
 		
-		GameManager.damage += 1
 		GameManager.current_bullet_damage = GameManager.damage
 	elif GameManager.loaded_bullets_array[0] == GameManager.BulletType.BLANK:
 		#play_sound_click()
 		is_live_bullet = false
 	GameManager.loaded_bullets_array.remove_at(0)
+	if shooter == GameManager.enemy:
+		if target == GameManager.enemy:
+			await enemy_shoot_self()
+			print("enemy shoot enemy")
+			GameManager.enemy.blood_particles()
+			if is_live_bullet:
+				GameManager.enemy_health -= GameManager.damage
+		elif target == GameManager.player:
+			await enemy_shoot_player()
+			print("enemy shoot player")
+			GameManager.player.blood_particles()
+			if is_live_bullet:
+				GameManager.player_health -= GameManager.damage
+	elif shooter == GameManager.player:
+		if target == GameManager.enemy:
+			await player_shoot_enemy()
+			print("player shoot enemy")
+			GameManager.enemy.blood_particles()
+			if is_live_bullet:
+				GameManager.enemy_health -= GameManager.damage
+		elif target == GameManager.player:
+			await player_shoot_self()
+			print("player shoot player")
+			GameManager.player.blood_particles()
+			if is_live_bullet:
+				GameManager.player_health -= GameManager.damage
+	# Checks if bullet was live or blank
+	
 	# Waits for animation to finish
 	# Add animation later
 	await get_tree().create_timer(1, false).timeout

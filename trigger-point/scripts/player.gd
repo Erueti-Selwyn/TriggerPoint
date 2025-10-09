@@ -12,6 +12,7 @@ var camera: Camera3D = null
 
 @export var live_bullet_pos : Node3D
 @export var blank_bullet_pos : Node3D
+@export var player_blood_position: Node3D
 
 # In game UI features
 @export var win_lose_screen : Control
@@ -273,3 +274,10 @@ func reset_health():
 	GameManager.enemy_health = GameManager.player_max_health
 	GameManager.damage = 1
 	GameManager.current_bullet_damage = GameManager.damage
+
+
+func blood_particles():
+	var blood = GameManager.blood_splatter_particle.instantiate()
+	add_child(blood)
+	blood.global_position = player_blood_position.global_position
+	blood.emitting = true
