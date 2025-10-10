@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b4nvspb3l6fj1"
-path.s3tc="res://.godot/imported/enemy_Plastic006_1K-JPG_Color.jpg-28802258fe735af4e9c1363c5b78259f.s3tc.ctex"
+path.s3tc="res://.godot/imported/enemy_Plastic006_1K-JPG_Color.jpg-a8058a1199d6e4d8086435cbabaa771d.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://models/enemy/enemy_Plastic006_1K-JPG_Color.jpg"
-dest_files=["res://.godot/imported/enemy_Plastic006_1K-JPG_Color.jpg-28802258fe735af4e9c1363c5b78259f.s3tc.ctex"]
+source_file="res://models/Enemy/enemy_Plastic006_1K-JPG_Color.jpg"
+dest_files=["res://.godot/imported/enemy_Plastic006_1K-JPG_Color.jpg-a8058a1199d6e4d8086435cbabaa771d.s3tc.ctex"]
 
 [params]
 
