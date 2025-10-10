@@ -237,9 +237,8 @@ _data = {
 "SHOOTING ENEMY": SubResource("Animation_0eih3")
 }
 
-[node name="ShotgunExam" type="StaticBody3D" node_paths=PackedStringArray("barrel_node") groups=["gun"]]
+[node name="ShotgunExam" type="StaticBody3D" groups=["gun"]]
 script = ExtResource("1_3ume2")
-barrel_node = NodePath("SHOTGUNexam/GUN/Skeleton3D/Cube/BarrelPoint")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.127258, 0.228516)
