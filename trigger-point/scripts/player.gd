@@ -12,15 +12,18 @@ var camera: Camera3D = null
 
 @export var live_bullet_pos : Node3D
 @export var blank_bullet_pos : Node3D
+@export var player_blood_position: Node3D
 
 # In game UI features
 @export var win_lose_screen : Control
 @export var current_damage_label : Label3D
 @export var held_item_description_label : Label3D
-@export var player_score_label : Label3D
-@export var enemy_score_label : Label3D
 @export var shoot_player_label : Label3D
 @export var shoot_enemy_label : Label3D
+@export var player_scoreboard_label : Label3D
+@export var enemy_socreboard_label : Label3D
+@export var player_health_icons : Array
+@export var enemy_health_icons : Array
 
 @export var inventory_root: Node3D
 @export var shop_root: Node3D
@@ -45,17 +48,12 @@ func _ready() -> void:
 	debug_label_2 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug2
 	debug_label_3 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug3
 	debug_label_4 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug4
-	camera = $Camera3D
+	camera = $Head/Camera3D
 	GameManager.player = self
 	GameManager.live_bullet_pos = live_bullet_pos
 	GameManager.blank_bullet_pos = blank_bullet_pos
-	GameManager.game_state = GameManager.GameState.WAITING
-	GameManager.current_bullet_damage = 1
-	GameManager.damage = GameManager.current_bullet_damage
-	GameManager.player_health = GameManager.player_max_health
-	GameManager.enemy_health = GameManager.enemy_max_health
-	GameManager.reload()
 	target_rotation = camera.rotation
+	GameManager.start_game()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -68,7 +66,7 @@ func _process(_delta: float) -> void:
 	if (
 		Input.is_action_just_pressed("add_item") and 
 		GameManager.game_state == GameManager.GameState.DECIDING and 
-		GameManager.turn_owner == GameManager.TurnOwner.PLAYER
+		GameManager.turn_owner == GameManager.player
 	):
 		inventory_root.add_random_item()
 	if Input.is_action_just_pressed("escape"):
@@ -109,7 +107,7 @@ func check_mouse_position(mouse:Vector2):
 	if (
 		raycast_result.is_empty() == false and 
 		(GameManager.game_state == GameManager.GameState.DECIDING and 
-		GameManager.turn_owner == GameManager.TurnOwner.PLAYER or
+		GameManager.turn_owner == GameManager.player or
 		GameManager.game_state == GameManager.GameState.SHOPPING or
 		GameManager.game_state == GameManager.GameState.GETTINGITEM)
 	):
@@ -151,15 +149,15 @@ func click():
 	if (
 		current_hover_object and 
 		GameManager.game_state == GameManager.GameState.DECIDING and 
-		GameManager.turn_owner == GameManager.TurnOwner.PLAYER
+		GameManager.turn_owner == GameManager.player
 	):
 		if current_hover_object.is_in_group("gun") or current_hover_object.is_in_group("item"):
 			inventory_root.click_item(current_hover_object)
 		if GameManager.shotgun_node.in_hand and GameManager.loaded_bullets_array.size() > 0: 
 			if current_hover_object.is_in_group("enemy_button"):
-				GameManager.shoot("enemy")
+				GameManager.shoot(GameManager.player, GameManager.enemy)
 			elif current_hover_object.is_in_group("player_button"):
-				GameManager.shoot("player")
+				GameManager.shoot(GameManager.player, GameManager.player)
 		elif current_hover_object.is_in_group("player_button") or current_hover_object.is_in_group("enemy_button"):
 			inventory_root.use_item()
 	elif current_hover_object and GameManager.game_state == GameManager.GameState.SHOPPING:
@@ -179,17 +177,16 @@ func click():
 		if current_hover_object.is_in_group("item"):
 			inventory_root.click_item(current_hover_object)
 
+
 func update_text_labels():
 	current_damage_label.text = ("Damage: " + str(GameManager.current_bullet_damage))
-	player_score_label.text = str(GameManager.player_health)
-	enemy_score_label.text = str(GameManager.enemy_health)
-	debug_label_1.text = str(GameManager.TurnOwnerNames[GameManager.turn_owner])
 	debug_label_2.text = str(GameManager.GameStateNames[GameManager.game_state])
 	debug_label_3.text = str(GameManager.loaded_bullets_array)
+	# Changes health symbols
 	# Changes the colour of the text on the table when hovering
 	if (
 		GameManager.game_state == GameManager.GameState.DECIDING and 
-		GameManager.turn_owner == GameManager.TurnOwner.PLAYER and 
+		GameManager.turn_owner == GameManager.player and 
 		current_hover_object
 	):
 		if current_hover_object.is_in_group("player_button"):
@@ -227,9 +224,9 @@ func update_text_labels():
 		shoot_enemy_label.text = "Enemy"
 	elif is_instance_valid(inventory_root.held_item) and inventory_root.held_item.type == "item":
 		shoot_player_label.visible = true
-		shoot_enemy_label.visible = true
+		shoot_enemy_label.visible = false
 		shoot_player_label.text = "Use item\non Self"
-		shoot_enemy_label.text = "Use item\non Enemy"
+		shoot_enemy_label.text = "null"
 	else:
 		shoot_player_label.visible = false
 		shoot_enemy_label.visible = false
@@ -243,18 +240,15 @@ func update_text_labels():
 		held_item_description_label.visible = false
 
 
-func start_player_turn():
+func start_turn():
 	GameManager.dealing_box.visible = false
 	GameManager.game_state = GameManager.GameState.WAITING
-	GameManager.turn_owner = GameManager.TurnOwner.PLAYER
 	await GameManager.dealing_table.box_open_player()
 	await get_tree().create_timer(0.2).timeout
 	GameManager.dealing_box.visible = true
 	await GameManager.dealing_table.box_close_player()
 	GameManager.game_state = GameManager.GameState.GETTINGITEM
-	
-	#GameManager.receive_item_count = randi_range(1,2)
-	GameManager.receive_item_count = 2
+	GameManager.receive_item_count = randi_range(1,2)
 	inventory_root.add_random_item()
 
 
@@ -280,3 +274,10 @@ func reset_health():
 	GameManager.enemy_health = GameManager.player_max_health
 	GameManager.damage = 1
 	GameManager.current_bullet_damage = GameManager.damage
+
+
+func blood_particles():
+	var blood = GameManager.blood_splatter_particle.instantiate()
+	add_child(blood)
+	blood.global_position = player_blood_position.global_position
+	blood.emitting = true

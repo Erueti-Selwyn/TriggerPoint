@@ -1,32 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://5t6fyl18fw6r"]
+[gd_scene load_steps=3 format=3 uid="uid://b0n613w84vp5h"]
 
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_d3oqq"]
+[ext_resource type="PackedScene" uid="uid://bxpkfk5j36dgj" path="res://models/enemy/enemy.glb" id="1_eont8"]
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="2_qqjol"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h238u"]
-albedo_color = Color(0.79323, 9.76573e-05, 0.0604373, 1)
+[node name="enemy" node_paths=PackedStringArray("enemy_blood_position") instance=ExtResource("1_eont8")]
+script = ExtResource("2_qqjol")
+enemy_blood_position = NodePath("EnemyBloodPosition")
 
-[sub_resource type="SphereMesh" id="SphereMesh_28t3j"]
-material = SubResource("StandardMaterial3D_h238u")
-radius = 1.25
-height = 2.5
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3xf2k"]
-albedo_color = Color(0, 0, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_w4e8i"]
-material = SubResource("StandardMaterial3D_3xf2k")
-size = Vector3(0.25, 0.25, 0.25)
-
-[node name="enemy" type="Node3D"]
-script = ExtResource("1_d3oqq")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_28t3j")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.158, 0.1, -0.385025)
-mesh = SubResource("BoxMesh_w4e8i")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15815, 0.1, 0.366279)
-mesh = SubResource("BoxMesh_w4e8i")
+[node name="EnemyBloodPosition" type="Node3D" parent="." index="14"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.79854, 8.86969, 0)
