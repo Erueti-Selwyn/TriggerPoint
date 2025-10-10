@@ -1,9 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqb4gob60csnp"]
+[gd_scene load_steps=2 format=3 uid="uid://vxtw570aligy"]
 
-[ext_resource type="PackedScene" uid="uid://bx5ky3svxbc08" path="res://models/item_models/syringe/syringe.glb" id="1_nubga"]
+[ext_resource type="PackedScene" uid="uid://yhb3t55oecgl" path="res://models/item_models/syringe/syringe.glb" id="1_nubga"]
 
 [node name="syringe" instance=ExtResource("1_nubga")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 
 [node name="Syringe_With_Blood_SM" parent="." index="0"]
-transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
+transform = Transform3D(0.194933, 0, 0, 0, 0, -0.194933, 0, 0.194933, 0, 0, 0, 0)
