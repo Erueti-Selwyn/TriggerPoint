@@ -241,15 +241,9 @@ func update_text_labels():
 
 
 func start_turn():
-	GameManager.dealing_box.visible = false
-	GameManager.game_state = GameManager.GameState.WAITING
-	await GameManager.dealing_table.box_open_player()
-	await get_tree().create_timer(0.2).timeout
-	GameManager.dealing_box.visible = true
-	await GameManager.dealing_table.box_close_player()
-	GameManager.game_state = GameManager.GameState.GETTINGITEM
-	GameManager.receive_item_count = randi_range(1,2)
-	inventory_root.add_random_item()
+	print("started turn")
+	GameManager.game_state = GameManager.GameState.DECIDING
+	GameManager.turn_owner = GameManager.player
 
 
 func end_shop():

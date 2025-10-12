@@ -5,15 +5,7 @@ extends Item
 func _init():
 	type = "item"
 	item_type = "peek"
-	shop_description = "Reveals the next two bullets\ninstead of just one"
 	item_description = "Reveals the next\nbullet in the chamber"
-	upgraded_description = "Revels the next two\nbullets in the chamber"
-
-
-func _ready():
-	base_model = preload("res://models/items/base_item/base_peek_model.tscn")
-	upgraded_model = preload("res://models/items/upgraded_item/upgraded_peek_model.tscn")
-	super()
 
 
 func use():

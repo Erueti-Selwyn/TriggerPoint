@@ -1,11 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://5n74syg47p6g"]
+[gd_scene load_steps=4 format=3 uid="uid://5n74syg47p6g"]
 
 [ext_resource type="Script" path="res://scripts/items/one_health_item.gd" id="1_g66eb"]
 [ext_resource type="Script" path="res://scripts/hover.gd" id="2_r2g22"]
+[ext_resource type="PackedScene" uid="uid://b4gr8p6jm1l2o" path="res://models/item_models/potion/potion.glb" id="2_uim54"]
 
 [node name="one_health_item" type="Node3D" groups=["item"]]
-transform = Transform3D(-0.809017, 0.587785, 2.56929e-08, 0, -4.37114e-08, 1, 0.587785, 0.809017, 3.53633e-08, 0, 0, 0)
+transform = Transform3D(-0.161803, 0.117557, 5.13858e-09, 0, -8.74228e-09, 0.2, 0.117557, 0.161803, 7.07265e-09, 0, 0.201573, 0)
 script = ExtResource("1_g66eb")
+
+[node name="potion" parent="." instance=ExtResource("2_uim54")]
 
 [node name="mesh" type="Node3D" parent="." node_paths=PackedStringArray("meshes", "parent")]
 script = ExtResource("2_r2g22")

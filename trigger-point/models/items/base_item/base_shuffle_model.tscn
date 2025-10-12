@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://d3vvxs6c7knqq"]
-
-[ext_resource type="PackedScene" uid="uid://cvpgdw30f03ji" path="res://models/item_models/dice/lowpoly_dice.glb" id="1_lw3ha"]
-
-[node name="BaseShuffleModel" type="Node3D"]
-
-[node name="lowpoly_dice" parent="." instance=ExtResource("1_lw3ha")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)

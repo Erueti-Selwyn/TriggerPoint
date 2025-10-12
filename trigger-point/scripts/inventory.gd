@@ -58,9 +58,8 @@ func update_item_position():
 func add_random_item():
 	if inventory_has_empty_slot():
 		GameManager.receive_item_count -= 1
-		#var rand = randi_range(0, GameManager.item_scene_dictionary.size() - 1)
-		#new_item = GameManager.item_scene_dictionary[GameManager.item_name_array[rand]].instantiate()
-		new_item = GameManager.item_scene_dictionary[GameManager.item_name_array[1]].instantiate()
+		var rand = randi_range(0, GameManager.item_scene_dictionary.size() - 1)
+		new_item = GameManager.item_scene_dictionary[GameManager.item_name_array[rand]].instantiate()
 		add_child(new_item)
 		new_item.global_position = GameManager.dealing_box.global_position
 		new_item.rotation = Vector3(0, 0, 0)
@@ -84,7 +83,8 @@ func click_item(current_hover_object):
 	):
 		inventory.insert(current_hover_object.slot_number, new_item)
 		new_item.inventory_slot = current_hover_object.slot_number
-
+		
+		# Puts news local transform
 		var new_local_transform: Transform3D = current_hover_object.global_transform.affine_inverse() * new_item.global_transform
 		new_item.get_parent().remove_child(new_item)
 		current_hover_object.add_child(new_item)
@@ -92,6 +92,7 @@ func click_item(current_hover_object):
 		
 		new_item.in_hand = false
 		new_item = null
+		
 		update_item_position()
 		if GameManager.receive_item_count > 0:
 			add_random_item()
