@@ -1,11 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=13 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="PackedScene" uid="uid://dabo5ahjn3wym" path="res://scenes/gameplay/scoreboard.tscn" id="1_plvog"]
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/gameplay/inventory.tscn" id="5_e4d32"]
 [ext_resource type="PackedScene" uid="uid://cbnqqus6j6t23" path="res://models/ingame area NonText.glb" id="5_ymd3f"]
-[ext_resource type="PackedScene" uid="uid://b24ifdcjn4l3r" path="res://scenes/gameplay/shop.tscn" id="8_ev4sa"]
-[ext_resource type="PackedScene" uid="uid://ctssqpsysreu0" path="res://models/ingame area.glb" id="8_fgbfl"]
 [ext_resource type="PackedScene" uid="uid://ckkdeg8mads5t" path="res://models/dealing_table/Dealing Table.tscn" id="8_jl8fi"]
 [ext_resource type="PackedScene" uid="uid://b0n613w84vp5h" path="res://scenes/gameplay/enemy.tscn" id="8_llb3g"]
 [ext_resource type="PackedScene" uid="uid://7cakdks6xqyr" path="res://scenes/gameplay/shotgunfinal.tscn" id="10_rxli0"]
@@ -108,12 +106,6 @@ skeleton = NodePath("../..")
 
 [node name="Dealing Table" parent="environment" instance=ExtResource("8_jl8fi")]
 
-[node name="shop" parent="environment" instance=ExtResource("8_ev4sa")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.422, 4.14153, 0)
-
-[node name="ingame area" parent="environment" instance=ExtResource("8_fgbfl")]
-visible = false
-
 [node name="ingame area NonText" parent="environment" instance=ExtResource("5_ymd3f")]
 
 [node name="PosNodes" type="Node3D" parent="."]
@@ -133,7 +125,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2401, 5.827, 0)
 [node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6991, 7.47431, 0.00628603)
 
-[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
+[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "shoot_player_label", "shoot_enemy_label", "inventory_root") instance=ExtResource("4_h4ghb")]
 transform = Transform3D(0.999996, -0.0026878, 0, 0.0026878, 0.999996, 0, 0, 0, 1, 7.7, 7.1, 0)
 live_bullet_pos = NodePath("../PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("../PosNodes/BlankBulletPos")
@@ -142,7 +134,6 @@ held_item_description_label = NodePath("../DiegeticUI/ItemDescriptionLabel")
 shoot_player_label = NodePath("../DiegeticUI/Self/ShootYourselfLabel")
 shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")
 inventory_root = NodePath("../Inventory")
-shop_root = NodePath("../environment/shop")
 
 [node name="Inventory" parent="." node_paths=PackedStringArray("held_item_pos") instance=ExtResource("5_e4d32")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.396, 4.015, 0)

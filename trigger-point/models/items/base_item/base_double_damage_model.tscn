@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ctuqx4sglkd78"]
-
-[ext_resource type="PackedScene" uid="uid://blxmepipolsk4" path="res://models/item_models/pink_potion/pink_potion.glb" id="1_tg7ta"]
-
-[node name="base_double_damage_model" type="Node3D"]
-
-[node name="pink_potion" parent="." instance=ExtResource("1_tg7ta")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
