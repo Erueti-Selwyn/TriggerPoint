@@ -1,10 +1,10 @@
 [gd_scene load_steps=25 format=3 uid="uid://b7q1eno5y5die"]
 
-[ext_resource type="VideoStream" path="res://videos/Screen-1-1.ogv" id="1_d8xve"]
+[ext_resource type="VideoStream" path="res://videos/Screen1.ogv" id="1_d8xve"]
 [ext_resource type="Script" path="res://scripts/video_texture.gd" id="1_khi8y"]
 [ext_resource type="PackedScene" uid="uid://dabo5ahjn3wym" path="res://scenes/gameplay/scoreboard.tscn" id="1_plvog"]
-[ext_resource type="VideoStream" path="res://videos/Screen-2-1.ogv" id="2_y0lly"]
-[ext_resource type="VideoStream" path="res://videos/Screen-3-1.ogv" id="3_uyxme"]
+[ext_resource type="VideoStream" path="res://videos/Screen2.ogv" id="2_y0lly"]
+[ext_resource type="VideoStream" path="res://videos/Screen3.ogv" id="3_uyxme"]
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
 [ext_resource type="FontFile" uid="uid://byfgd2yvl30p4" path="res://assets/2D/fonts/digital-7.ttf" id="4_j3ivg"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/gameplay/inventory.tscn" id="5_e4d32"]

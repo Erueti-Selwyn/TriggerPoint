@@ -102,6 +102,7 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 		if target == GameManager.enemy:
 			await enemy_hold()
 			await enemy_shoot_self()
+			await get_tree().create_timer(1.5).timeout
 			shoot_bullet(next_bullet)
 			await enemy_shoot_self_return()
 			await enemy_drop_gun()
@@ -125,6 +126,7 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 				GameManager.enemy_health -= GameManager.damage
 		elif target == GameManager.player:
 			await player_shoot_self()
+			await get_tree().create_timer(1.5).timeout
 			shoot_bullet(next_bullet)
 			await player_shoot_self_return()
 			await drop_gun()
