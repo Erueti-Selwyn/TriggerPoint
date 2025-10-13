@@ -17,7 +17,7 @@ func _process(_delta: float) -> void:
 
 
 func box_close_player():
-	anim_player.play_backwards("Box Open Player")
+	anim_player.play("Box Close Player")
 	await anim_player.animation_finished
 	return
 

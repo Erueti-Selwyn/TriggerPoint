@@ -16,7 +16,6 @@ var camera: Camera3D = null
 
 # In game UI features
 @export var win_lose_screen : Control
-@export var current_damage_label : Label3D
 @export var held_item_description_label : Label3D
 @export var shoot_player_label : Label3D
 @export var shoot_enemy_label : Label3D
@@ -57,7 +56,8 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	debug_label_4.text = str(1/delta)
 	GameManager.live_bullets = GameManager.loaded_bullets_array.count(GameManager.BulletType.LIVE)
 	GameManager.blank_bullets = GameManager.loaded_bullets_array.count(GameManager.BulletType.BLANK)
 	update_text_labels()
@@ -116,8 +116,8 @@ func check_mouse_position(mouse:Vector2):
 		if not GameManager.game_state == GameManager.GameState.GETTINGITEM:
 			if previous_hover_mesh  != current_hover_mesh:
 				if is_instance_valid(previous_hover_mesh) and previous_hover_mesh.has_method("unhover"):
-						previous_hover_mesh.unhover()
-						previous_hover_mesh = null
+					previous_hover_mesh.unhover()
+					previous_hover_mesh = null
 			previous_hover_mesh = current_hover_mesh
 			if is_instance_valid(current_hover_mesh) and current_hover_mesh.has_method("hover"):
 				current_hover_mesh.hover()
@@ -179,9 +179,9 @@ func click():
 
 
 func update_text_labels():
-	current_damage_label.text = ("Damage: " + str(GameManager.current_bullet_damage))
-	debug_label_2.text = str(GameManager.GameStateNames[GameManager.game_state])
+	debug_label_1.text = str(GameManager.GameStateNames[GameManager.game_state])
 	debug_label_3.text = str(GameManager.loaded_bullets_array)
+	debug_label_2.text = str(GameManager.turn_owner)
 	# Changes health symbols
 	# Changes the colour of the text on the table when hovering
 	if (
@@ -241,15 +241,9 @@ func update_text_labels():
 
 
 func start_turn():
-	GameManager.dealing_box.visible = false
-	GameManager.game_state = GameManager.GameState.WAITING
-	await GameManager.dealing_table.box_open_player()
-	await get_tree().create_timer(0.2).timeout
-	GameManager.dealing_box.visible = true
-	await GameManager.dealing_table.box_close_player()
-	GameManager.game_state = GameManager.GameState.GETTINGITEM
-	GameManager.receive_item_count = randi_range(1,2)
-	inventory_root.add_random_item()
+	print("started turn")
+	GameManager.game_state = GameManager.GameState.DECIDING
+	GameManager.turn_owner = GameManager.player
 
 
 func end_shop():

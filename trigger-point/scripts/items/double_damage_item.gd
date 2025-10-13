@@ -5,15 +5,7 @@ extends Item
 func _init():
 	type = "item"
 	item_type = "double_damage"
-	shop_description = "Damage will be tripled\ninstead of doubled"
 	item_description = "Doubles damage\nof next shot"
-	upgraded_description = "Triples damage\nof next shot"
-
-
-func _ready():
-	base_model = preload("res://models/items/base_item/base_double_damage_model.tscn")
-	upgraded_model = preload("res://models/items/upgraded_item/upgraded_double_damage_model.tscn")
-	super()
 
 
 func use():

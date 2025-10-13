@@ -75,8 +75,8 @@ var receive_item_count: int = 0
 
 var player: Node3D = null
 var enemy: Node3D = null
+
 var inventory_root: Node3D = null
-var gun_node: Node3D = null
 var shotgun_node: Node3D = null
 var shop_root: Node3D = null
 
@@ -106,14 +106,6 @@ var item_name_array:Array = [
 	"shuffle": GameManager.shuffle_item_scene, 
 }
 
-@onready var item_name_level_dictionary:Dictionary = {
-	"double_damage": GameManager.double_damage_item_level, 
-	"one_health": GameManager.one_health_item_level,
-	"peek": GameManager.peek_item_level,
-	"remove_bullet": GameManager.remove_bullet_item_level,
-	"shuffle": GameManager.shuffle_item_level,
-}
-
 
 func _process(_delta) -> void:
 	if enemy_health <= 0 and round_ended == false and not player == null:
@@ -135,10 +127,11 @@ func start_game():
 	player_health = player_max_health
 	enemy_health = enemy_max_health
 	turn_owner = player
-	reload()
+	get_items()
 
 
 func start_turn():
+	print(str(turn_owner))
 	turn_owner.start_turn()
 
 
@@ -151,9 +144,9 @@ func end_player_turn():
 
 func continue_enemy_turn():
 	if round_ended == false:
-		enemy.start_turn()
 		game_state = GameState.DECIDING
 		turn_owner = enemy
+		start_turn()
 
 
 func end_enemy_turn():
@@ -172,6 +165,17 @@ func continue_player_turn():
 func start_shop():
 	game_state = GameState.SHOPPING
 	shop_root.start_shop()
+
+
+func get_items():
+	GameManager.dealing_box.visible = false
+	GameManager.game_state = GameManager.GameState.WAITING
+	await GameManager.dealing_table.box_open_player()
+	GameManager.dealing_box.visible = true
+	await GameManager.dealing_table.box_close_player()
+	GameManager.game_state = GameManager.GameState.GETTINGITEM
+	GameManager.receive_item_count = randi_range(1,2)
+	inventory_root.add_random_item()
 
 
 func reload():
@@ -206,7 +210,7 @@ func shoot(shooter:Node3D, target:Node3D):
 	inventory_root.update_item_position()
 	var next_bullet = loaded_bullets_array[0]
 	game_state = GameState.SHOOTING
-	await shotgun_node.shoot(shooter, target)
+	await shotgun_node.shoot(shooter, target, next_bullet)
 	if next_bullet == BulletType.LIVE:
 		if turn_owner == player:
 			end_player_turn()
@@ -274,4 +278,5 @@ func end_getting_item():
 	await get_tree().create_timer(0.2).timeout
 	GameManager.dealing_box.visible = false
 	await GameManager.dealing_table.box_close_player()
-	GameManager.game_state = GameManager.GameState.DECIDING
+	reload()
+	

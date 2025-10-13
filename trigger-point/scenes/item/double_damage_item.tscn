@@ -1,14 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj6f47dkphwj1"]
+[gd_scene load_steps=4 format=3 uid="uid://cj6f47dkphwj1"]
 
 [ext_resource type="Script" path="res://scripts/items/double_damage_item.gd" id="1_miujg"]
 [ext_resource type="Script" path="res://scripts/hover.gd" id="2_fwyud"]
+[ext_resource type="PackedScene" uid="uid://chb656tylqkc0" path="res://models/item_models/2x/2x_Text.glb" id="3_ln5a8"]
 
 [node name="double_damage_item" type="Node3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]
-transform = Transform3D(-0.809017, 0.587785, 2.56929e-08, 0, -4.37114e-08, 1, 0.587785, 0.809017, 3.53633e-08, 0, 0, 0)
+transform = Transform3D(0.941788, 0, 0.336208, 0, 1, 0, -0.336208, 0, 0.941788, 0, 0.831187, 0)
 script = ExtResource("1_miujg")
 mesh_node = NodePath("mesh")
 
 [node name="mesh" type="Node3D" parent="." node_paths=PackedStringArray("meshes", "parent")]
+transform = Transform3D(0.246796, 0, -0.969068, 0, 1, 0, 0.969068, 0, 0.246796, 0, 0, 0)
 script = ExtResource("2_fwyud")
 meshes = NodePath(".")
 parent = NodePath("..")
+
+[node name="2x_Text" parent="mesh" instance=ExtResource("3_ln5a8")]
