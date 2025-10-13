@@ -151,7 +151,6 @@ func continue_enemy_turn():
 
 func end_enemy_turn():
 	if round_ended == false:
-		await shotgun_node.enemy_return_gun()
 		game_state = GameState.DECIDING
 		turn_owner = player
 		start_turn()
@@ -211,7 +210,7 @@ func shoot(shooter:Node3D, target:Node3D):
 	inventory_root.update_item_position()
 	var next_bullet = loaded_bullets_array[0]
 	game_state = GameState.SHOOTING
-	await shotgun_node.shoot(shooter, target)
+	await shotgun_node.shoot(shooter, target, next_bullet)
 	if next_bullet == BulletType.LIVE:
 		if turn_owner == player:
 			end_player_turn()
