@@ -1,7 +1,7 @@
 extends Node3D
 var in_hand : bool = false
 var type : String = "gun"
-@onready var animation_player = $SHOTGUNFINAL/AnimationPlayer
+@onready var animation_player = $Shotgun/AnimationPlayer
 @onready var collision_shape = $CollisionShape3D
 
 
@@ -17,22 +17,29 @@ func hold():
 
 func drop_gun():
 	in_hand = false
-	animation_player.play_backwards("GUN SELECT")
+	animation_player.play("GUN RRETURN")
 	await animation_player.animation_finished
 	collision_shape.disabled = false
 
 
-func player_shoot_self():
-	animation_player.play("SHOOT SELF")
+func enemy_hold():
+	animation_player.play("ENEMY PICKUP")
 	await animation_player.animation_finished
-	animation_player.play_backwards("GUN SELECT")
+
+
+func player_shoot_self():
+	animation_player.play("AIM  SELF")
+	await animation_player.animation_finished
+	animation_player.play("GUN RRETURN")
 	await animation_player.animation_finished
 
 
 func player_shoot_enemy():
-	animation_player.play("SHOOT ENEMY")
+	animation_player.play("AIM ENEMY")
 	await animation_player.animation_finished
-	animation_player.play_backwards("GUN SELECT")
+	animation_player.play("SHOOT ENEMY GUN RETURN")
+	await animation_player.animation_finished
+	animation_player.play("GUN RRETURN")
 	await animation_player.animation_finished
 
 
@@ -46,7 +53,7 @@ func enemy_shoot_self():
 func enemy_shoot_player():
 	animation_player.play("ENEMY PICKUP")
 	await animation_player.animation_finished
-	animation_player.play("ENEMY KILL YOU")
+	animation_player.play("ENEMY KILL AIM ")
 	await animation_player.animation_finished
 
 

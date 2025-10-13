@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bxpkfk5j36dgj"
-path="res://.godot/imported/enemy.glb-caab3d2ab3d3f18ddc09dd5b76a4b00b.scn"
+uid="uid://dcoahu8ovkvgf"
+path="res://.godot/imported/Shotgun.glb-55d441765f0f2f62b06870f7a51eb60c.scn"
 
 [deps]
 
-source_file="res://models/enemy/enemy.glb"
-dest_files=["res://.godot/imported/enemy.glb-caab3d2ab3d3f18ddc09dd5b76a4b00b.scn"]
+source_file="res://models/shotgun/Shotgun.glb"
+dest_files=["res://.godot/imported/Shotgun.glb-55d441765f0f2f62b06870f7a51eb60c.scn"]
 
 [params]
 

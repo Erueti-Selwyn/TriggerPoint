@@ -5,13 +5,13 @@
 [ext_resource type="VideoStream" path="res://videos/Screen-2-1.ogv" id="2_y0lly"]
 [ext_resource type="VideoStream" path="res://videos/Screen-3-1.ogv" id="3_uyxme"]
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
+[ext_resource type="FontFile" uid="uid://byfgd2yvl30p4" path="res://assets/2D/fonts/digital-7.ttf" id="4_j3ivg"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/gameplay/inventory.tscn" id="5_e4d32"]
 [ext_resource type="PackedScene" uid="uid://cbnqqus6j6t23" path="res://models/ingame area NonText.glb" id="5_ymd3f"]
 [ext_resource type="PackedScene" uid="uid://b24ifdcjn4l3r" path="res://scenes/gameplay/shop.tscn" id="8_ev4sa"]
-[ext_resource type="PackedScene" uid="uid://ctssqpsysreu0" path="res://models/ingame area.glb" id="8_fgbfl"]
 [ext_resource type="PackedScene" uid="uid://ckkdeg8mads5t" path="res://models/dealing_table/Dealing Table.tscn" id="8_jl8fi"]
 [ext_resource type="PackedScene" uid="uid://b0n613w84vp5h" path="res://scenes/gameplay/enemy.tscn" id="8_llb3g"]
-[ext_resource type="PackedScene" uid="uid://7cakdks6xqyr" path="res://scenes/gameplay/shotgunfinal.tscn" id="10_rxli0"]
+[ext_resource type="PackedScene" uid="uid://d0blka36vu28u" path="res://scenes/gameplay/shotgun.tscn" id="12_hvetj"]
 
 [sub_resource type="Environment" id="Environment_vch0a"]
 tonemap_mode = 3
@@ -200,8 +200,6 @@ mesh = SubResource("QuadMesh_ftij3")
 [node name="SubViewport" type="SubViewport" parent="DiegeticUI/Enemy"]
 size = Vector2i(1800, 1284)
 
-[node name="Camera3D" type="Camera3D" parent="DiegeticUI/Enemy/SubViewport"]
-
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="DiegeticUI/Enemy/SubViewport"]
 offset_left = -400.0
 offset_top = -300.0
@@ -219,8 +217,6 @@ mesh = SubResource("PlaneMesh_tqwri")
 
 [node name="SubViewport2" type="SubViewport" parent="DiegeticUI/Enemy"]
 size = Vector2i(1800, 1284)
-
-[node name="Camera3D" type="Camera3D" parent="DiegeticUI/Enemy/SubViewport2"]
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="DiegeticUI/Enemy/SubViewport2"]
 offset_left = -200.0
@@ -241,8 +237,6 @@ mesh = SubResource("QuadMesh_dsjkt")
 [node name="SubViewport3" type="SubViewport" parent="DiegeticUI/Enemy"]
 size = Vector2i(1284, 1800)
 
-[node name="Camera3D" type="Camera3D" parent="DiegeticUI/Enemy/SubViewport3"]
-
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="DiegeticUI/Enemy/SubViewport3"]
 offset_left = -200.0
 offset_top = -350.0
@@ -257,18 +251,12 @@ loop = true
 transform = Transform3D(-0.0139622, -0.999903, 0, -4.37071e-08, 6.10308e-10, 1, -0.999903, 0.0139622, -4.37114e-08, 3.21115, -0.5, 0)
 text = "Item
 Description"
+font = ExtResource("4_j3ivg")
 font_size = 55
 width = 160.0
 
-[node name="CurrentDamage" type="Label3D" parent="DiegeticUI"]
-transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, 1, -1, 4.37114e-08, -4.37114e-08, -0.648273, -0.5, -2.73705)
-visible = false
-text = "Damage: 1"
-font_size = 50
-
 [node name="Scoreboard" parent="DiegeticUI" instance=ExtResource("1_plvog")]
-transform = Transform3D(0.659963, 0, 0.751299, 0, 1, 0, -0.751299, 0, 0.659963, 2.318, 1.0708, -6.09018)
-visible = false
+transform = Transform3D(0.680721, 0, 0.732543, 0, 1, 0, -0.732543, 0, 0.680721, 1.48162, 0.86764, -5.60622)
 
 [node name="environment" type="Node3D" parent="."]
 
@@ -282,8 +270,18 @@ skeleton = NodePath("../..")
 [node name="shop" parent="environment" instance=ExtResource("8_ev4sa")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.422, 4.14153, 0)
 
-[node name="ingame area" parent="environment" instance=ExtResource("8_fgbfl")]
+[node name="ingame area" parent="environment"]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
 visible = false
+script = null
 
 [node name="ingame area NonText" parent="environment" instance=ExtResource("5_ymd3f")]
 
@@ -304,11 +302,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2401, 5.827, 0)
 [node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6991, 7.47431, 0.00628603)
 
-[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
+[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "held_item_description_label", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
 transform = Transform3D(0.999996, -0.0026878, 0, 0.0026878, 0.999996, 0, 0, 0, 1, 7.7, 7.1, 0)
 live_bullet_pos = NodePath("../PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("../PosNodes/BlankBulletPos")
-current_damage_label = NodePath("../DiegeticUI/CurrentDamage")
 held_item_description_label = NodePath("../DiegeticUI/ItemDescriptionLabel")
 shoot_player_label = NodePath("../DiegeticUI/Self/ShootYourselfLabel")
 shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")
@@ -322,4 +319,4 @@ held_item_pos = NodePath("../PosNodes/HeldItemPos")
 [node name="enemy" parent="." instance=ExtResource("8_llb3g")]
 transform = Transform3D(-0.7, 0, 6.11959e-08, 0, 0.7, 0, -6.11959e-08, 0, -0.7, -7.13927, -0.239827, 0)
 
-[node name="ShotgunStaticBody" parent="." instance=ExtResource("10_rxli0")]
+[node name="Shotgun" parent="." instance=ExtResource("12_hvetj")]
