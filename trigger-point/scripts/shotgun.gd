@@ -37,12 +37,21 @@ func player_shoot_enemy():
 
 
 func enemy_shoot_self():
+	animation_player.play("ENEMY PICKUP")
+	await animation_player.animation_finished
 	animation_player.play("ENEMY KILL SELF")
 	await animation_player.animation_finished
 
 
 func enemy_shoot_player():
+	animation_player.play("ENEMY PICKUP")
+	await animation_player.animation_finished
 	animation_player.play("ENEMY KILL YOU")
+	await animation_player.animation_finished
+
+
+func enemy_return_gun():
+	animation_player.play("ENEMY RETURN GUN")
 	await animation_player.animation_finished
 
 

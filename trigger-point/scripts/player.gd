@@ -16,7 +16,6 @@ var camera: Camera3D = null
 
 # In game UI features
 @export var win_lose_screen : Control
-@export var current_damage_label : Label3D
 @export var held_item_description_label : Label3D
 @export var shoot_player_label : Label3D
 @export var shoot_enemy_label : Label3D
@@ -116,8 +115,8 @@ func check_mouse_position(mouse:Vector2):
 		if not GameManager.game_state == GameManager.GameState.GETTINGITEM:
 			if previous_hover_mesh  != current_hover_mesh:
 				if is_instance_valid(previous_hover_mesh) and previous_hover_mesh.has_method("unhover"):
-						previous_hover_mesh.unhover()
-						previous_hover_mesh = null
+					previous_hover_mesh.unhover()
+					previous_hover_mesh = null
 			previous_hover_mesh = current_hover_mesh
 			if is_instance_valid(current_hover_mesh) and current_hover_mesh.has_method("hover"):
 				current_hover_mesh.hover()
@@ -179,9 +178,9 @@ func click():
 
 
 func update_text_labels():
-	current_damage_label.text = ("Damage: " + str(GameManager.current_bullet_damage))
-	debug_label_2.text = str(GameManager.GameStateNames[GameManager.game_state])
+	debug_label_1.text = str(GameManager.GameStateNames[GameManager.game_state])
 	debug_label_3.text = str(GameManager.loaded_bullets_array)
+	debug_label_2.text = str(GameManager.turn_owner)
 	# Changes health symbols
 	# Changes the colour of the text on the table when hovering
 	if (
