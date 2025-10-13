@@ -586,14 +586,14 @@ bones/0/name = "Bone"
 bones/0/parent = -1
 bones/0/rest = Transform3D(-0.157216, 0.983352, 0.0911126, -0.0158696, 0.0897325, -0.995839, -0.987437, -0.158008, 0.00149804, -1.45221, -0.104479, 0.123644)
 bones/0/enabled = true
-bones/0/position = Vector3(-11.8313, 0.179168, -1.34294)
-bones/0/rotation = Quaternion(0.191719, 0.650726, 0.678709, 0.281341)
+bones/0/position = Vector3(-11.7255, 0.35445, -1.33126)
+bones/0/rotation = Quaternion(0.193768, 0.668463, 0.662687, 0.276509)
 bones/0/scale = Vector3(1, 1, 1)
 bones/1/name = "Bone.001"
 bones/1/parent = 0
 bones/1/rest = Transform3D(0.990208, -0.139023, 0.0126511, 0.139309, 0.989921, -0.025482, -0.00898097, 0.0269949, 0.999595, -0.170667, 1.93047, 0.0474162)
 bones/1/enabled = true
-bones/1/position = Vector3(-0.143677, 1.73829, 0.0421758)
+bones/1/position = Vector3(-0.170667, 1.93047, 0.0474167)
 bones/1/rotation = Quaternion(0.0131526, 0.00542177, 0.06976, 0.997462)
 bones/1/scale = Vector3(1, 1, 1)
 
@@ -602,7 +602,7 @@ mesh = SubResource("ArrayMesh_ravx3")
 skin = SubResource("Skin_c4pc7")
 
 [node name="BULLET" type="MeshInstance3D" parent="SHOTGUNFINAL"]
-transform = Transform3D(0.00232811, -0.0917018, 0.0112587, 0.00451065, -0.025237, -0.0397383, 0.0411576, 0.00795302, 0.00371824, -4.76011, 3.30409, 0.592643)
+transform = Transform3D(0.00232811, -0.0917018, 0.0112587, 0.00451065, -0.025237, -0.0397383, 0.0411576, 0.00795303, 0.00371824, -4.76011, 3.30409, 0.592643)
 mesh = SubResource("ArrayMesh_en2eg")
 skeleton = NodePath("")
 
