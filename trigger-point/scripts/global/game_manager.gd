@@ -77,7 +77,6 @@ var player: Node3D = null
 var enemy: Node3D = null
 
 var inventory_root: Node3D = null
-var gun_node: Node3D = null
 var shotgun_node: Node3D = null
 var shop_root: Node3D = null
 
@@ -145,13 +144,14 @@ func end_player_turn():
 
 func continue_enemy_turn():
 	if round_ended == false:
-		enemy.start_turn()
 		game_state = GameState.DECIDING
 		turn_owner = enemy
+		start_turn()
 
 
 func end_enemy_turn():
 	if round_ended == false:
+		await shotgun_node.enemy_return_gun()
 		game_state = GameState.DECIDING
 		turn_owner = player
 		start_turn()

@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=14 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="PackedScene" uid="uid://dabo5ahjn3wym" path="res://scenes/gameplay/scoreboard.tscn" id="1_plvog"]
+[ext_resource type="FontFile" uid="uid://byfgd2yvl30p4" path="res://assets/2D/fonts/digital-7.ttf" id="1_xv3ju"]
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/gameplay/inventory.tscn" id="5_e4d32"]
 [ext_resource type="PackedScene" uid="uid://cbnqqus6j6t23" path="res://models/ingame area NonText.glb" id="5_ymd3f"]
@@ -62,7 +63,8 @@ transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 
 modulate = Color(0.678431, 0.678431, 0.678431, 1)
 text = "Shoot 
 Yourself"
-font_size = 120
+font = ExtResource("1_xv3ju")
+font_size = 140
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DiegeticUI/Self"]
 shape = SubResource("BoxShape3D_6bif5")
@@ -78,24 +80,19 @@ transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 
 modulate = Color(0.678431, 0.678431, 0.678431, 1)
 text = "Shoot 
 Enemy"
-font_size = 120
+font = ExtResource("1_xv3ju")
+font_size = 140
 
 [node name="ItemDescriptionLabel" type="Label3D" parent="DiegeticUI"]
 transform = Transform3D(-0.0139622, -0.999903, 0, -4.37071e-08, 6.10308e-10, 1, -0.999903, 0.0139622, -4.37114e-08, 3.21115, -0.5, 0)
 text = "Item
 Description"
-font_size = 55
+font = ExtResource("1_xv3ju")
+font_size = 64
 width = 160.0
 
-[node name="CurrentDamage" type="Label3D" parent="DiegeticUI"]
-transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, 1, -1, 4.37114e-08, -4.37114e-08, -0.648273, -0.5, -2.73705)
-visible = false
-text = "Damage: 1"
-font_size = 50
-
 [node name="Scoreboard" parent="DiegeticUI" instance=ExtResource("1_plvog")]
-transform = Transform3D(0.659963, 0, 0.751299, 0, 1, 0, -0.751299, 0, 0.659963, 2.318, 1.0708, -6.09018)
-visible = false
+transform = Transform3D(0.750198, 0, 0.804489, 0, 1.1, 0, -0.804489, 0, 0.750198, 1.50345, 0.839118, -5.64597)
 
 [node name="environment" type="Node3D" parent="."]
 
@@ -125,11 +122,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2401, 5.827, 0)
 [node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6991, 7.47431, 0.00628603)
 
-[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "current_damage_label", "held_item_description_label", "shoot_player_label", "shoot_enemy_label", "inventory_root") instance=ExtResource("4_h4ghb")]
+[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "held_item_description_label", "shoot_player_label", "shoot_enemy_label", "inventory_root") instance=ExtResource("4_h4ghb")]
 transform = Transform3D(0.999996, -0.0026878, 0, 0.0026878, 0.999996, 0, 0, 0, 1, 7.7, 7.1, 0)
 live_bullet_pos = NodePath("../PosNodes/LiveBulletPos")
 blank_bullet_pos = NodePath("../PosNodes/BlankBulletPos")
-current_damage_label = NodePath("../DiegeticUI/CurrentDamage")
 held_item_description_label = NodePath("../DiegeticUI/ItemDescriptionLabel")
 shoot_player_label = NodePath("../DiegeticUI/Self/ShootYourselfLabel")
 shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cr3a3ocp2ow7g" path="res://models/item_models/wrench/wrench.glb" id="3_drl1e"]
 
 [node name="remove_bullet_item" type="Node3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]
-transform = Transform3D(0.173856, 0, 0.0988642, 0, 0.2, 0, -0.0988642, 0, 0.173856, 0, 0, 0)
+transform = Transform3D(0.130392, 0, 0.0741481, 0, 0.15, 0, -0.0741481, 0, 0.130392, 0, 0, 0)
 script = ExtResource("1_1jebh")
 mesh_node = NodePath("mesh")
 

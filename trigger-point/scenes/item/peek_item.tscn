@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://245x5o1i1qxt" path="res://models/item_models/magnifying glass/magnifying_glass.glb" id="3_wc4p1"]
 
 [node name="peek_item" type="Node3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]
-transform = Transform3D(-3.39701e-08, -0.777146, 0.62932, 1, -4.37114e-08, -5.55407e-14, 2.75085e-08, 0.62932, 0.777146, 0, 0, 0)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 script = ExtResource("1_fne1m")
 mesh_node = NodePath("mesh")
 

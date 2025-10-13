@@ -1,77 +1,91 @@
-[gd_scene load_steps=4 format=3 uid="uid://dabo5ahjn3wym"]
+[gd_scene load_steps=9 format=3 uid="uid://dabo5ahjn3wym"]
 
 [ext_resource type="Script" path="res://scripts/scoreboard.gd" id="1_56nsn"]
-[ext_resource type="Texture2D" uid="uid://dlu0sbwm84dvu" path="res://assets/2D/StarHealth.png" id="1_b4lfj"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_k27fg"]
-size = Vector3(4, 2, 1)
+[ext_resource type="FontFile" uid="uid://byfgd2yvl30p4" path="res://assets/2D/fonts/digital-7.ttf" id="2_au7f2"]
+[ext_resource type="Texture2D" uid="uid://d13l2nj1qve63" path="res://assets/2D/health_icons/empty bar.png" id="2_n2f6t"]
+[ext_resource type="Texture2D" uid="uid://bb4f567yw528s" path="res://assets/2D/health_icons/seg 1.png" id="3_4tyqs"]
+[ext_resource type="Texture2D" uid="uid://cvxwt2nia6fuh" path="res://assets/2D/health_icons/seg 2.png" id="4_uow0k"]
+[ext_resource type="Texture2D" uid="uid://bycusrvdmsjb7" path="res://assets/2D/health_icons/seg 3.png" id="5_n0mcv"]
+[ext_resource type="Texture2D" uid="uid://cmu057xreiyk5" path="res://assets/2D/health_icons/seg 4.png" id="6_tp11s"]
+[ext_resource type="Texture2D" uid="uid://dokyddi4ehuq7" path="res://assets/2D/health_icons/seg 5.png" id="7_gp6da"]
 
 [node name="Scoreboard" type="Node3D" node_paths=PackedStringArray("player_health_icons", "enemy_health_icons")]
 script = ExtResource("1_56nsn")
 player_health_icons = [NodePath("Player/PlayerHealth/Health0"), NodePath("Player/PlayerHealth/Health1"), NodePath("Player/PlayerHealth/Health2"), NodePath("Player/PlayerHealth/Health3"), NodePath("Player/PlayerHealth/Health4")]
 enemy_health_icons = [NodePath("Enemy/EnemyHealth/Health0"), NodePath("Enemy/EnemyHealth/Health1"), NodePath("Enemy/EnemyHealth/Health2"), NodePath("Enemy/EnemyHealth/Health3"), NodePath("Enemy/EnemyHealth/Health4")]
 
-[node name="ScoreboardMesh" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_k27fg")
-
 [node name="Enemy" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.5, 0.51)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.51)
 text = "Enemy"
+font = ExtResource("2_au7f2")
+font_size = 60
 
 [node name="EnemyHealth" type="Node3D" parent="Enemy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
 
+[node name="EmptyBar" type="Sprite3D" parent="Enemy/EnemyHealth"]
+transform = Transform3D(0.13, 0, 0, 0, 0.13, 0, 0, 0, 0.13, 0, 0, 0)
+texture = ExtResource("2_n2f6t")
+
 [node name="Health0" type="Sprite3D" parent="Enemy/EnemyHealth"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
 pixel_size = 0.0075
-texture = ExtResource("1_b4lfj")
+texture = ExtResource("3_4tyqs")
 
 [node name="Health1" type="Sprite3D" parent="Enemy/EnemyHealth"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0)
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
 pixel_size = 0.0075
-texture = ExtResource("1_b4lfj")
+texture = ExtResource("4_uow0k")
 
 [node name="Health2" type="Sprite3D" parent="Enemy/EnemyHealth"]
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
 pixel_size = 0.0075
-texture = ExtResource("1_b4lfj")
+texture = ExtResource("5_n0mcv")
 
 [node name="Health3" type="Sprite3D" parent="Enemy/EnemyHealth"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0)
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
 pixel_size = 0.0075
-texture = ExtResource("1_b4lfj")
+texture = ExtResource("6_tp11s")
 
 [node name="Health4" type="Sprite3D" parent="Enemy/EnemyHealth"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
 pixel_size = 0.0075
-texture = ExtResource("1_b4lfj")
+texture = ExtResource("7_gp6da")
 
 [node name="Player" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.5, 0.51)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0.51)
 text = "Player"
+font = ExtResource("2_au7f2")
+font_size = 60
 
 [node name="PlayerHealth" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
 
+[node name="EmptyBar" type="Sprite3D" parent="Player/PlayerHealth"]
+transform = Transform3D(0.13, 0, 0, 0, 0.13, 0, 0, 0, 0.13, 0, 0, 0)
+texture = ExtResource("2_n2f6t")
+
 [node name="Health0" type="Sprite3D" parent="Player/PlayerHealth"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
 pixel_size = 0.0075
-texture = ExtResource("1_b4lfj")
+texture = ExtResource("3_4tyqs")
 
 [node name="Health1" type="Sprite3D" parent="Player/PlayerHealth"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0)
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
 pixel_size = 0.0075
-texture = ExtResource("1_b4lfj")
+texture = ExtResource("4_uow0k")
 
 [node name="Health2" type="Sprite3D" parent="Player/PlayerHealth"]
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
 pixel_size = 0.0075
-texture = ExtResource("1_b4lfj")
+texture = ExtResource("5_n0mcv")
 
 [node name="Health3" type="Sprite3D" parent="Player/PlayerHealth"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0)
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
 pixel_size = 0.0075
-texture = ExtResource("1_b4lfj")
+texture = ExtResource("6_tp11s")
 
 [node name="Health4" type="Sprite3D" parent="Player/PlayerHealth"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, 0, 0, 0)
 pixel_size = 0.0075
-texture = ExtResource("1_b4lfj")
+texture = ExtResource("7_gp6da")
