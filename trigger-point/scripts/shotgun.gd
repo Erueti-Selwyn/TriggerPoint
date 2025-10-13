@@ -1,7 +1,8 @@
 extends Node3D
 var in_hand : bool = false
 var type : String = "gun"
-@onready var animation_player = $Shotgun/AnimationPlayer
+var current_target:Node3D
+@onready var animation_player = $Shotgun_Final/AnimationPlayer
 @onready var collision_shape = $CollisionShape3D
 
 
@@ -27,76 +28,106 @@ func enemy_hold():
 	await animation_player.animation_finished
 
 
+func enemy_drop_gun():
+	animation_player.play("ENEMY RETURN GUN")
+	await animation_player.animation_finished
+
+
 func player_shoot_self():
 	animation_player.play("AIM  SELF")
-	await animation_player.animation_finished
-	animation_player.play("GUN RRETURN")
 	await animation_player.animation_finished
 
 
 func player_shoot_enemy():
 	animation_player.play("AIM ENEMY")
 	await animation_player.animation_finished
-	animation_player.play("SHOOT ENEMY GUN RETURN")
-	await animation_player.animation_finished
-	animation_player.play("GUN RRETURN")
-	await animation_player.animation_finished
+
 
 
 func enemy_shoot_self():
-	animation_player.play("ENEMY PICKUP")
-	await animation_player.animation_finished
 	animation_player.play("ENEMY KILL SELF")
 	await animation_player.animation_finished
 
 
 func enemy_shoot_player():
-	animation_player.play("ENEMY PICKUP")
-	await animation_player.animation_finished
 	animation_player.play("ENEMY KILL AIM ")
 	await animation_player.animation_finished
+	await get_tree().create_timer(1.5).timeout
 
 
-func enemy_return_gun():
-	animation_player.play("ENEMY RETURN GUN")
+func player_shoot_self_return():
+	animation_player.play("SHOOT SELF GUN RETURN")
 	await animation_player.animation_finished
 
 
-func shoot(shooter:Node3D, target:Node3D):
-	var is_live_bullet
-	if GameManager.loaded_bullets_array[0] == GameManager.BulletType.LIVE:
-		is_live_bullet = true
+func player_shoot_enemy_return():
+	animation_player.play("SHOOT ENEMY GUN RETURN")
+	await animation_player.animation_finished
+
+
+func enemy_shoot_self_return():
+	animation_player.play("ENEMY KILL SELF UNAIM")
+	await animation_player.animation_finished
+
+
+func enemy_shoot_player_return():
+	animation_player.play("ENEMY KILL UNAIM")
+	await animation_player.animation_finished
+
+
+func shoot_bullet(next_bullet):
+	print("should have shot")
+	if next_bullet == GameManager.BulletType.LIVE:
+		print("is live")
 		GameManager.camera.shake_screen()
-		
+		if current_target == GameManager.enemy:
+			GameManager.enemy.blood_particles()
+		elif current_target == GameManager.player:
+			GameManager.player.blood_particles()
+	elif next_bullet == GameManager.BulletType.BLANK:
+		print("is blank")
+	return
+
+
+func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
+	current_target = target
+	var is_live_bullet
+	if next_bullet == GameManager.BulletType.LIVE:
+		is_live_bullet = true
 		GameManager.current_bullet_damage = GameManager.damage
-	elif GameManager.loaded_bullets_array[0] == GameManager.BulletType.BLANK:
-		#play_sound_click()
+	elif next_bullet == GameManager.BulletType.BLANK:
 		is_live_bullet = false
 	GameManager.loaded_bullets_array.remove_at(0)
 	if shooter == GameManager.enemy:
 		if target == GameManager.enemy:
+			await enemy_hold()
 			await enemy_shoot_self()
-			print("enemy shoot enemy")
-			GameManager.enemy.blood_particles()
+			shoot_bullet(next_bullet)
+			await enemy_shoot_self_return()
+			await enemy_drop_gun()
 			if is_live_bullet:
 				GameManager.enemy_health -= GameManager.damage
 		elif target == GameManager.player:
+			await enemy_hold()
 			await enemy_shoot_player()
-			print("enemy shoot player")
-			GameManager.player.blood_particles()
+			shoot_bullet(next_bullet)
+			await enemy_shoot_player_return()
+			await enemy_drop_gun()
 			if is_live_bullet:
 				GameManager.player_health -= GameManager.damage
 	elif shooter == GameManager.player:
 		if target == GameManager.enemy:
 			await player_shoot_enemy()
-			print("player shoot enemy")
-			GameManager.enemy.blood_particles()
+			shoot_bullet(next_bullet)
+			await player_shoot_enemy_return()
+			await drop_gun()
 			if is_live_bullet:
 				GameManager.enemy_health -= GameManager.damage
 		elif target == GameManager.player:
 			await player_shoot_self()
-			print("player shoot player")
-			GameManager.player.blood_particles()
+			shoot_bullet(next_bullet)
+			await player_shoot_self_return()
+			await drop_gun()
 			if is_live_bullet:
 				GameManager.player_health -= GameManager.damage
 	# Checks if bullet was live or blank
