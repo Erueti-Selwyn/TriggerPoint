@@ -200,9 +200,8 @@ func reload():
 			else:
 				loaded_bullets_array.append(BulletType.BLANK)
 		loaded_bullets_array.shuffle()
-		show_loaded_bullets()
+		await show_loaded_bullets()
 		game_state = GameState.RELOADING
-		await get_tree().create_timer(2).timeout
 		start_turn()
 
 
@@ -237,22 +236,23 @@ func show_loaded_bullets():
 	var current_live_bullet_count : int = 0
 	var current_blank_bullet_count : int = 0
 	var bullet_obj_array : Array
-	var is_live
 	# Shows loaded bullets in order
 	for item in range(loaded_bullets_array.size()):
+		var is_live: bool
 		var bullet = shotgun_shell_scene.instantiate()
 		add_child(bullet)
 		if loaded_bullets_array[item] == BulletType.LIVE:
+			current_live_bullet_count += 1
 			is_live = true
-			bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y + 0.1, live_bullet_pos.global_position.z - (float(current_live_bullet_count)/6))
+			bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y, live_bullet_pos.global_position.z - (float(current_live_bullet_count)/6))
 		elif loaded_bullets_array[item] == BulletType.BLANK:
+			current_blank_bullet_count += 1
 			is_live = false
-			bullet.global_position = Vector3(blank_bullet_pos.global_position.x, blank_bullet_pos.global_position.y + 0.1, blank_bullet_pos.global_position.z + (float(current_blank_bullet_count)/6))
+			bullet.global_position = Vector3(blank_bullet_pos.global_position.x, blank_bullet_pos.global_position.y, blank_bullet_pos.global_position.z + (float(current_blank_bullet_count)/6))
 		
 		bullet.get_child(0).set_colour(is_live)
 		bullet.rotation = Vector3(0, 0, deg_to_rad(90))
 		bullet_obj_array.append(bullet)
-
 	await get_tree().create_timer(2).timeout
 	for item in bullet_obj_array:
 		item.queue_free()
