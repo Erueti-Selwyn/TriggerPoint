@@ -1,9 +1,13 @@
 extends Node3D
+
 var in_hand : bool = false
 var type : String = "gun"
 var current_target:Node3D
 @onready var animation_player = $Shotgun_Final/AnimationPlayer
-@onready var collision_shape = $CollisionShape3D
+@onready var collision_shape = $CollisionShape3D 
+@onready var gun_shot_audio_stream_player = $GunShotAudioStreamPlayer3D
+@onready var gun_click_audio_stream_player = $GunClickAudioStreamPlayer3D3
+@onready var gun_cock_audio_stream_player = $GunCockAudioStreamPlayer3D2
 
 
 func _ready():
@@ -15,6 +19,7 @@ func hold():
 	animation_player.play("GUN SELECT")
 	collision_shape.disabled = true
 	await animation_player.animation_finished
+
 
 func drop_gun():
 	in_hand = false
@@ -43,7 +48,6 @@ func player_shoot_enemy():
 	await animation_player.animation_finished
 
 
-
 func enemy_shoot_self():
 	animation_player.play("ENEMY KILL SELF")
 	await animation_player.animation_finished
@@ -52,7 +56,8 @@ func enemy_shoot_self():
 func enemy_shoot_player():
 	animation_player.play("ENEMY KILL AIM ")
 	await animation_player.animation_finished
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(1.5, true).timeout
+	print("finished enemy shooting player")
 
 
 func player_shoot_self_return():
@@ -76,16 +81,16 @@ func enemy_shoot_player_return():
 
 
 func shoot_bullet(next_bullet):
-	print("should have shot")
 	if next_bullet == GameManager.BulletType.LIVE:
-		print("is live")
+		gun_shot_audio_stream_player.play()
 		GameManager.camera.shake_screen()
 		if current_target == GameManager.enemy:
 			GameManager.enemy.blood_particles()
 		elif current_target == GameManager.player:
 			GameManager.player.blood_particles()
 	elif next_bullet == GameManager.BulletType.BLANK:
-		print("is blank")
+		gun_click_audio_stream_player.play()
+		print("blank")
 	return
 
 
@@ -102,7 +107,7 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 		if target == GameManager.enemy:
 			await enemy_hold()
 			await enemy_shoot_self()
-			await get_tree().create_timer(1.5).timeout
+			await get_tree().create_timer(1.5, true).timeout
 			shoot_bullet(next_bullet)
 			await enemy_shoot_self_return()
 			await enemy_drop_gun()
@@ -126,18 +131,12 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 				GameManager.enemy_health -= GameManager.damage
 		elif target == GameManager.player:
 			await player_shoot_self()
-			await get_tree().create_timer(1.5).timeout
+			await get_tree().create_timer(1, true).timeout
 			shoot_bullet(next_bullet)
 			await player_shoot_self_return()
 			await drop_gun()
 			if is_live_bullet:
 				GameManager.player_health -= GameManager.damage
-	# Checks if bullet was live or blank
-	
-	# Waits for animation to finish
-	# Add animation later
-	await get_tree().create_timer(1, false).timeout
-	#play_sound_cock()
 	var bullet = GameManager.bullet_gravity_scene.instantiate()
 	var level_node = get_tree().root
 	level_node.add_child(bullet)
@@ -153,4 +152,3 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 	bullet.rotation = Vector3(0, 0, deg_to_rad(90))
 	GameManager.used_shells_array.append(bullet)
 	GameManager.used_shells += 1
-	#move_to(original_pos, original_rot, gun_lerp_speed)

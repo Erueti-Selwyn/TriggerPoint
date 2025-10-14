@@ -1,10 +1,13 @@
-[gd_scene load_steps=23 format=4 uid="uid://d0blka36vu28u"]
+[gd_scene load_steps=26 format=4 uid="uid://d0blka36vu28u"]
 
 [ext_resource type="Script" path="res://scripts/shotgun.gd" id="1_35tug"]
 [ext_resource type="Script" path="res://scripts/hover.gd" id="2_t1eek"]
 [ext_resource type="Texture2D" uid="uid://cwifghukmalro" path="res://models/shotgun/Shotgun_Final_SHOTGUN_SHOTGUN_BaseColor.png" id="3_qpekq"]
 [ext_resource type="Texture2D" uid="uid://d1hl8ctm3oc6p" path="res://models/shotgun/Shotgun_Final_SHOTGUN_SHOTGUN_Metallic-SHOTGUN_SHOTGUN_Roughness.png" id="4_dewrp"]
 [ext_resource type="Texture2D" uid="uid://4vcaht30v247" path="res://models/shotgun/Shotgun_Final_SHOTGUN_SHOTGUN_Height.png" id="5_e6u8v"]
+[ext_resource type="AudioStream" uid="uid://cotj3ivdihjj8" path="res://sound/gun/gunshot.mp3" id="6_m7xwe"]
+[ext_resource type="AudioStream" uid="uid://cr5e7tuf3hwqm" path="res://sound/gun/shotgun cock.mp3" id="7_pin2j"]
+[ext_resource type="AudioStream" uid="uid://ddj50ufwhk6o8" path="res://sound/gun/gun click.mp3" id="8_8x2l2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vefgy"]
 size = Vector3(1.06158, 0.50708, 4.8501)
@@ -387,14 +390,14 @@ bones/0/name = "Bone"
 bones/0/parent = -1
 bones/0/rest = Transform3D(-0.157216, 0.983352, 0.0911126, -0.0158696, 0.0897325, -0.995839, -0.987437, -0.158008, 0.00149804, -1.45221, -0.104479, 0.123644)
 bones/0/enabled = true
-bones/0/position = Vector3(-15.794, 3.37832, 2.0266)
-bones/0/rotation = Quaternion(0.534055, 0.374386, -0.240954, -0.718723)
+bones/0/position = Vector3(-6.2039, -2.02878, -1.59673)
+bones/0/rotation = Quaternion(0.506866, 0.345654, 0.348842, 0.708463)
 bones/0/scale = Vector3(1, 1, 1)
 bones/1/name = "Bone.001"
 bones/1/parent = 0
 bones/1/rest = Transform3D(0.990208, -0.139023, 0.0126511, 0.139309, 0.989921, -0.025482, -0.00898096, 0.0269949, 0.999595, -0.170667, 1.93047, 0.0474165)
 bones/1/enabled = true
-bones/1/position = Vector3(-0.170666, 1.93047, 0.0474168)
+bones/1/position = Vector3(-0.143677, 1.73829, 0.0421751)
 bones/1/rotation = Quaternion(0.0131526, 0.00542176, 0.06976, 0.997462)
 bones/1/scale = Vector3(1, 1, 1)
 
@@ -406,3 +409,12 @@ skin = SubResource("Skin_27631")
 libraries = {
 "": SubResource("AnimationLibrary_hpnj2")
 }
+
+[node name="GunShotAudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_m7xwe")
+
+[node name="GunCockAudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("7_pin2j")
+
+[node name="GunClickAudioStreamPlayer3D3" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("8_8x2l2")

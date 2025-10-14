@@ -2,6 +2,7 @@ extends Node
 
 var bullet_gravity_scene = preload("res://scenes/visual/bullet_gravity.tscn")
 var bullet_scene = preload("res://scenes/visual/bullet.tscn")
+var shotgun_shell_scene = preload("res://scenes/visual/shotgun_shell.tscn")
 var blood_splatter_particle = preload("res://scenes/visual/blood_splatter_particle.tscn")
 
 var one_health_item_scene = preload("res://scenes/item/one_health_item.tscn")
@@ -211,6 +212,7 @@ func shoot(shooter:Node3D, target:Node3D):
 	var next_bullet = loaded_bullets_array[0]
 	game_state = GameState.SHOOTING
 	await shotgun_node.shoot(shooter, target, next_bullet)
+	print("finished shooting")
 	if next_bullet == BulletType.LIVE:
 		if turn_owner == player:
 			end_player_turn()
@@ -235,25 +237,22 @@ func show_loaded_bullets():
 	var current_live_bullet_count : int = 0
 	var current_blank_bullet_count : int = 0
 	var bullet_obj_array : Array
+	var is_live
 	# Shows loaded bullets in order
 	for item in range(loaded_bullets_array.size()):
-		var bullet = bullet_gravity_scene.instantiate()
+		var bullet = shotgun_shell_scene.instantiate()
 		add_child(bullet)
-		var mesh = bullet.get_node("MeshInstance3D")
-		var base_mat = mesh.get_active_material(0)
-		var mat = base_mat.duplicate()
-		bullet.rotation = Vector3(0, 0, deg_to_rad(90))
-		bullet_obj_array.append(bullet)
 		if loaded_bullets_array[item] == BulletType.LIVE:
-			current_live_bullet_count += 1
-			mat.albedo_color = Color(1, 0, 0)
-			mesh.set_surface_override_material(0, mat)
+			is_live = true
 			bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y + 0.1, live_bullet_pos.global_position.z - (float(current_live_bullet_count)/6))
 		elif loaded_bullets_array[item] == BulletType.BLANK:
-			current_blank_bullet_count += 1
-			mat.albedo_color = Color(0, 0, 1)
-			mesh.set_surface_override_material(0, mat)
+			is_live = false
 			bullet.global_position = Vector3(blank_bullet_pos.global_position.x, blank_bullet_pos.global_position.y + 0.1, blank_bullet_pos.global_position.z + (float(current_blank_bullet_count)/6))
+		
+		bullet.get_child(0).set_colour(is_live)
+		bullet.rotation = Vector3(0, 0, deg_to_rad(90))
+		bullet_obj_array.append(bullet)
+
 	await get_tree().create_timer(2).timeout
 	for item in bullet_obj_array:
 		item.queue_free()

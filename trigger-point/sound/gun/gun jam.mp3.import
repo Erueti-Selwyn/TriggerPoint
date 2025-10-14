@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cwjxddl2ocqay"
+path="res://.godot/imported/gun jam.mp3-2e2f4d0a8c83f7116684c3ccdf95a67b.mp3str"
+
+[deps]
+
+source_file="res://sound/gun/gun jam.mp3"
+dest_files=["res://.godot/imported/gun jam.mp3-2e2f4d0a8c83f7116684c3ccdf95a67b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4
