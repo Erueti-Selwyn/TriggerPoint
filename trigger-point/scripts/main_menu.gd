@@ -18,9 +18,7 @@ func check_mouse_position(mouse:Vector2):
 	params.to = end
 	
 	var raycast_result = space.intersect_ray(params)
-	if (
-		raycast_result.is_empty() == false
-	):
+	if raycast_result.is_empty() == false:
 		if raycast_result.collider != current_hover_object and current_hover_object:
 			current_hover_object.unhover()
 		if raycast_result.collider.is_in_group("button"):
@@ -28,6 +26,7 @@ func check_mouse_position(mouse:Vector2):
 			current_hover_object.hover()
 	elif current_hover_object:
 		current_hover_object.unhover()
+		current_hover_object = null
 
 
 func _input(event):
