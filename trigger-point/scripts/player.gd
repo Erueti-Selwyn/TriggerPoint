@@ -1,17 +1,11 @@
 extends Node3D
 
-# DEBUG STUFF
-
-# DEBUG STUFF
-
 # Constants
 const ITEM_LERP_SPEED: float = 5
 
 var camera: Camera3D = null
 @export var rotation_shop: Vector3
 @export var camera_lerp_speed: int
-
-
 
 @export var used_bullet_pos: Node3D
 @export var center_bullet_pos: Node3D
@@ -22,8 +16,6 @@ var camera: Camera3D = null
 @export var held_item_description_label: Label3D
 @export var shoot_player_label: Label3D
 @export var shoot_enemy_label: Label3D
-@export var player_scoreboard_label: Label3D
-@export var enemy_socreboard_label: Label3D
 @export var player_health_icons: Array
 @export var enemy_health_icons: Array
 
@@ -72,7 +64,7 @@ func _process(delta: float) -> void:
 		GameManager.turn_owner == GameManager.player
 	):
 		inventory_root.add_random_item()
-	if Input.is_action_just_pressed("escape"):
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		if GameManager.game_state == GameManager.GameState.SHOPPING:
 			shop_root.drop_shop_items()
 		else:

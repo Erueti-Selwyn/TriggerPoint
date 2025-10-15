@@ -51,59 +51,58 @@ func player_shoot_self():
 func player_shoot_enemy():
 	animation_player.play("AIM ENEMY")
 	await get_tree().process_frame
-	await get_tree().create_timer(animation_player.current_animation_length).timeout
+	await animation_player.animation_finished
 
 
 func enemy_shoot_self():
 	animation_player.play("ENEMY KILL SELF")
 	await get_tree().process_frame
-	await get_tree().create_timer(animation_player.current_animation_length).timeout
+	await animation_player.animation_finished
 
 
 func enemy_shoot_player():
 	animation_player.play("ENEMY KILL AIM ")
 	await get_tree().process_frame
-	await get_tree().create_timer(animation_player.current_animation_length).timeout
+	await animation_player.animation_finished
 	await get_tree().create_timer(1.5, true).timeout
-	print("finished enemy shooting player")
 
 
 func player_shoot_self_return():
 	animation_player.play("SHOOT SELF GUN RETURN")
 	await get_tree().process_frame
-	await get_tree().create_timer(animation_player.current_animation_length).timeout
+	await animation_player.animation_finished
 
 
 func player_shoot_enemy_return():
 	animation_player.play("SHOOT ENEMY GUN RETURN")
 	await get_tree().process_frame
-	await get_tree().create_timer(animation_player.current_animation_length).timeout
+	await animation_player.animation_finished
 
 
 func enemy_shoot_self_return():
 	animation_player.play("ENEMY KILL SELF UNAIM")
 	await get_tree().process_frame
-	await get_tree().create_timer(animation_player.current_animation_length).timeout
+	await animation_player.animation_finished
 
 
 func enemy_shoot_player_return():
 	animation_player.play("ENEMY KILL UNAIM")
 	await get_tree().process_frame
-	await get_tree().create_timer(animation_player.current_animation_length).timeout
+	await animation_player.animation_finished
 
 
 func player_reload():
 	animation_player.play("PLAYER RELOAD")
 	gun_cock_audio_stream_player.play()
 	await get_tree().process_frame
-	await get_tree().create_timer(animation_player.current_animation_length).timeout
+	await animation_player.animation_finished
 
 
 func enemy_reload():
 	animation_player.play("ENEMY RELOAD")
 	gun_cock_audio_stream_player.play()
 	await get_tree().process_frame
-	await get_tree().create_timer(animation_player.current_animation_length).timeout
+	await animation_player.animation_finished
 
 
 func shoot_bullet(next_bullet):
@@ -112,8 +111,10 @@ func shoot_bullet(next_bullet):
 		GameManager.camera.shake_screen()
 		if current_target == GameManager.enemy:
 			GameManager.enemy.blood_particles()
+			GameManager.enemy_health -= GameManager.damage
 		elif current_target == GameManager.player:
 			GameManager.player.blood_particles()
+			GameManager.player_health -= GameManager.damage
 	elif next_bullet == GameManager.BulletType.BLANK:
 		gun_click_audio_stream_player.play()
 		print("blank")
@@ -122,12 +123,6 @@ func shoot_bullet(next_bullet):
 
 func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 	current_target = target
-	var is_live_bullet
-	if next_bullet == GameManager.BulletType.LIVE:
-		is_live_bullet = true
-		GameManager.current_bullet_damage = GameManager.damage
-	elif next_bullet == GameManager.BulletType.BLANK:
-		is_live_bullet = false
 	GameManager.loaded_bullets_array.remove_at(0)
 	if shooter == GameManager.enemy:
 		if target == GameManager.enemy:
@@ -139,8 +134,6 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await enemy_reload()
 			remove_bullet()
 			await enemy_drop_gun()
-			if is_live_bullet:
-				GameManager.enemy_health -= GameManager.damage
 		elif target == GameManager.player:
 			await enemy_hold()
 			await enemy_shoot_player()
@@ -149,8 +142,6 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await enemy_reload()
 			remove_bullet()
 			await enemy_drop_gun()
-			if is_live_bullet:
-				GameManager.player_health -= GameManager.damage
 	elif shooter == GameManager.player:
 		if target == GameManager.enemy:
 			await player_shoot_enemy()
@@ -159,8 +150,6 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await player_reload()
 			remove_bullet()
 			await drop_gun()
-			if is_live_bullet:
-				GameManager.enemy_health -= GameManager.damage
 		elif target == GameManager.player:
 			await player_shoot_self()
 			await get_tree().create_timer(1, true).timeout
@@ -169,9 +158,7 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await player_reload()
 			remove_bullet()
 			await drop_gun()
-			if is_live_bullet:
-				GameManager.player_health -= GameManager.damage
-	
+
 
 func remove_bullet():
 	#var is_live_bullet: bool

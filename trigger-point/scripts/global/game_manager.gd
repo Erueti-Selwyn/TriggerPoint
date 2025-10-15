@@ -105,12 +105,12 @@ func _process(_delta) -> void:
 		player_money += 10
 		enemy_health = 0
 		round_ended = true
-		end_round()
+		player.win()
 	if player_health <= 0 and round_ended == false and not player == null:
 		player_money += 5
 		enemy_health = 0
 		round_ended = true
-		end_round()
+		player.lose()
 	if round_ended == false and loaded_bullets_array.size() <= 0:
 		turn_owner = player
 		reload()
@@ -259,12 +259,6 @@ func show_loaded_bullets():
 	for item in bullet_obj_array:
 		item.queue_free()
 	bullet_obj_array.resize(0)
-
-
-func end_round():
-	await get_tree().create_timer(2).timeout
-	if GameManager.game_state != GameManager.GameState.SHOPPING:
-		GameManager.start_shop()
 
 
 func toggle_child_collision(object : Node, condition : bool):
