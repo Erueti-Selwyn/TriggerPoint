@@ -1,14 +1,14 @@
 extends Node3D
 
-var shop_slot_nodes:Array = []
-var items_in_shop:Array = []
-var new_shop_items_dict:Dictionary = {}
-var shop_held_item_pos:Node3D = null
-var reroll_button_label:Label3D = null
-var buy_button_label:Label3D = null
-var leave_button_label:Label3D = null
-var item_shop_description_label:Label3D = null
-var item_lerp_speed:float = 0.05
+var shop_slot_nodes: Array = []
+var items_in_shop: Array = []
+var new_shop_items_dict: Dictionary = {}
+var shop_held_item_pos: Node3D = null
+var reroll_button_label: Label3D = null
+var buy_button_label: Label3D = null
+var leave_button_label: Label3D = null
+var item_shop_description_label: Label3D = null
+const ITEM_LERP_SPEED: float = 0.05
 var offset:Vector3 = Vector3(0,0.1,0)
 
 
@@ -60,11 +60,11 @@ func update_item_positions():
 	for item in items_in_shop:
 		if is_instance_valid(item):
 			if item.in_hand == true:
-				item.move_to(shop_held_item_pos.global_position, Vector3(0,0,0), item_lerp_speed)
+				item.move_to(shop_held_item_pos.global_position, Vector3(0,0,0), ITEM_LERP_SPEED)
 				GameManager.toggle_child_collision(shop_slot_nodes[item.inventory_slot], true)
 				item_shop_description_label.text = item.shop_description
 			else:
-				item.move_to(shop_slot_nodes[item.inventory_slot].global_position + offset, item.original_rot, item_lerp_speed)
+				item.move_to(shop_slot_nodes[item.inventory_slot].global_position + offset, item.original_rot, ITEM_LERP_SPEED)
 				GameManager.toggle_child_collision(shop_slot_nodes[item.inventory_slot], false)
 
 

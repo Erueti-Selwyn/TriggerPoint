@@ -18,78 +18,92 @@ func hold():
 	in_hand = true
 	animation_player.play("GUN SELECT")
 	collision_shape.disabled = true
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func drop_gun():
 	in_hand = false
 	animation_player.play("GUN RRETURN")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 	collision_shape.disabled = false
 
 
 func enemy_hold():
 	animation_player.play("ENEMY PICKUP")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func enemy_drop_gun():
 	animation_player.play("ENEMY RETURN GUN")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func player_shoot_self():
 	animation_player.play("AIM  SELF")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func player_shoot_enemy():
 	animation_player.play("AIM ENEMY")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func enemy_shoot_self():
 	animation_player.play("ENEMY KILL SELF")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func enemy_shoot_player():
 	animation_player.play("ENEMY KILL AIM ")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 	await get_tree().create_timer(1.5, true).timeout
 	print("finished enemy shooting player")
 
 
 func player_shoot_self_return():
 	animation_player.play("SHOOT SELF GUN RETURN")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func player_shoot_enemy_return():
 	animation_player.play("SHOOT ENEMY GUN RETURN")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func enemy_shoot_self_return():
 	animation_player.play("ENEMY KILL SELF UNAIM")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func enemy_shoot_player_return():
 	animation_player.play("ENEMY KILL UNAIM")
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func player_reload():
 	animation_player.play("PLAYER RELOAD")
 	gun_cock_audio_stream_player.play()
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func enemy_reload():
 	animation_player.play("ENEMY RELOAD")
 	gun_cock_audio_stream_player.play()
-	await animation_player.animation_finished
+	await get_tree().process_frame
+	await get_tree().create_timer(animation_player.current_animation_length).timeout
 
 
 func shoot_bullet(next_bullet):

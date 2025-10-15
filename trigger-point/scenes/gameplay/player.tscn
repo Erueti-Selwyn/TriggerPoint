@@ -13,8 +13,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.44138, 0.878755, 0)
 script = ExtResource("1_i10gd")
 rotation_shop = Vector3(-0.0994838, -1.5708, 0)
 camera_lerp_speed = 7
-item_lerp_speed = 0.05
-gun_lerp_speed = 0.1
 player_blood_position = NodePath("Head/Camera3D/PlayerBloodPosition")
 win_lose_screen = NodePath("CanvasLayer/GUI/WinLoseScreen")
 

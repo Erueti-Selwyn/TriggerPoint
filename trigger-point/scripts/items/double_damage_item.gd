@@ -7,6 +7,5 @@ func _init():
 	item_type = "double_damage"
 	item_description = "Doubles damage\nof next shot"
 
-
 func use():
-	GameManager.current_bullet_damage = GameManager.current_bullet_damage * 2
+	GameManager.current_bullet_damage = GameManager.damage * 2

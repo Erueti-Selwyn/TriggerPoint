@@ -10,7 +10,7 @@ func _init():
 
 func use():
 	if GameManager.loaded_bullets_array.size() > 0:
-		var bullet = GameManager.bullet_gravity_scene.instantiate()
+		var bullet = GameManager.shotgun_shell_scene.instantiate()
 		var level_node = get_tree().root
 		level_node.add_child(bullet)
 		var mesh = bullet.get_node("MeshInstance3D")

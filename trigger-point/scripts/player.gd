@@ -4,11 +4,14 @@ extends Node3D
 
 # DEBUG STUFF
 
+# Constants
+const ITEM_LERP_SPEED: float = 5
+
 var camera: Camera3D = null
 @export var rotation_shop: Vector3
 @export var camera_lerp_speed: int
-@export var item_lerp_speed: float
-@export var gun_lerp_speed: float
+
+
 
 @export var used_bullet_pos: Node3D
 @export var center_bullet_pos: Node3D

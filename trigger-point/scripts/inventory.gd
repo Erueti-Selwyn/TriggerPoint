@@ -3,14 +3,14 @@ extends Node3D
 
 
 # Constants
-const INVENTORY_SIZE:int = 4
+const INVENTORY_SIZE: int = 4
+const ITEM_LERP_SPEED: float = 0.05
 
 # Variables
 @export var held_item_pos: Node3D
 var inventory:Array = [null, null, null, null]
 var loaded_items:Array = []
 var slots_nodes:Array = []
-var item_lerp_speed:float = 0.05
 var held_item: Node3D
 var new_item:Node3D
 
@@ -40,15 +40,15 @@ func _process(_delta):
 func update_item_position():
 	for item in loaded_items:
 		if is_instance_valid(item) and item.in_hand:
-			item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
+			item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), ITEM_LERP_SPEED)
 	for item in inventory:
 		# Returns items not in hand
 		if is_instance_valid(item) and not item.in_hand:
 			GameManager.toggle_child_collision(slots_nodes[item.inventory_slot], false)
-			item.move_to(slots_nodes[item.inventory_slot].global_position + Vector3(0,0.1,0), item.original_rot, item_lerp_speed)
+			item.move_to(slots_nodes[item.inventory_slot].global_position + Vector3(0,0.1,0), item.original_rot, ITEM_LERP_SPEED)
 		if is_instance_valid(item)and item.in_hand:
 			GameManager.toggle_child_collision(slots_nodes[item.inventory_slot], true)
-			item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), item_lerp_speed)
+			item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), ITEM_LERP_SPEED)
 	if GameManager.shotgun_node.in_hand:
 		GameManager.toggle_child_collision(GameManager.shotgun_node, true)
 	else:

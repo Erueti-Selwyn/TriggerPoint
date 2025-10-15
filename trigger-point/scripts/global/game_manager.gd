@@ -1,7 +1,5 @@
 extends Node
 
-var bullet_gravity_scene = preload("res://scenes/visual/bullet_gravity.tscn")
-var bullet_scene = preload("res://scenes/visual/bullet.tscn")
 var shotgun_shell_scene = preload("res://scenes/visual/shotgun_shell.tscn")
 var blood_splatter_particle = preload("res://scenes/visual/blood_splatter_particle.tscn")
 
@@ -34,8 +32,8 @@ const GameStateNames = {
 	GameState.GAMEOVER: "GAMEOVER",
 }
 
-var game_state : GameState
-var turn_owner : Node3D
+var game_state: GameState
+var turn_owner: Node3D
 # Player stats
 var round_number: int = 1
 var player_health: int
@@ -56,7 +54,7 @@ var bullets_in_chamber: int = 6
 var live_bullets: int = 3
 var blank_bullets: int = 3
 var loaded_bullets_array: Array = []
-enum BulletType {BLANK, LIVE, SLUG, CRIPPLE}
+enum BulletType {BLANK, LIVE}
 
 var used_shells : int
 var used_shells_array : Array
@@ -65,12 +63,6 @@ var used_shells_array : Array
 var round_ended: bool = false
 var shop_open: bool = false
 var using_item: bool = false
-
-var one_health_item_level: int = 1
-var peek_item_level: int = 1
-var shuffle_item_level: int = 1
-var double_damage_item_level: int = 1
-var remove_bullet_item_level: int = 1
 
 var receive_item_count: int = 0
 
@@ -88,8 +80,8 @@ var dealing_box: Node3D
 var dealing_table: Node3D
 var camera: Node3D
 
-var hover_text_colour:Color = Color("ffffff")
-var unhover_text_colour:Color = Color("adadad")
+var hover_text_colour: Color = Color("ffffff")
+var unhover_text_colour: Color = Color("adadad")
 
 var item_name_array:Array = [
 	"double_damage",
@@ -119,7 +111,9 @@ func _process(_delta) -> void:
 		enemy_health = 0
 		round_ended = true
 		end_round()
-
+	if round_ended == false and loaded_bullets_array.size() <= 0:
+		turn_owner = player
+		reload()
 
 func start_game():
 	game_state = GameState.WAITING
@@ -132,6 +126,8 @@ func start_game():
 
 
 func start_turn():
+	if not turn_owner:
+		return
 	print(str(turn_owner))
 	turn_owner.start_turn()
 
@@ -239,6 +235,8 @@ func show_loaded_bullets():
 	var bullet_spacing: float = 0.2
 	var starting_x: float = ((loaded_bullets_array.size() - 1) * bullet_spacing) / 2
 	var instantiated_bullet_count: int = 0
+	if not center_bullet_pos:
+		return
 	for item in range(blank_count):
 		var bullet = shotgun_shell_scene.instantiate()
 		add_child(bullet)
