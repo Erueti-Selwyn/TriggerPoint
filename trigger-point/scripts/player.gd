@@ -5,32 +5,32 @@ extends Node3D
 # DEBUG STUFF
 
 var camera: Camera3D = null
-@export var rotation_shop : Vector3
-@export var camera_lerp_speed : int
-@export var item_lerp_speed : float
-@export var gun_lerp_speed : float
+@export var rotation_shop: Vector3
+@export var camera_lerp_speed: int
+@export var item_lerp_speed: float
+@export var gun_lerp_speed: float
 
-@export var live_bullet_pos : Node3D
-@export var blank_bullet_pos : Node3D
+@export var used_bullet_pos: Node3D
+@export var center_bullet_pos: Node3D
 @export var player_blood_position: Node3D
 
 # In game UI features
-@export var win_lose_screen : Control
-@export var held_item_description_label : Label3D
-@export var shoot_player_label : Label3D
-@export var shoot_enemy_label : Label3D
-@export var player_scoreboard_label : Label3D
-@export var enemy_socreboard_label : Label3D
-@export var player_health_icons : Array
-@export var enemy_health_icons : Array
+@export var win_lose_screen: Control
+@export var held_item_description_label: Label3D
+@export var shoot_player_label: Label3D
+@export var shoot_enemy_label: Label3D
+@export var player_scoreboard_label: Label3D
+@export var enemy_socreboard_label: Label3D
+@export var player_health_icons: Array
+@export var enemy_health_icons: Array
 
 @export var inventory_root: Node3D
 @export var shop_root: Node3D
 
-var target_rotation : Vector3
-var current_hover_object : Node
-var previous_hover_mesh : Node
-var current_hover_mesh : Node
+var target_rotation: Vector3
+var current_hover_object: Node
+var previous_hover_mesh: Node
+var current_hover_mesh: Node
 
 # For Mouse Hovering
 const DIST = 1000
@@ -49,8 +49,8 @@ func _ready() -> void:
 	debug_label_4 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug4
 	camera = $Head/Camera3D
 	GameManager.player = self
-	GameManager.live_bullet_pos = live_bullet_pos
-	GameManager.blank_bullet_pos = blank_bullet_pos
+	GameManager.center_bullet_pos = center_bullet_pos
+	GameManager.used_bullet_pos = used_bullet_pos
 	target_rotation = camera.rotation
 	GameManager.start_game()
 

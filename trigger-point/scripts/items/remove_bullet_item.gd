@@ -21,7 +21,7 @@ func use():
 		else:
 			mat.albedo_color = Color(0, 0, 1)
 		mesh.set_surface_override_material(0, mat)
-		bullet.global_position = Vector3(GameManager.live_bullet_pos.global_position.x, GameManager.live_bullet_pos.global_position.y + 0.1, GameManager.live_bullet_pos.global_position.z - (float(GameManager.used_shells)/6))
+		bullet.global_position = Vector3(GameManager.center_bullet_pos.global_position.x, GameManager.center_bullet_pos.global_position.y + 0.1, GameManager.center_bullet_pos.global_position.z - (float(GameManager.used_shells)/6))
 		bullet.rotation = Vector3(0, 0, deg_to_rad(90))
 		GameManager.loaded_bullets_array.remove_at(0)
 		GameManager.used_shells_array.append(bullet)

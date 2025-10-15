@@ -80,6 +80,18 @@ func enemy_shoot_player_return():
 	await animation_player.animation_finished
 
 
+func player_reload():
+	animation_player.play("PLAYER RELOAD")
+	gun_cock_audio_stream_player.play()
+	await animation_player.animation_finished
+
+
+func enemy_reload():
+	animation_player.play("ENEMY RELOAD")
+	gun_cock_audio_stream_player.play()
+	await animation_player.animation_finished
+
+
 func shoot_bullet(next_bullet):
 	if next_bullet == GameManager.BulletType.LIVE:
 		gun_shot_audio_stream_player.play()
@@ -110,6 +122,8 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await get_tree().create_timer(1.5, true).timeout
 			shoot_bullet(next_bullet)
 			await enemy_shoot_self_return()
+			await enemy_reload()
+			remove_bullet()
 			await enemy_drop_gun()
 			if is_live_bullet:
 				GameManager.enemy_health -= GameManager.damage
@@ -118,6 +132,8 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await enemy_shoot_player()
 			shoot_bullet(next_bullet)
 			await enemy_shoot_player_return()
+			await enemy_reload()
+			remove_bullet()
 			await enemy_drop_gun()
 			if is_live_bullet:
 				GameManager.player_health -= GameManager.damage
@@ -126,6 +142,8 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await player_shoot_enemy()
 			shoot_bullet(next_bullet)
 			await player_shoot_enemy_return()
+			await player_reload()
+			remove_bullet()
 			await drop_gun()
 			if is_live_bullet:
 				GameManager.enemy_health -= GameManager.damage
@@ -134,21 +152,24 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await get_tree().create_timer(1, true).timeout
 			shoot_bullet(next_bullet)
 			await player_shoot_self_return()
+			await player_reload()
+			remove_bullet()
 			await drop_gun()
 			if is_live_bullet:
 				GameManager.player_health -= GameManager.damage
-	var bullet = GameManager.bullet_gravity_scene.instantiate()
-	var level_node = get_tree().root
-	level_node.add_child(bullet)
-	var mesh = bullet.get_node("MeshInstance3D")
-	var base_mat = mesh.get_active_material(0)
-	var mat = base_mat.duplicate()
-	if is_live_bullet:
-		mat.albedo_color = Color(1, 0, 0)
-	else:
-		mat.albedo_color = Color(0, 0, 1)
-	mesh.set_surface_override_material(0, mat)
-	bullet.global_position = Vector3(GameManager.live_bullet_pos.global_position.x, GameManager.live_bullet_pos.global_position.y + 0.1, GameManager.live_bullet_pos.global_position.z - (float(GameManager.used_shells)/6))
-	bullet.rotation = Vector3(0, 0, deg_to_rad(90))
-	GameManager.used_shells_array.append(bullet)
-	GameManager.used_shells += 1
+	
+
+func remove_bullet():
+	#var is_live_bullet: bool
+	#var bullet_spacing: float = 0.2
+	#if GameManager.loaded_bullets_array[0] == GameManager.BulletType.LIVE:
+	#	is_live_bullet = true
+	#elif GameManager.loaded_bullets_array[0] == GameManager.BulletType.BLANK:
+	#	is_live_bullet = false
+	#var bullet = GameManager.shotgun_shell_scene.instantiate()
+	#add_child(bullet)
+	#bullet.global_position = Vector3(GameManager.used_bullet_pos.global_position.x, GameManager.used_bullet_pos.global_position.y, GameManager.used_bullet_pos.global_position.z + (bullet_spacing * GameManager.used_shells))
+	#bullet.get_child(0).set_colour(is_live_bullet)
+	#bullet.rotation = Vector3(0, deg_to_rad(180), deg_to_rad(90))
+	#GameManager.used_shells += 1
+	pass

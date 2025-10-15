@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bcvfl3q3gcdvm"
+path="res://.godot/imported/static background.mp3-fd88fcd1de1f9d161c77081d665dd2c9.mp3str"
+
+[deps]
+
+source_file="res://sound/background/static background.mp3"
+dest_files=["res://.godot/imported/static background.mp3-fd88fcd1de1f9d161c77081d665dd2c9.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
