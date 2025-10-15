@@ -1,14 +1,58 @@
-[gd_scene load_steps=2 format=3 uid="uid://oi35offcptm"]
+[gd_scene load_steps=6 format=3 uid="uid://oi35offcptm"]
 
-[ext_resource type="PackedScene" uid="uid://bld3a60fsvpad" path="res://models/main_menu/MAIN MENU.glb" id="1_feev5"]
+[ext_resource type="PackedScene" uid="uid://c7lsslnvmq5xk" path="res://scenes/main_menu_tvs.tscn" id="1_fyxy7"]
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_v5pxy"]
+
+[sub_resource type="Environment" id="Environment_gnfit"]
+volumetric_fog_enabled = true
+volumetric_fog_length = 375.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3eacp"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_tu1mh"]
+material = SubResource("StandardMaterial3D_3eacp")
+size = Vector2(20, 20)
 
 [node name="MainMenu" type="Node3D"]
+script = ExtResource("1_v5pxy")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.981942, 1.49012e-08, -0.189181, -0.0269958, 0.989766, 0.140121, 0.187245, 0.142698, -0.971893, -2.00541, 0.762039, -4.33512)
+transform = Transform3D(-0.98053, 0.00158029, -0.196362, -0.0552047, 0.957421, 0.283369, 0.188449, 0.288692, -0.938693, -1.79995, 0.714552, -3.83043)
 
-[node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.83297, 2.8583, -1.54859e-08)
-light_energy = 16.0
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_gnfit")
 
-[node name="MAIN MENU" parent="." instance=ExtResource("1_feev5")]
+[node name="SpotLight3D" type="SpotLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.784582, 0.620026, 0, -0.620026, 0.784582, -1.83297, 3.2987, 1.15613)
+light_energy = 1.534
+shadow_enabled = true
+spot_range = 12.255
+spot_angle_attenuation = 1.7411
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.623975, 0.544717, 0.560302, 0, -0.717008, 0.697065, 0.781444, -0.434951, -0.447395, 2.92097, 3.2987, -4.18381)
+light_energy = 1.534
+shadow_enabled = true
+spot_range = 12.255
+spot_angle = 24.49
+spot_angle_attenuation = 1.7411
+
+[node name="SpotLight3D3" type="SpotLight3D" parent="WorldEnvironment"]
+transform = Transform3D(-0.891339, 0, 0.453337, 0, 1, 0, -0.453337, 0, -0.891339, -2.3277, 0.173375, -1.41303)
+spot_range = 1.745
+spot_angle = 92.11
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 4.94115)
+mesh = SubResource("QuadMesh_tu1mh")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.23454, 0, -0.144189)
+mesh = SubResource("QuadMesh_tu1mh")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.81817, 0, -0.144189)
+mesh = SubResource("QuadMesh_tu1mh")
+
+[node name="MAIN MENU" parent="." instance=ExtResource("1_fyxy7")]
