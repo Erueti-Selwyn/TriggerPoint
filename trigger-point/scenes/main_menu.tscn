@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://oi35offcptm"]
+
+[ext_resource type="PackedScene" uid="uid://bld3a60fsvpad" path="res://models/main_menu/MAIN MENU.glb" id="1_feev5"]
+
+[node name="MainMenu" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.981942, 1.49012e-08, -0.189181, -0.0269958, 0.989766, 0.140121, 0.187245, 0.142698, -0.971893, -2.00541, 0.762039, -4.33512)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.83297, 2.8583, -1.54859e-08)
+light_energy = 16.0
+
+[node name="MAIN MENU" parent="." instance=ExtResource("1_feev5")]

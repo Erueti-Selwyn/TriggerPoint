@@ -74,19 +74,19 @@ var remove_bullet_item_level: int = 1
 
 var receive_item_count: int = 0
 
-var player: Node3D = null
-var enemy: Node3D = null
+var player: Node3D
+var enemy: Node3D
 
-var inventory_root: Node3D = null
-var shotgun_node: Node3D = null
-var shop_root: Node3D = null
+var inventory_root: Node3D
+var shotgun_node: Node3D
+var shop_root: Node3D
 
-var live_bullet_pos: Node3D = null
-var blank_bullet_pos: Node3D = null
-var held_item_pos: Node3D = null
-var dealing_box: Node3D = null
-var dealing_table: Node3D = null
-var camera: Node3D = null
+var center_bullet_pos: Node3D
+var used_bullet_pos: Node3D
+var held_item_pos: Node3D
+var dealing_box: Node3D
+var dealing_table: Node3D
+var camera: Node3D
 
 var hover_text_colour:Color = Color("ffffff")
 var unhover_text_colour:Color = Color("adadad")
@@ -175,7 +175,7 @@ func get_items():
 	GameManager.dealing_box.visible = true
 	await GameManager.dealing_table.box_close_player()
 	GameManager.game_state = GameManager.GameState.GETTINGITEM
-	GameManager.receive_item_count = randi_range(1,2)
+	GameManager.receive_item_count = 2
 	inventory_root.add_random_item()
 
 
@@ -233,26 +233,30 @@ func shoot(shooter:Node3D, target:Node3D):
 
 
 func show_loaded_bullets():
-	var current_live_bullet_count : int = 0
-	var current_blank_bullet_count : int = 0
 	var bullet_obj_array : Array
-	# Shows loaded bullets in order
-	for item in range(loaded_bullets_array.size()):
-		var is_live: bool
+	var blank_count: int = loaded_bullets_array.count(BulletType.BLANK)
+	var live_count: int = loaded_bullets_array.count(BulletType.LIVE)
+	var bullet_spacing: float = 0.2
+	var starting_x: float = ((loaded_bullets_array.size() - 1) * bullet_spacing) / 2
+	var instantiated_bullet_count: int = 0
+	for item in range(blank_count):
 		var bullet = shotgun_shell_scene.instantiate()
 		add_child(bullet)
-		if loaded_bullets_array[item] == BulletType.LIVE:
-			current_live_bullet_count += 1
-			is_live = true
-			bullet.global_position = Vector3(live_bullet_pos.global_position.x, live_bullet_pos.global_position.y, live_bullet_pos.global_position.z - (float(current_live_bullet_count)/6))
-		elif loaded_bullets_array[item] == BulletType.BLANK:
-			current_blank_bullet_count += 1
-			is_live = false
-			bullet.global_position = Vector3(blank_bullet_pos.global_position.x, blank_bullet_pos.global_position.y, blank_bullet_pos.global_position.z + (float(current_blank_bullet_count)/6))
-		
-		bullet.get_child(0).set_colour(is_live)
-		bullet.rotation = Vector3(0, 0, deg_to_rad(90))
+		bullet.global_position = Vector3(center_bullet_pos.global_position.x, center_bullet_pos.global_position.y, center_bullet_pos.global_position.z - starting_x + (bullet_spacing * instantiated_bullet_count))
+		bullet.get_child(0).set_colour(false)
+		bullet.rotation = Vector3(0, deg_to_rad(180), deg_to_rad(90))
 		bullet_obj_array.append(bullet)
+		instantiated_bullet_count += 1
+	
+	for item in range(live_count):
+		var bullet = shotgun_shell_scene.instantiate()
+		add_child(bullet)
+		bullet.global_position = Vector3(center_bullet_pos.global_position.x, center_bullet_pos.global_position.y, center_bullet_pos.global_position.z - starting_x + (bullet_spacing * instantiated_bullet_count))
+		bullet.get_child(0).set_colour(true)
+		bullet.rotation = Vector3(0, deg_to_rad(180), deg_to_rad(90))
+		bullet_obj_array.append(bullet)
+		instantiated_bullet_count += 1
+	
 	await get_tree().create_timer(2).timeout
 	for item in bullet_obj_array:
 		item.queue_free()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=27 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="VideoStream" path="res://videos/Screen1.ogv" id="1_d8xve"]
 [ext_resource type="Script" path="res://scripts/video_texture.gd" id="1_khi8y"]
@@ -8,11 +8,13 @@
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
 [ext_resource type="FontFile" uid="uid://byfgd2yvl30p4" path="res://assets/2D/fonts/digital-7.ttf" id="4_j3ivg"]
 [ext_resource type="PackedScene" uid="uid://dqk3ys4l1nrag" path="res://scenes/gameplay/inventory.tscn" id="5_e4d32"]
-[ext_resource type="PackedScene" uid="uid://cbnqqus6j6t23" path="res://models/ingame area NonText.glb" id="5_ymd3f"]
 [ext_resource type="PackedScene" uid="uid://b24ifdcjn4l3r" path="res://scenes/gameplay/shop.tscn" id="8_ev4sa"]
 [ext_resource type="PackedScene" uid="uid://ckkdeg8mads5t" path="res://models/dealing_table/Dealing Table.tscn" id="8_jl8fi"]
 [ext_resource type="PackedScene" uid="uid://b0n613w84vp5h" path="res://scenes/gameplay/enemy.tscn" id="8_llb3g"]
+[ext_resource type="PackedScene" uid="uid://demjqydwnmq8i" path="res://models/ingame area/ingame area.glb" id="9_ok13q"]
 [ext_resource type="PackedScene" uid="uid://d0blka36vu28u" path="res://scenes/gameplay/shotgun.tscn" id="12_hvetj"]
+[ext_resource type="AudioStream" uid="uid://bcvfl3q3gcdvm" path="res://sound/background/static background.mp3" id="14_k2n7m"]
+[ext_resource type="Script" path="res://scripts/background_static.gd" id="15_nxbeo"]
 
 [sub_resource type="Environment" id="Environment_vch0a"]
 tonemap_mode = 3
@@ -86,14 +88,13 @@ spot_attenuation = 1.6
 
 [node name="SpotLight3D2" type="SpotLight3D" parent="WorldEnvironment"]
 transform = Transform3D(-0.972029, 0.200978, -0.12152, 0.0636048, 0.723347, 0.687549, 0.226083, 0.660589, -0.715897, -4.0814, 9.77588, -8.53967)
-light_energy = 16.0
+light_energy = 32.0
 light_volumetric_fog_energy = 0.0
-spot_range = 16.3947
-spot_angle = 28.4152
+spot_range = 17.455
+spot_angle = 25.92
 
 [node name="OmniLight3D" type="OmniLight3D" parent="WorldEnvironment/SpotLight3D2"]
 transform = Transform3D(1, 1.49012e-08, -1.49012e-08, 0, 1, 2.98023e-08, 0, 0, 1, 0.466809, 1.00382, -1.97649)
-visible = false
 light_energy = 8.434
 light_indirect_energy = 0.15
 light_volumetric_fog_energy = 2.293
@@ -106,17 +107,16 @@ light_volumetric_fog_energy = 0.3
 spot_range = 45.082
 spot_attenuation = 2.0
 spot_angle = 77.5
-spot_angle_attenuation = 4.0
+spot_angle_attenuation = 2.2974
 
 [node name="OmniLight3D" type="OmniLight3D" parent="WorldEnvironment/SpotLight3D3"]
 transform = Transform3D(1, -1.52737e-07, 3.72529e-09, 1.52737e-07, 1, 2.38419e-07, -5.58794e-09, -1.78814e-07, 1, -0.0729729, 1.13904, -2.10846)
-visible = false
 light_energy = 3.805
 light_volumetric_fog_energy = 0.0
 omni_range = 2.69809
 
 [node name="OmniLight3D" type="OmniLight3D" parent="WorldEnvironment"]
-transform = Transform3D(0.97764, 0.210284, 0, -0.210284, 0.97764, 0, 0, 0, 1, -8.52306, 6.19744, -0.245607)
+transform = Transform3D(0.97764, 0.210284, 0, -0.210284, 0.97764, 0, 0, 0, 1, -7.81634, 6.04543, -0.245607)
 light_color = Color(1, 0.0470588, 0.0705882, 1)
 light_energy = 11.505
 
@@ -132,32 +132,26 @@ light_energy = 5.997
 
 [node name="OmniLight3D4" type="OmniLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.16901, 6.55228, 4.54354)
-visible = false
 light_energy = 4.556
 light_volumetric_fog_energy = 0.0
 
 [node name="OmniLight3D5" type="OmniLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.10721, 5.15675, -4.47082)
-visible = false
 light_energy = 2.53
 light_volumetric_fog_energy = 0.0
 omni_range = 3.38025
 
 [node name="OmniLight3D6" type="OmniLight3D" parent="WorldEnvironment"]
 transform = Transform3D(0.809396, 0, 0.587263, 0, 1, 0, -0.587263, 0, 0.809396, 2.00379, 5.48209, -5.01187)
-visible = false
-light_energy = 3.747
 omni_range = 2.93748
 
 [node name="OmniLight3D7" type="OmniLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.386939, 6.52369, 5.20543)
-visible = false
 light_energy = 1.809
 omni_range = 3.09464
 
 [node name="OmniLight3D8" type="OmniLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.59829, 5.49024, 4.20425)
-visible = false
 light_energy = 0.88
 omni_range = 2.15941
 
@@ -270,18 +264,18 @@ skeleton = NodePath("../..")
 [node name="shop" parent="environment" instance=ExtResource("8_ev4sa")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10.422, 4.14153, 0)
 
-[node name="ingame area NonText" parent="environment" instance=ExtResource("5_ymd3f")]
+[node name="ingame area" parent="environment" instance=ExtResource("9_ok13q")]
 
 [node name="PosNodes" type="Node3D" parent="."]
 
 [node name="HeldItemPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86106, 4.59251, 0)
 
-[node name="LiveBulletPos" type="Node3D" parent="PosNodes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.89566, 4.02555, 3.00418)
+[node name="CenterBulletPos" type="Node3D" parent="PosNodes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.896, 4.026, 0)
 
-[node name="BlankBulletPos" type="Node3D" parent="PosNodes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.89545, 4.02519, -3.004)
+[node name="UsedBulletPos" type="Node3D" parent="PosNodes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.896, 4.026, 3)
 
 [node name="ShootPlayerPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2401, 5.827, 0)
@@ -289,10 +283,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2401, 5.827, 0)
 [node name="ShootEnemyPos" type="Node3D" parent="PosNodes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6991, 7.47431, 0.00628603)
 
-[node name="player" parent="." node_paths=PackedStringArray("live_bullet_pos", "blank_bullet_pos", "held_item_description_label", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
+[node name="player" parent="." node_paths=PackedStringArray("center_bullet_pos", "held_item_description_label", "shoot_player_label", "shoot_enemy_label", "inventory_root", "shop_root") instance=ExtResource("4_h4ghb")]
 transform = Transform3D(0.999996, -0.0026878, 0, 0.0026878, 0.999996, 0, 0, 0, 1, 7.7, 7.1, 0)
-live_bullet_pos = NodePath("../PosNodes/LiveBulletPos")
-blank_bullet_pos = NodePath("../PosNodes/BlankBulletPos")
+center_bullet_pos = NodePath("../PosNodes/CenterBulletPos")
 held_item_description_label = NodePath("../DiegeticUI/ItemDescriptionLabel")
 shoot_player_label = NodePath("../DiegeticUI/Self/ShootYourselfLabel")
 shoot_enemy_label = NodePath("../DiegeticUI/Enemy/ShootEnemyLabel")
@@ -304,6 +297,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.396, 4.015, 0)
 held_item_pos = NodePath("../PosNodes/HeldItemPos")
 
 [node name="enemy" parent="." instance=ExtResource("8_llb3g")]
-transform = Transform3D(-0.7, 0, 6.11959e-08, 0, 0.7, 0, -6.11959e-08, 0, -0.7, -7.13927, -0.239827, 0)
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, -7.13927, -0.239827, 0)
 
 [node name="Shotgun" parent="." instance=ExtResource("12_hvetj")]
+
+[node name="BackgroundStaticAudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("14_k2n7m")
+autoplay = true
+script = ExtResource("15_nxbeo")
