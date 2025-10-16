@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://d0blka36vu28u"]
+[gd_scene load_steps=50 format=4 uid="uid://d0blka36vu28u"]
 
 [ext_resource type="Script" path="res://scripts/shotgun.gd" id="1_35tug"]
 [ext_resource type="Script" path="res://scripts/hover.gd" id="2_t1eek"]
@@ -422,6 +422,107 @@ _data = {
 "SHOOT SELF GUN RETURN": SubResource("Animation_2v6wv")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ku3at"]
+animation = &"AIM  SELF"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rpunq"]
+animation = &"AIM ENEMY"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7l3l1"]
+animation = &"GUN RRETURN"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dxj54"]
+animation = &"GUN RRETURN"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_do6nx"]
+animation = &"GUN RRETURN"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lnvox"]
+animation = &"GUN SELECT"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_26xnb"]
+animation = &"SHOOT ENEMY GUN RETURN"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dab8o"]
+animation = &"SHOOT SELF GUN RETURN"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pnwwo"]
+advance_mode = 2
+advance_condition = &"player_pick_up"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yo47f"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jxkap"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"player_drop"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pgfix"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ui4ik"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2xk2q"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0uoqr"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bb3cr"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"player_self"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pukoi"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dy87m"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fw1ji"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"player_enemy"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gn7ov"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_5qcb5"]
+"states/AIM  SELF/node" = SubResource("AnimationNodeAnimation_ku3at")
+"states/AIM  SELF/position" = Vector2(293.211, 221.074)
+"states/AIM ENEMY/node" = SubResource("AnimationNodeAnimation_rpunq")
+"states/AIM ENEMY/position" = Vector2(293.211, 309.631)
+"states/GUN RRETURN/node" = SubResource("AnimationNodeAnimation_do6nx")
+"states/GUN RRETURN/position" = Vector2(385, 167)
+"states/GUN RRETURN 2/node" = SubResource("AnimationNodeAnimation_7l3l1")
+"states/GUN RRETURN 2/position" = Vector2(832.211, 214.074)
+"states/GUN RRETURN 3/node" = SubResource("AnimationNodeAnimation_dxj54")
+"states/GUN RRETURN 3/position" = Vector2(832.211, 309.631)
+"states/GUN SELECT/node" = SubResource("AnimationNodeAnimation_lnvox")
+"states/GUN SELECT/position" = Vector2(327, 24)
+"states/SHOOT ENEMY GUN RETURN/node" = SubResource("AnimationNodeAnimation_26xnb")
+"states/SHOOT ENEMY GUN RETURN/position" = Vector2(587, 309.631)
+"states/SHOOT SELF GUN RETURN/node" = SubResource("AnimationNodeAnimation_dab8o")
+"states/SHOOT SELF GUN RETURN/position" = Vector2(587, 221.074)
+transitions = ["Start", "GUN SELECT", SubResource("AnimationNodeStateMachineTransition_pnwwo"), "GUN SELECT", "End", SubResource("AnimationNodeStateMachineTransition_yo47f"), "Start", "GUN RRETURN", SubResource("AnimationNodeStateMachineTransition_jxkap"), "SHOOT SELF GUN RETURN", "GUN RRETURN 2", SubResource("AnimationNodeStateMachineTransition_pgfix"), "GUN RRETURN 2", "End", SubResource("AnimationNodeStateMachineTransition_ui4ik"), "AIM  SELF", "SHOOT SELF GUN RETURN", SubResource("AnimationNodeStateMachineTransition_2xk2q"), "GUN RRETURN", "End", SubResource("AnimationNodeStateMachineTransition_0uoqr"), "Start", "AIM  SELF", SubResource("AnimationNodeStateMachineTransition_bb3cr"), "AIM ENEMY", "SHOOT ENEMY GUN RETURN", SubResource("AnimationNodeStateMachineTransition_pukoi"), "SHOOT ENEMY GUN RETURN", "GUN RRETURN 3", SubResource("AnimationNodeStateMachineTransition_dy87m"), "Start", "AIM ENEMY", SubResource("AnimationNodeStateMachineTransition_fw1ji"), "GUN RRETURN 3", "End", SubResource("AnimationNodeStateMachineTransition_gn7ov")]
+graph_offset = Vector2(99.2108, -8.23767)
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_oulc4"]
+graph_offset = Vector2(-206.097, 100.914)
+nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_5qcb5")
+nodes/StateMachine/position = Vector2(129, 144)
+node_connections = [&"output", 0, &"StateMachine"]
+
 [node name="Shotgun" type="StaticBody3D" groups=["gun"]]
 script = ExtResource("1_35tug")
 
@@ -451,14 +552,14 @@ bones/0/name = "Bone"
 bones/0/parent = -1
 bones/0/rest = Transform3D(-0.157216, 0.983352, 0.0911126, -0.0158696, 0.0897325, -0.995839, -0.987437, -0.158008, 0.00149804, -1.45221, -0.104479, 0.123644)
 bones/0/enabled = true
-bones/0/position = Vector3(-11.8313, 0.160204, -1.05838)
-bones/0/rotation = Quaternion(0.191774, 0.650724, 0.678705, 0.281322)
+bones/0/position = Vector3(-1.45221, -0.104479, 0.123644)
+bones/0/rotation = Quaternion(0.433461, 0.557999, -0.516958, 0.483222)
 bones/0/scale = Vector3(1, 1, 1)
 bones/1/name = "Bone.001"
 bones/1/parent = 0
 bones/1/rest = Transform3D(0.990208, -0.139023, 0.0126511, 0.139309, 0.989921, -0.025482, -0.00898096, 0.0269949, 0.999595, -0.170667, 1.93047, 0.0474165)
 bones/1/enabled = true
-bones/1/position = Vector3(-0.143677, 1.73829, 0.0421751)
+bones/1/position = Vector3(-0.170667, 1.93047, 0.0474165)
 bones/1/rotation = Quaternion(0.0131526, 0.00542177, 0.0697602, 0.997462)
 bones/1/scale = Vector3(1, 1, 1)
 
@@ -470,3 +571,12 @@ skin = SubResource("Skin_xlono")
 libraries = {
 "": SubResource("AnimationLibrary_1svm5")
 }
+
+[node name="AnimationTree" type="AnimationTree" parent="Shotgun_Final/AnimationPlayer"]
+root_node = NodePath("../..")
+tree_root = SubResource("AnimationNodeBlendTree_oulc4")
+anim_player = NodePath("..")
+parameters/StateMachine/conditions/player_drop = false
+parameters/StateMachine/conditions/player_enemy = false
+parameters/StateMachine/conditions/player_pick_up = false
+parameters/StateMachine/conditions/player_self = false

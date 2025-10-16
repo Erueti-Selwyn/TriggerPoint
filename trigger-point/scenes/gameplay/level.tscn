@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b7q1eno5y5die"]
+[gd_scene load_steps=19 format=3 uid="uid://b7q1eno5y5die"]
 
 [ext_resource type="PackedScene" uid="uid://dabo5ahjn3wym" path="res://scenes/gameplay/scoreboard.tscn" id="1_plvog"]
 [ext_resource type="PackedScene" uid="uid://bvtpy0a34dg4c" path="res://scenes/gameplay/player.tscn" id="4_h4ghb"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://pqbj1q7kuwgi" path="res://models/ingame area/ingame area.glb" id="9_ok13q"]
 [ext_resource type="PackedScene" uid="uid://d0blka36vu28u" path="res://scenes/gameplay/shotgun.tscn" id="12_hvetj"]
 [ext_resource type="PackedScene" uid="uid://boembsc3j8hr8" path="res://scenes/ui/pause_menu.tscn" id="12_ojfg2"]
+[ext_resource type="PackedScene" uid="uid://nhela11xflxu" path="res://scenes/ui/win_lose_screen.tscn" id="13_y5dm2"]
 [ext_resource type="AudioStream" uid="uid://bcvfl3q3gcdvm" path="res://sound/background/static background.mp3" id="14_k2n7m"]
 [ext_resource type="Script" path="res://scripts/background_static.gd" id="15_nxbeo"]
 
@@ -235,3 +236,6 @@ autoplay = true
 script = ExtResource("15_nxbeo")
 
 [node name="PauseMenu" parent="." instance=ExtResource("12_ojfg2")]
+visible = false
+
+[node name="WinLoseScreen" parent="." instance=ExtResource("13_y5dm2")]
