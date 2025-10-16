@@ -18,7 +18,7 @@ size = Vector2(20, 20)
 script = ExtResource("1_v5pxy")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.98053, 0.00158029, -0.196362, -0.0552047, 0.957421, 0.283369, 0.188449, 0.288692, -0.938693, -1.79995, 0.714552, -3.83043)
+transform = Transform3D(-0.987013, -0.00944768, -0.160365, -0.0552047, 0.957421, 0.283369, 0.150859, 0.288542, -0.945508, -1.79995, 0.714552, -2.96962)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gnfit")
@@ -42,6 +42,20 @@ spot_angle_attenuation = 1.7411
 transform = Transform3D(-0.891339, 0, 0.453337, 0, 1, 0, -0.453337, 0, -0.891339, -2.3277, 0.173375, -1.41303)
 spot_range = 1.745
 spot_angle = 92.11
+
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.175456, -0.0756298, -1.5554)
+light_energy = 0.5
+omni_range = 0.733283
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.38583, -0.757095, -1.45505)
+light_energy = 0.5
+omni_range = 1.38454
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.220777, 0.647681, -1.28392)
+omni_range = 0.733283
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 4.94115)
