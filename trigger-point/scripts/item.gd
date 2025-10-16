@@ -2,6 +2,7 @@ extends Node3D
 class_name Item
 
 var in_hand: bool = false
+var is_recieving: bool = false
 var is_item: bool = true
 @onready var original_pos: Vector3 = global_position
 @onready var original_rot: Vector3 = rotation

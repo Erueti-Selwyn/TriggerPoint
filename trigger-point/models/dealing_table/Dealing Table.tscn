@@ -842,7 +842,7 @@ mesh = SubResource("ArrayMesh_xu1tt")
 skeleton = NodePath("")
 
 [node name="ItemSlotRight" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.997, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(0.997, 0, 0, 0, 1, 0, 0, 0, 1, -0.97, -0.88, 0)
 mesh = SubResource("ArrayMesh_8c4eb")
 skeleton = NodePath("")
 
@@ -852,11 +852,11 @@ mesh = SubResource("ArrayMesh_m6jt2")
 skeleton = NodePath("")
 
 [node name="Box" parent="ItemSlotLeft" instance=ExtResource("6_023yy")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 3.5449, 4.21994, -0.0609171)
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 3.545, 4.22, 0)
 visible = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_rffsv")
 }
-speed_scale = 1.5
+speed_scale = 1.75

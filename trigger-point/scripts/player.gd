@@ -220,7 +220,7 @@ func update_text_labels():
 	elif is_instance_valid(inventory_root.held_item) and inventory_root.held_item.type == "item":
 		shoot_player_label.visible = true
 		shoot_enemy_label.visible = false
-		shoot_player_label.text = "Use item\non Self"
+		shoot_player_label.text = "Use item"
 		shoot_enemy_label.text = "null"
 	else:
 		shoot_player_label.visible = false
@@ -251,11 +251,11 @@ func end_shop():
 
 
 func win():
-	win_lose_screen.display_winner(self ,true)
+	win_lose_screen.display_winner(true)
 
 
 func lose():
-	win_lose_screen.display_winner(self, false)
+	win_lose_screen.display_winner(false)
 
 
 func reset_health():

@@ -14,6 +14,7 @@ grow_vertical = 2
 script = ExtResource("1_bnb43")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,6 +24,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.45098)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,24 +34,35 @@ grow_vertical = 2
 alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+process_mode = 3
 layout_mode = 2
 theme_override_constants/separation = 50
 alignment = 1
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+process_mode = 3
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_l02a2")
 theme_override_font_sizes/font_size = 200
 text = "PAUSE"
 
 [node name="Resume" type="Button" parent="HBoxContainer/VBoxContainer"]
+process_mode = 3
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_l02a2")
 theme_override_font_sizes/font_size = 100
 text = "Resume"
 
+[node name="Restart" type="Button" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_l02a2")
+theme_override_font_sizes/font_size = 100
+text = "Reset"
+
 [node name="Quit" type="Button" parent="HBoxContainer/VBoxContainer"]
+process_mode = 3
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_l02a2")
@@ -57,4 +70,5 @@ theme_override_font_sizes/font_size = 100
 text = "Quit"
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

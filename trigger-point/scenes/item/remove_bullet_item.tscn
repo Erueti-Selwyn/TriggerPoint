@@ -16,3 +16,4 @@ meshes = NodePath(".")
 parent = NodePath("..")
 
 [node name="wrench" parent="mesh" instance=ExtResource("3_drl1e")]
+transform = Transform3D(1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, 1, 0, -0.650117, 0)
