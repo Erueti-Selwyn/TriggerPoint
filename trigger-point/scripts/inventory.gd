@@ -8,6 +8,7 @@ const ITEM_LERP_SPEED: float = 0.05
 
 # Variables
 @export var held_item_pos: Node3D
+@export var new_item_pos: Node3D
 var inventory:Array = [null, null, null, null]
 var loaded_items:Array = []
 var slots_nodes:Array = []
@@ -39,14 +40,14 @@ func _process(_delta):
 
 func update_item_position():
 	for item in loaded_items:
-		if is_instance_valid(item) and item.in_hand:
-			item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), ITEM_LERP_SPEED)
+		if is_instance_valid(item) and item.is_recieving:
+			item.move_to(new_item_pos.global_position, Vector3(0, 0, 0), ITEM_LERP_SPEED)
 	for item in inventory:
 		# Returns items not in hand
 		if is_instance_valid(item) and not item.in_hand:
 			GameManager.toggle_child_collision(slots_nodes[item.inventory_slot], false)
 			item.move_to(slots_nodes[item.inventory_slot].global_position + Vector3(0,0.1,0), item.original_rot, ITEM_LERP_SPEED)
-		if is_instance_valid(item)and item.in_hand:
+		if is_instance_valid(item) and item.in_hand:
 			GameManager.toggle_child_collision(slots_nodes[item.inventory_slot], true)
 			item.move_to(held_item_pos.global_position, Vector3(0, 0, 0), ITEM_LERP_SPEED)
 	if GameManager.shotgun_node.in_hand:
@@ -61,9 +62,9 @@ func add_random_item():
 		var rand = randi_range(0, GameManager.item_scene_dictionary.size() - 1)
 		new_item = GameManager.item_scene_dictionary[GameManager.item_name_array[rand]].instantiate()
 		add_child(new_item)
-		new_item.global_position = GameManager.dealing_box.global_position
+		new_item.global_position = GameManager.dealing_box.global_position - Vector3(0.2, 0.2, 0)
 		new_item.rotation = Vector3(0, 0, 0)
-		new_item.in_hand = true
+		new_item.is_recieving = true
 		loaded_items.append(new_item)
 		update_item_position()
 
@@ -91,6 +92,7 @@ func click_item(current_hover_object):
 		new_item.transform = new_local_transform
 		
 		new_item.in_hand = false
+		new_item.is_recieving = false
 		new_item = null
 		
 		update_item_position()

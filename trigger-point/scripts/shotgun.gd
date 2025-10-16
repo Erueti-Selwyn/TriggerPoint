@@ -123,7 +123,6 @@ func shoot_bullet(next_bullet):
 
 func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 	current_target = target
-	GameManager.loaded_bullets_array.remove_at(0)
 	if shooter == GameManager.enemy:
 		if target == GameManager.enemy:
 			await enemy_hold()
@@ -158,19 +157,19 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await player_reload()
 			remove_bullet()
 			await drop_gun()
+	GameManager.loaded_bullets_array.remove_at(0)
 
 
 func remove_bullet():
 	var is_live_bullet: bool
 	var bullet_spacing: float = 0.2
 	if GameManager.loaded_bullets_array[0] == GameManager.BulletType.LIVE:
-		is_live_bullet = false
-	elif GameManager.loaded_bullets_array[0] == GameManager.BulletType.BLANK:
 		is_live_bullet = true
+	elif GameManager.loaded_bullets_array[0] == GameManager.BulletType.BLANK:
+		is_live_bullet = false
 	var bullet = GameManager.shotgun_shell_scene.instantiate()
 	add_child(bullet)
 	bullet.global_position = Vector3(GameManager.used_bullet_pos.global_position.x, GameManager.used_bullet_pos.global_position.y, GameManager.used_bullet_pos.global_position.z - (bullet_spacing * GameManager.used_shells))
 	bullet.get_child(0).set_colour(is_live_bullet)
 	bullet.rotation = Vector3(0, deg_to_rad(180), deg_to_rad(90))
 	GameManager.used_shells += 1
-	pass

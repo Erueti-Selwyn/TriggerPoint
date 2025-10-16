@@ -5,15 +5,15 @@
 [ext_resource type="PackedScene" uid="uid://chb656tylqkc0" path="res://models/item_models/2x/2x_Text.glb" id="3_ln5a8"]
 
 [node name="double_damage_item" type="Node3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]
-transform = Transform3D(0.941788, 0, 0.336208, 0, 1, 0, -0.336208, 0, 0.941788, 0, 0, 0)
+transform = Transform3D(0.844721, 0, 0.535208, 0, 1, 0, -0.535208, 0, 0.844721, 0, 0, 0)
 script = ExtResource("1_miujg")
 mesh_node = NodePath("mesh")
 
 [node name="mesh" type="Node3D" parent="." node_paths=PackedStringArray("meshes", "parent")]
-transform = Transform3D(-0.249721, 0, 0.968318, 0, 1, 0, -0.968318, 0, -0.249721, 0, 0, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 script = ExtResource("2_fwyud")
 meshes = NodePath(".")
 parent = NodePath("..")
 
 [node name="2x_Text" parent="mesh" instance=ExtResource("3_ln5a8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.416808, 0)
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0.241273, 0)

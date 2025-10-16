@@ -10,21 +10,5 @@ func _init():
 
 func use():
 	if GameManager.loaded_bullets_array.size() > 0:
-		var bullet = GameManager.shotgun_shell_scene.instantiate()
-		var level_node = get_tree().root
-		level_node.add_child(bullet)
-		var mesh = bullet.get_node("MeshInstance3D")
-		var base_mat = mesh.get_active_material(0)
-		var mat = base_mat.duplicate()
-		if GameManager.loaded_bullets_array[0] == GameManager.BulletType.LIVE:
-			mat.albedo_color = Color(1, 0, 0)
-		else:
-			mat.albedo_color = Color(0, 0, 1)
-		mesh.set_surface_override_material(0, mat)
-		bullet.global_position = Vector3(GameManager.center_bullet_pos.global_position.x, GameManager.center_bullet_pos.global_position.y + 0.1, GameManager.center_bullet_pos.global_position.z - (float(GameManager.used_shells)/6))
-		bullet.rotation = Vector3(0, 0, deg_to_rad(90))
+		GameManager.shotgun_node.remove_bullet()
 		GameManager.loaded_bullets_array.remove_at(0)
-		GameManager.used_shells_array.append(bullet)
-		GameManager.used_shells += 1
-	else:
-		return false
