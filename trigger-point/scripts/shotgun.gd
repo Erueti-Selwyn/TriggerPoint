@@ -56,8 +56,12 @@ func player_shoot_enemy():
 
 func enemy_shoot_self():
 	animation_player.play("ENEMY KILL SELF")
-	while animation_player.is_playing() and animation_player.current_animation == "ENEMY KILL SELF":
+	while animation_player.is_playing() and animation_player.current_animation == "AIM ENEMY":
 		await get_tree().process_frame
+	animation_player.queue("ENEMY KILL SELF UNAIM")
+	animation_player.queue("ENEMY RELOAD")
+	animation_player.queue("ENEMY RETURN GUN")
+	await get_tree().create_timer(10).timeout
 
 
 func enemy_shoot_player():
@@ -101,7 +105,7 @@ func player_reload():
 func enemy_reload():
 	animation_player.play("ENEMY RELOAD")
 	gun_cock_audio_stream_player.play()
-	while animation_player.is_playing() and animation_player.current_animation == "ENEMY RELOAD	":
+	while animation_player.is_playing() and animation_player.current_animation == "ENEMY RELOAD":
 		await get_tree().process_frame
 
 
@@ -127,7 +131,6 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 		if target == GameManager.enemy:
 			await enemy_hold()
 			await enemy_shoot_self()
-			await get_tree().create_timer(1.5, true).timeout
 			shoot_bullet(next_bullet)
 			await enemy_shoot_self_return()
 			await enemy_reload()
@@ -151,7 +154,7 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await drop_gun()
 		elif target == GameManager.player:
 			await player_shoot_self()
-			await get_tree().create_timer(1, true).timeout
+			await get_tree().create_timer(0.75).timeout
 			shoot_bullet(next_bullet)
 			await player_shoot_self_return()
 			await player_reload()
@@ -172,4 +175,5 @@ func remove_bullet():
 	bullet.global_position = Vector3(GameManager.used_bullet_pos.global_position.x, GameManager.used_bullet_pos.global_position.y, GameManager.used_bullet_pos.global_position.z - (bullet_spacing * GameManager.used_shells))
 	bullet.get_child(0).set_colour(is_live_bullet)
 	bullet.rotation = Vector3(0, deg_to_rad(180), deg_to_rad(90))
+	GameManager.used_bullets_array.append(bullet)
 	GameManager.used_shells += 1

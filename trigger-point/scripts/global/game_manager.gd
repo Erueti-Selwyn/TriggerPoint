@@ -54,6 +54,7 @@ var bullets_in_chamber: int = 6
 var live_bullets: int = 3
 var blank_bullets: int = 3
 var loaded_bullets_array: Array = []
+var used_bullets_array: Array = []
 enum BulletType {BLANK, LIVE}
 
 var used_shells : int
@@ -113,6 +114,9 @@ func _process(_delta) -> void:
 		player.lose()
 	if round_ended == false and loaded_bullets_array.size() <= 0:
 		turn_owner = player
+		for item in used_bullets_array:
+			item.queue_free()
+		used_bullets_array = []
 		reload()
 
 func start_game():
@@ -254,8 +258,10 @@ func show_loaded_bullets():
 		bullet.rotation = Vector3(0, deg_to_rad(180), deg_to_rad(90))
 		bullet_obj_array.append(bullet)
 		instantiated_bullet_count += 1
-	
-	await get_tree().create_timer(2).timeout
+	var start = Time.get_ticks_msec()
+	await get_tree().create_timer(2, true).timeout
+	print("Elapsed:", (Time.get_ticks_msec() - start) / 1000.0)
+	print("finished showing")
 	for item in bullet_obj_array:
 		item.queue_free()
 	bullet_obj_array.resize(0)
