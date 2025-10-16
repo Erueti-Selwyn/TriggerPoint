@@ -46,7 +46,7 @@ var enemy_health: int
 var enemy_max_health: int = 5
 
 # Game Rules
-var current_bullet_damage: int = 1
+var base_damage: int = 1
 var damage: int = 1
 # Bullets
 var max_bullets_in_chamber: int = 6
@@ -121,8 +121,8 @@ func _process(_delta) -> void:
 
 func start_game():
 	game_state = GameState.WAITING
-	current_bullet_damage = 1
-	damage = current_bullet_damage
+	base_damage = 1
+	damage = base_damage
 	player_health = player_max_health
 	enemy_health = enemy_max_health
 	turn_owner = player

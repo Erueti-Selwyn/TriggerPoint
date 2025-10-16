@@ -9,4 +9,7 @@ func _init():
 
 
 func use():
-	GameManager.player_health += 1
+	if GameManager.player_health < 5:
+		GameManager.player_health += 1
+	else:
+		return false

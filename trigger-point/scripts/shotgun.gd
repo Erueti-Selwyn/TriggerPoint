@@ -161,6 +161,7 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			remove_bullet()
 			await drop_gun()
 	GameManager.loaded_bullets_array.remove_at(0)
+	GameManager.damage = GameManager.base_damage
 
 
 func remove_bullet():
