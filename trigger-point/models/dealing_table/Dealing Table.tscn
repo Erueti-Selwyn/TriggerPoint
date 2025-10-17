@@ -859,3 +859,4 @@ visible = false
 libraries = {
 "": SubResource("AnimationLibrary_rffsv")
 }
+speed_scale = 1.75

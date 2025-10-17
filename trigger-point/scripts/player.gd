@@ -53,7 +53,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	GameManager.live_bullets = GameManager.loaded_bullets_array.count(GameManager.BulletType.LIVE)
 	GameManager.blank_bullets = GameManager.loaded_bullets_array.count(GameManager.BulletType.BLANK)
 	update_text_labels()

@@ -126,7 +126,7 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 		if target == GameManager.enemy:
 			await enemy_hold()
 			await enemy_shoot_self()
-			await get_tree().create_timer(0.75, false, true).timeout
+			await get_tree().create_timer(0.5, false, true).timeout
 			shoot_bullet(next_bullet)
 			await enemy_shoot_self_return()
 			await enemy_reload()
@@ -135,7 +135,7 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 		elif target == GameManager.player:
 			await enemy_hold()
 			await enemy_shoot_player()
-			await get_tree().create_timer(0.75, false, true).timeout
+			await get_tree().create_timer(0.5, false, true).timeout
 			shoot_bullet(next_bullet)
 			await enemy_shoot_player_return()
 			await enemy_reload()
@@ -144,7 +144,6 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 	elif shooter == GameManager.player:
 		if target == GameManager.enemy:
 			await player_shoot_enemy()
-			await get_tree().create_timer(0.75, false, true).timeout
 			shoot_bullet(next_bullet)
 			await player_shoot_enemy_return()
 			await player_reload()
@@ -152,7 +151,7 @@ func shoot(shooter:Node3D, target:Node3D, next_bullet:GameManager.BulletType):
 			await drop_gun()
 		elif target == GameManager.player:
 			await player_shoot_self()
-			await get_tree().create_timer(0.75, false, true).timeout
+			await get_tree().create_timer(0.5, false, true).timeout
 			shoot_bullet(next_bullet)
 			await player_shoot_self_return()
 			await player_reload()

@@ -86,6 +86,7 @@ var hover_text_colour: Color = Color("ffffff")
 var unhover_text_colour: Color = Color("adadad")
 var gun_guide_text_count: int = 0
 var shoot_someone_text_count: int = 0
+var item_guide_text_count: int = 0
 
 var item_name_array:Array = [
 	"double_damage",
@@ -218,8 +219,6 @@ func reload():
 
 
 func shoot(shooter:Node3D, target:Node3D):
-	if on_screen_text_node.is_text == true:
-		on_screen_text_node.text_disseapear()
 	inventory_root.drop_item()
 	inventory_root.update_item_position()
 	var next_bullet = loaded_bullets_array[0]

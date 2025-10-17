@@ -29,9 +29,11 @@ func text_clear():
 
 
 func get_item_text():
-	text_clear()
-	text = "Each turn recive 2 new items -- use them wisely."
-	text_appear()
+	if GameManager.item_guide_text_count < 1:
+		text_clear()
+		text = "Each turn recive 2 new items -- use them wisely."
+		text_appear()
+		GameManager.item_guide_text_count += 1
 
 
 func loaded_bullets_text(live_count: int, blank_count: int):
@@ -51,6 +53,22 @@ func gun_guide_text():
 func shoot_someone_text():
 	if GameManager.shoot_someone_text_count < 1:
 		text_clear()
-		text = "Shoot Yourself with a blank and continue your turn."
+		text = "Shoot Yourself with a blank, and continue your turn."
 		text_appear()
 		GameManager.shoot_someone_text_count += 1
+
+
+func start_enemy_turn_text():
+	text_clear()
+	var rand = randi_range(0, 3)
+	if rand == 0:
+		text = "My turn."
+	elif rand == 1:
+		text = "Good luck."
+	elif rand == 2:
+		text = "Let's see how lucky you are."
+	elif rand == 3:
+		text = "Ready?"
+	text_appear()
+	await get_tree().create_timer(5, false, true).timeout
+	text_disseapear()

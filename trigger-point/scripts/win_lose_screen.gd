@@ -10,9 +10,9 @@ func _ready():
 func display_winner(player_won : bool):
 	self.visible = true
 	if player_won:
-		winner_text.text = "Win!"
+		winner_text.text = "You Win!"
 	else:
-		winner_text.text = "Lost!"
+		winner_text.text = "You Lost!"
 
 
 func _on_restart_pressed():
