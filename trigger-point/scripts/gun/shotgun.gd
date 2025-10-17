@@ -3,6 +3,7 @@ extends Node3D
 # Variables
 var in_hand : bool = false
 var current_target:Node3D
+var type: String = "gun"
 
 # @onready variables
 @onready var animation_player: AnimationPlayer = $Shotgun_Final/AnimationPlayer
