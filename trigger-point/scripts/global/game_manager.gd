@@ -43,7 +43,7 @@ var player_money: int = 0
 
 # Enemy stats
 var enemy_health: int
-var enemy_max_health: int = 1
+var enemy_max_health: int = 5
 
 # Game Rules
 var base_damage: int = 1
