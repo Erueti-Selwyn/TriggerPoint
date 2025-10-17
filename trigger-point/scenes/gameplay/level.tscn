@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://pqbj1q7kuwgi" path="res://models/ingame area/ingame area.glb" id="9_ok13q"]
 [ext_resource type="PackedScene" uid="uid://d0blka36vu28u" path="res://scenes/gameplay/shotgun.tscn" id="12_hvetj"]
 [ext_resource type="AudioStream" uid="uid://bcvfl3q3gcdvm" path="res://sound/background/static background.mp3" id="14_k2n7m"]
-[ext_resource type="Script" path="res://scripts/background_static.gd" id="15_nxbeo"]
+[ext_resource type="Script" path="res://scripts/environment/background_static.gd" id="15_nxbeo"]
 
 [sub_resource type="Environment" id="Environment_vch0a"]
 tonemap_mode = 3

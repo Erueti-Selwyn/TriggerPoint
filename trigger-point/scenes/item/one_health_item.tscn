@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://5n74syg47p6g"]
 
 [ext_resource type="Script" path="res://scripts/items/one_health_item.gd" id="1_g66eb"]
-[ext_resource type="Script" path="res://scripts/hover.gd" id="2_r2g22"]
+[ext_resource type="Script" path="res://scripts/environment/hover.gd" id="2_r2g22"]
 [ext_resource type="PackedScene" uid="uid://mv7qm5ug2sx7" path="res://models/item_models/syringe/syringe.tscn" id="3_1sya3"]
 
 [node name="one_health_item" type="Node3D" groups=["item"]]

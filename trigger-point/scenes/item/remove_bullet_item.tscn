@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://2wa08swjuveh"]
 
 [ext_resource type="Script" path="res://scripts/items/remove_bullet_item.gd" id="1_1jebh"]
-[ext_resource type="Script" path="res://scripts/hover.gd" id="2_ewg30"]
+[ext_resource type="Script" path="res://scripts/environment/hover.gd" id="2_ewg30"]
 [ext_resource type="PackedScene" uid="uid://cr3a3ocp2ow7g" path="res://models/item_models/wrench/wrench.glb" id="3_drl1e"]
 
 [node name="remove_bullet_item" type="Node3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]

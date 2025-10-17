@@ -4,7 +4,6 @@ extends Item
 
 func _init():
 	type = "item"
-	item_type = "shuffle"
 	item_description = "Shuffles Bullets\nin the chamber"
 
 
@@ -13,4 +12,3 @@ func use():
 		GameManager.loaded_bullets_array.shuffle()
 	else:
 		return false
-		

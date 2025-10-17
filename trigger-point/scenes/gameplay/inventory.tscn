@@ -1,9 +1,9 @@
 [gd_scene load_steps=12 format=4 uid="uid://dqk3ys4l1nrag"]
 
-[ext_resource type="Script" path="res://scripts/inventory.gd" id="1_csvbu"]
-[ext_resource type="Script" path="res://scripts/slot.gd" id="2_wljo2"]
-[ext_resource type="Script" path="res://scripts/inventory_ring.gd" id="3_yot4q"]
-[ext_resource type="Shader" path="res://scenes/gameplay/flashing.gdshader" id="4_oh7h4"]
+[ext_resource type="Script" path="res://scripts/player/inventory.gd" id="1_csvbu"]
+[ext_resource type="Script" path="res://scripts/player/slot.gd" id="2_wljo2"]
+[ext_resource type="Script" path="res://scripts/player/inventory_ring.gd" id="3_yot4q"]
+[ext_resource type="Shader" path="res://materials/shaders/flashing.gdshader" id="4_oh7h4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ofw86"]
 size = Vector3(0.75, 1, 0.75)

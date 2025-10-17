@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://dabo5ahjn3wym"]
 
-[ext_resource type="Script" path="res://scripts/scoreboard.gd" id="1_56nsn"]
+[ext_resource type="Script" path="res://scripts/environment/scoreboard.gd" id="1_56nsn"]
 [ext_resource type="FontFile" uid="uid://byfgd2yvl30p4" path="res://assets/2D/fonts/digital-7.ttf" id="2_au7f2"]
 [ext_resource type="Texture2D" uid="uid://d13l2nj1qve63" path="res://assets/2D/health_icons/empty bar.png" id="2_n2f6t"]
 [ext_resource type="Texture2D" uid="uid://bb4f567yw528s" path="res://assets/2D/health_icons/seg 1.png" id="3_4tyqs"]

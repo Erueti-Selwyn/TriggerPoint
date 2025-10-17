@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=4 uid="uid://d0blka36vu28u"]
 
-[ext_resource type="Script" path="res://scripts/shotgun.gd" id="1_35tug"]
-[ext_resource type="Script" path="res://scripts/hover.gd" id="2_t1eek"]
+[ext_resource type="Script" path="res://scripts/gun/shotgun.gd" id="1_35tug"]
+[ext_resource type="Script" path="res://scripts/environment/hover.gd" id="2_t1eek"]
 [ext_resource type="AudioStream" uid="uid://cotj3ivdihjj8" path="res://sound/gun/gunshot.mp3" id="6_m7xwe"]
 [ext_resource type="Texture2D" uid="uid://bskr3f0xo1uyv" path="res://models/new_shotgun/Shotgun_Final_SHOTGUN_SHOTGUN_BaseColor.png" id="6_n740l"]
 [ext_resource type="Texture2D" uid="uid://bfipdtxannkju" path="res://models/new_shotgun/Shotgun_Final_SHOTGUN_SHOTGUN_Metallic-SHOTGUN_SHOTGUN_Roughness.png" id="7_bpfle"]

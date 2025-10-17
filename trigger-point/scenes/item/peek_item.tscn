@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cjpbdto0cac0u"]
 
 [ext_resource type="Script" path="res://scripts/items/peek_item.gd" id="1_fne1m"]
-[ext_resource type="Script" path="res://scripts/hover.gd" id="2_7hmph"]
+[ext_resource type="Script" path="res://scripts/environment/hover.gd" id="2_7hmph"]
 [ext_resource type="PackedScene" uid="uid://245x5o1i1qxt" path="res://models/item_models/magnifying glass/magnifying_glass.glb" id="3_wc4p1"]
 
 [node name="peek_item" type="Node3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]

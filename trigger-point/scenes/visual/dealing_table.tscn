@@ -1,9 +1,9 @@
 [gd_scene load_steps=43 format=4 uid="uid://dok1q46eis68o"]
 
-[ext_resource type="Script" path="res://scripts/dealing_table.gd" id="1_4xoc5"]
+[ext_resource type="Script" path="res://scripts/environment/dealing_table.gd" id="1_4xoc5"]
 [ext_resource type="Texture2D" uid="uid://2u4vpu7sg2in" path="res://models/dealing_table/Dealing Table_Board.png" id="2_x82mr"]
-[ext_resource type="Texture2D" uid="uid://cmtvvpi3vfrdo" path="res://models/dealing_table/Dealing Table_Wood062_1K-JPG_Color.jpg" id="3_k0lnw"]
-[ext_resource type="Texture2D" uid="uid://bt4dfxi2bq21q" path="res://models/dealing_table/Dealing Table_Metal062C_1K-JPG_Color.jpg" id="4_klhr2"]
+[ext_resource type="Texture2D" uid="uid://c18wocrem0mkr" path="res://models/dealing_table/Dealing Table_Wood062_1K-JPG_Color.jpg" id="3_k0lnw"]
+[ext_resource type="Texture2D" uid="uid://b5fm0yvor13w2" path="res://models/dealing_table/Dealing Table_Metal062C_1K-JPG_Color.jpg" id="4_klhr2"]
 [ext_resource type="Texture2D" uid="uid://coravw2bp2yf3" path="res://models/dealing_table/Dealing Table_Metal062C_1K-JPG_Metalness-Metal062C_1K-JPG_Roughness.png" id="5_245bq"]
 [ext_resource type="PackedScene" uid="uid://clxcm4s5rutbl" path="res://scenes/visual/box.tscn" id="6_7jlbx"]
 

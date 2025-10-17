@@ -4,6 +4,7 @@ extends VideoTexture
 var is_hover: bool
 
 
+# Plays hover video file
 func hover():
 	if is_hover == false:
 		video_stream_player.stream = hover_video_file
@@ -12,6 +13,7 @@ func hover():
 		is_hover = true
 
 
+# Plays unhover video file
 func unhover():
 	if is_hover == true:
 		video_stream_player.stream = default_video_file
@@ -20,5 +22,6 @@ func unhover():
 		is_hover = false
 
 
+# Opens level scene
 func click():
 	get_tree().change_scene_to_file("res://scenes/gameplay/level.tscn")

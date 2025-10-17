@@ -1,6 +1,6 @@
 [gd_scene load_steps=35 format=4 uid="uid://ckkdeg8mads5t"]
 
-[ext_resource type="Script" path="res://scripts/dealing_table.gd" id="1_hsdle"]
+[ext_resource type="Script" path="res://scripts/environment/dealing_table.gd" id="1_hsdle"]
 [ext_resource type="Texture2D" uid="uid://2u4vpu7sg2in" path="res://models/dealing_table/Dealing Table_Board.png" id="1_wuheq"]
 [ext_resource type="Texture2D" uid="uid://c18wocrem0mkr" path="res://models/dealing_table/Dealing Table_Wood062_1K-JPG_Color.jpg" id="2_kcfwy"]
 [ext_resource type="Texture2D" uid="uid://b5fm0yvor13w2" path="res://models/dealing_table/Dealing Table_Metal062C_1K-JPG_Color.jpg" id="3_ejayo"]

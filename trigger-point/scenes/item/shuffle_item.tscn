@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dyogwl4mjo4vf"]
 
 [ext_resource type="Script" path="res://scripts/items/shuffle_item.gd" id="1_kaxj0"]
-[ext_resource type="Script" path="res://scripts/hover.gd" id="2_hljmm"]
+[ext_resource type="Script" path="res://scripts/environment/hover.gd" id="2_hljmm"]
 [ext_resource type="PackedScene" uid="uid://cvpgdw30f03ji" path="res://models/item_models/dice/lowpoly_dice.glb" id="3_23n0m"]
 
 [node name="shuffle_item" type="Node3D" node_paths=PackedStringArray("mesh_node") groups=["item"]]

@@ -1,9 +1,11 @@
 extends Label
+
 var is_text: bool = false
 var speed: float = 0.75
 
 
 func _process(delta):
+	# Makes text gradually load in and unload
 	if is_text:
 		if visible_ratio < 1.0:
 			visible_ratio += delta / speed
@@ -23,12 +25,14 @@ func text_disseapear():
 	is_text = false
 
 
+# Completly clears text immediately
 func text_clear():
 	visible_ratio = 0
 	is_text = false
 
 
 func get_item_text():
+	# Makes it so this text can only appear once
 	if GameManager.item_guide_text_count < 1:
 		text_clear()
 		text = "Each turn recive 2 new items -- use them wisely."
@@ -43,6 +47,7 @@ func loaded_bullets_text(live_count: int, blank_count: int):
 
 
 func gun_guide_text():
+	# Makes it so this text can only appear once
 	if GameManager.gun_guide_text_count < 1:
 		text_clear()
 		text = "Use an item, or click the gun to shoot."
@@ -51,6 +56,7 @@ func gun_guide_text():
 
 
 func shoot_someone_text():
+	# Makes it so this text can only appear once
 	if GameManager.shoot_someone_text_count < 1:
 		text_clear()
 		text = "Shoot Yourself with a blank, and continue your turn."
@@ -60,6 +66,7 @@ func shoot_someone_text():
 
 func start_enemy_turn_text():
 	text_clear()
+	# Randomly chooses a line for the enemy to say
 	var rand = randi_range(0, 3)
 	if rand == 0:
 		text = "My turn."

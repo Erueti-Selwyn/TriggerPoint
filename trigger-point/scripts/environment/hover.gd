@@ -1,0 +1,32 @@
+extends Node3D
+
+@export var meshes : Node3D
+@export var parent : Node
+@export var lerp_speed : float = 5
+@export var hover_amount : float = 0.3
+
+var meshes_rest_position : Vector3
+var is_hovering : bool
+var target_position : Vector3
+
+
+func hover():
+	is_hovering = true
+
+
+func unhover():
+	is_hovering = false
+
+
+func _physics_process(delta):
+	# Gets original rest position
+	meshes_rest_position = parent.global_position
+	if is_hovering:
+		# Changes target position to hover position
+		target_position = Vector3(meshes.global_position.x, (meshes_rest_position.y + hover_amount), meshes.global_position.z)
+	else:
+		# Changes target position to rest position
+		target_position = meshes_rest_position
+	if target_position != null:
+		# Moves to target position
+		meshes.global_position = meshes.global_position.lerp(target_position, clamp(delta * lerp_speed, 0.0, 1.0))

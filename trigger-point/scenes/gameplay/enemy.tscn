@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://b0n613w84vp5h"]
 
 [ext_resource type="PackedScene" uid="uid://bxpkfk5j36dgj" path="res://models/enemy/enemy.glb" id="1_eont8"]
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="2_qqjol"]
-[ext_resource type="Script" path="res://scripts/video_texture.gd" id="3_xrfve"]
+[ext_resource type="Script" path="res://scripts/enemy/enemy.gd" id="2_qqjol"]
+[ext_resource type="Script" path="res://scripts/video_texture/video_texture.gd" id="3_xrfve"]
 [ext_resource type="VideoStream" path="res://videos/Screen1.ogv" id="4_burxx"]
 [ext_resource type="VideoStream" path="res://videos/Screen2.ogv" id="5_rmpv8"]
 [ext_resource type="VideoStream" path="res://videos/Screen3.ogv" id="6_52lhy"]
