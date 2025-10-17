@@ -1,5 +1,7 @@
 extends Node3D
 
+@export var options_menu: Control
+
 var DIST: float = 1000
 var current_hover_object: Node3D
 
@@ -37,5 +39,10 @@ func _input(event):
 
 
 func click():
-	if current_hover_object:
-		current_hover_object.click()
+	if current_hover_object and GameManager.pause == false:
+		if current_hover_object.click() == "play":
+			get_tree().change_scene_to_file("res://scenes/gameplay/level.tscn")
+		elif current_hover_object.click() == "options":
+			options_menu.open()
+		elif current_hover_object.click() == "quit":
+			get_tree().quit()

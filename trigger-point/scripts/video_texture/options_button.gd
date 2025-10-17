@@ -12,6 +12,7 @@ func hover():
 		video_stream_player.play()
 		is_hover = true
 
+
 # Plays unhover video file
 func unhover():
 	if is_hover == true:
@@ -20,6 +21,7 @@ func unhover():
 		video_stream_player.play()
 		is_hover = false
 
+
 # Opens options menu
 func click():
-	get_tree().change_scene_to_file("res://scenes/gameplay/level.tscn")
+	return "options"

@@ -24,4 +24,4 @@ func unhover():
 
 # Opens level scene
 func click():
-	get_tree().change_scene_to_file("res://scenes/gameplay/level.tscn")
+	return "play"

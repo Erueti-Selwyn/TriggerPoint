@@ -23,4 +23,4 @@ func unhover():
 
 # Quits game
 func click():
-	get_tree().quit()
+	return "quit"

@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://oi35offcptm"]
+[gd_scene load_steps=7 format=3 uid="uid://oi35offcptm"]
 
 [ext_resource type="PackedScene" uid="uid://c7lsslnvmq5xk" path="res://scenes/ui/main_menu_tvs.tscn" id="1_fyxy7"]
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_v5pxy"]
+[ext_resource type="PackedScene" uid="uid://vor0t4nq0s6c" path="res://scenes/ui/options_menu.tscn" id="3_f3xbe"]
 
 [sub_resource type="Environment" id="Environment_gnfit"]
 volumetric_fog_enabled = true
@@ -14,8 +15,9 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_3eacp")
 size = Vector2(20, 20)
 
-[node name="MainMenu" type="Node3D"]
+[node name="MainMenu" type="Node3D" node_paths=PackedStringArray("options_menu")]
 script = ExtResource("1_v5pxy")
+options_menu = NodePath("OptionsMenu")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.987013, -0.00944768, -0.160365, -0.0552047, 0.957421, 0.283369, 0.150859, 0.288542, -0.945508, -1.79995, 0.714552, -2.96962)
@@ -70,3 +72,6 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.8181
 mesh = SubResource("QuadMesh_tu1mh")
 
 [node name="MAIN MENU" parent="." instance=ExtResource("1_fyxy7")]
+
+[node name="OptionsMenu" parent="." instance=ExtResource("3_f3xbe")]
+visible = false

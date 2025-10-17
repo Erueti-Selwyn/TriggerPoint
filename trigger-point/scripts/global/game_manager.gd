@@ -36,6 +36,7 @@ const GameStateNames = {
 }
 
 # Variables
+var pause: bool = false
 var game_state: GameState
 var turn_owner: Node3D
 var round_ended: bool = false
@@ -311,7 +312,7 @@ func show_loaded_bullets():
 	# Await so that player can see what bullets are loaded in the shotgun
 	await get_tree().create_timer(3, false, true).timeout
 	# Makes the UI text dissapear once finished
-	if blank_count and live_count and on_screen_text_node:
+	if blank_count and live_count and is_instance_valid(on_screen_text_node):
 		on_screen_text_node.text_disseapear()
 	# Deletes all bullets that were just instatiated
 	for item in bullet_obj_array:
