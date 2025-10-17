@@ -1,13 +1,56 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqk3ys4l1nrag"]
+[gd_scene load_steps=12 format=4 uid="uid://dqk3ys4l1nrag"]
 
 [ext_resource type="Script" path="res://scripts/inventory.gd" id="1_csvbu"]
 [ext_resource type="Script" path="res://scripts/slot.gd" id="2_wljo2"]
+[ext_resource type="Script" path="res://scripts/inventory_ring.gd" id="3_yot4q"]
+[ext_resource type="Shader" path="res://scenes/gameplay/flashing.gdshader" id="4_oh7h4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ofw86"]
 size = Vector3(0.75, 1, 0.75)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jmwho"]
+albedo_color = Color(0.40977, 0.440918, 0.16532, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_fe4ad"]
+material = SubResource("StandardMaterial3D_jmwho")
 size = Vector3(0.75, 0.1, 0.75)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bbcqk"]
+render_priority = 0
+shader = ExtResource("4_oh7h4")
+shader_parameter/time_mult = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gbdr4"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_j0251"]
+_surfaces = [{
+"aabb": AABB(-1.24493, -1, -1.24493, 2.48986, 2, 2.48986),
+"format": 34896613377,
+"index_count": 96,
+"index_data": PackedByteArray("BgAIAAIABgAMAAgABwAPAAUABwANAA8AAAAOAAQAAAAJAA4AAwANAAcAAwALAA0ACQALAAoACQAIAAsACAANAAsACAAMAA0ADAAPAA0ADAAOAA8ADgAKAA8ADgAJAAoAAQALAAMAAQAKAAsABQAKAAEABQAPAAoAAgAJAAAAAgAIAAkABAAMAAYABAAOAAwAAQAEAAUAAQAAAAQABQAGAAcABQAEAAYABwACAAMABwAGAAIAAwAAAAEAAwACAAAA"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 16,
+"vertex_data": PackedByteArray("LhkAANDmAAAuGf//0OYAAC4ZAAAuGQAALhn//y4ZAADQ5gAA0OYAANDm///Q5gAA0OYAAC4ZAADQ5v//LhkAAAAAAAAAAAAAAAAAAP//AAAAAP////8AAAAA//8AAAAA//8AAAAAAAD/////AAAAAP//AAD//wAA////////AAA=")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_8axiv"]
+resource_name = "inventory_ring_Cube_001"
+_surfaces = [{
+"aabb": AABB(-1.24493, -1, -1.24493, 2.48986, 2, 2.48986),
+"attribute_data": PackedByteArray("/x//P/8f/z//H/8//9//P//f/z//3/8//x//f/8f/3//H/9//9//f//f/3//3/9//1//P/9f/z//X/8//5//P/+f/z//n/8//1//f/9f/3//X/9//5//f/+f/3//n/9//1//v/8f/3//X/+//18AAP8f/z//X////58AAP/f/z//n////5//v//f/3//n/+//1//f/9f/3//X/9//5//f/+f/3//n/9//1//P/9f/z//X/8//5//P/+f/z//n/8/"),
+"format": 34896613399,
+"index_count": 96,
+"index_data": PackedByteArray("EwAZAAcAEwAlABkAFgAuABAAFgAoAC4AAQArAA0AAQAcACsACgAoABYACgAiACgAHQAjACAAHQAaACMAGAAnACEAGAAkACcAJgAvACkAJgAsAC8AKgAeAC0AKgAbAB4ABAAiAAoABAAfACIAEAAfAAQAEAAuAB8ABwAcAAEABwAZABwADQAlABMADQArACUAAwAMAA8AAwAAAAwAEQAUABcAEQAOABQAFQAGAAkAFQASAAYACwACAAUACwAIAAIA"),
+"material": SubResource("StandardMaterial3D_gbdr4"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 48,
+"vertex_data": PackedByteArray("LhkAANDm//8uGQAA0Ob/vy4ZAADQ5lTVLhn//9Dm//8uGf//0Ob/vy4Z///Q5lTVLhkAAC4Z/n8uGQAALhn/vy4ZAAAuGVTVLhn//y4Z/n8uGf//Lhn/vy4Z//8uGVTV0OYAANDm///Q5gAA0Ob/v9DmAADQ5qoq0Ob//9Dm///Q5v//0Ob/v9Dm///Q5qoq0OYAAC4Z/n/Q5gAALhn/v9DmAAAuGaoq0Ob//y4Z/n/Q5v//Lhn/v9Dm//8uGaoqAAAAAAAA//8AAAAAAAD/vwAAAAAAAFTVAAAAAP///78AAAAA////vwAAAAD//1TVAAD//////78AAP//////vwAA/////1TVAAD//wAA//8AAP//AAD/vwAA//8AAFTV//8AAAAA/////wAAAAD/v///AAAAAFTV/////wAA////////AAD/v/////8AAFTV//8AAP///7///wAA////v///AAD//1TV/////////7//////////v////////1TV////fwAA/3+qKqoq////f////3+qKqoq/3///wAA/3+qKqoq/3///////3+qKqoq////fwAA/39U1VTV////f////39U1VTV/3///wAA/39U1VTV/3///////39U1VTV/7//vwAA/39U1VTV/////wAA/39U1VTV/////////39U1VTV/7//v////39U1VTV/7//vwAA/3+qKqoq/7//v////3+qKqoq/////wAA/3+qKqoq/////////3+qKqoq")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_j0251")
 
 [node name="Inventory" type="Node3D"]
 script = ExtResource("1_csvbu")
@@ -21,8 +64,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 shape = SubResource("BoxShape3D_ofw86")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Slot0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0706784, 0)
 visible = false
 mesh = SubResource("BoxMesh_fe4ad")
+skeleton = NodePath("")
+
+[node name="inventory_ring" type="Node3D" parent="Slot0"]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, -0.0669533, 0)
+visible = false
+script = ExtResource("3_yot4q")
+
+[node name="Cube" type="MeshInstance3D" parent="Slot0/inventory_ring"]
+transform = Transform3D(1, 0, 0, 0, 0.0769151, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_bbcqk")
+mesh = SubResource("ArrayMesh_8axiv")
 skeleton = NodePath("")
 
 [node name="Slot1" type="StaticBody3D" parent="." groups=["item"]]
@@ -35,8 +90,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 shape = SubResource("BoxShape3D_ofw86")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Slot1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0706784, 0)
 visible = false
 mesh = SubResource("BoxMesh_fe4ad")
+skeleton = NodePath("")
+
+[node name="inventory_ring" type="Node3D" parent="Slot1"]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, -0.0669533, 0)
+visible = false
+script = ExtResource("3_yot4q")
+
+[node name="Cube" type="MeshInstance3D" parent="Slot1/inventory_ring"]
+transform = Transform3D(1, 0, 0, 0, 0.0769151, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_bbcqk")
+mesh = SubResource("ArrayMesh_8axiv")
 skeleton = NodePath("")
 
 [node name="Slot2" type="StaticBody3D" parent="." groups=["item"]]
@@ -49,8 +116,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 shape = SubResource("BoxShape3D_ofw86")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Slot2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0706784, 0)
 visible = false
 mesh = SubResource("BoxMesh_fe4ad")
+skeleton = NodePath("")
+
+[node name="inventory_ring" type="Node3D" parent="Slot2"]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, -0.0669533, 0)
+visible = false
+script = ExtResource("3_yot4q")
+
+[node name="Cube" type="MeshInstance3D" parent="Slot2/inventory_ring"]
+transform = Transform3D(1, 0, 0, 0, 0.0769151, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_bbcqk")
+mesh = SubResource("ArrayMesh_8axiv")
 skeleton = NodePath("")
 
 [node name="Slot3" type="StaticBody3D" parent="." groups=["item"]]
@@ -63,6 +142,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 shape = SubResource("BoxShape3D_ofw86")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Slot3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0706784, 0)
 visible = false
 mesh = SubResource("BoxMesh_fe4ad")
+skeleton = NodePath("")
+
+[node name="inventory_ring" type="Node3D" parent="Slot3"]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, -0.0669533, 0)
+visible = false
+script = ExtResource("3_yot4q")
+
+[node name="Cube" type="MeshInstance3D" parent="Slot3/inventory_ring"]
+transform = Transform3D(1, 0, 0, 0, 0.0769151, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_bbcqk")
+mesh = SubResource("ArrayMesh_8axiv")
 skeleton = NodePath("")

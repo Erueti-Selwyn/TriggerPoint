@@ -15,7 +15,7 @@ func _process(_delta: float) -> void:
 func start_turn():
 	if GameManager.player_health > 0 and GameManager.enemy_health > 0:
 		if GameManager.loaded_bullets_array.size() > 0:
-			await get_tree().create_timer(1, false).timeout
+			await get_tree().create_timer(1, false, true).timeout
 			var rand = randi_range(1, 2)
 			if rand == 1:
 				# Enemy shoots self

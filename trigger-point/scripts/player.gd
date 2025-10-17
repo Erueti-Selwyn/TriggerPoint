@@ -21,6 +21,7 @@ var camera: Camera3D = null
 
 @export var inventory_root: Node3D
 @export var shop_root: Node3D
+@export var on_screen_text_node: Label
 
 var target_rotation: Vector3
 var current_hover_object: Node
@@ -44,6 +45,7 @@ func _ready() -> void:
 	debug_label_4 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug4
 	camera = $Head/Camera3D
 	GameManager.player = self
+	GameManager.on_screen_text_node = on_screen_text_node
 	GameManager.center_bullet_pos = center_bullet_pos
 	GameManager.used_bullet_pos = used_bullet_pos
 	target_rotation = camera.rotation
@@ -52,7 +54,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	debug_label_4.text = str(1/delta)
 	GameManager.live_bullets = GameManager.loaded_bullets_array.count(GameManager.BulletType.LIVE)
 	GameManager.blank_bullets = GameManager.loaded_bullets_array.count(GameManager.BulletType.BLANK)
 	update_text_labels()
@@ -133,13 +134,6 @@ func find_hover_script(node):
 	return null
 
 
-func toggle_child_collision(object : Node, condition : bool):
-	for child in object.get_children():
-		if child is CollisionShape3D:
-			child.disabled = condition
-			break
-
-
 func click():
 	if (
 		current_hover_object and 
@@ -171,12 +165,14 @@ func click():
 	):
 		if current_hover_object.is_in_group("item"):
 			inventory_root.click_item(current_hover_object)
+			print("clicked")
 
 
 func update_text_labels():
 	debug_label_1.text = str(GameManager.GameStateNames[GameManager.game_state])
 	debug_label_3.text = str(GameManager.loaded_bullets_array)
 	debug_label_2.text = str(GameManager.turn_owner)
+	debug_label_4.text = str(GameManager.inventory_root.inventory)
 	# Changes health symbols
 	# Changes the colour of the text on the table when hovering
 	if (
@@ -215,8 +211,8 @@ func update_text_labels():
 	if is_instance_valid(inventory_root.held_item) and inventory_root.held_item.type == "gun" and GameManager.loaded_bullets_array.size() > 0:
 		shoot_player_label.visible = true
 		shoot_enemy_label.visible = true
-		shoot_player_label.text = "YOU"
-		shoot_enemy_label.text = "Enemy"
+		shoot_player_label.text = "SHOOT\nYOURSELF"
+		shoot_enemy_label.text = "SHOOT\nEnemy"
 	elif is_instance_valid(inventory_root.held_item) and inventory_root.held_item.type == "item":
 		shoot_player_label.visible = true
 		shoot_enemy_label.visible = false
@@ -236,9 +232,7 @@ func update_text_labels():
 
 
 func start_turn():
-	print("started turn")
-	GameManager.game_state = GameManager.GameState.DECIDING
-	GameManager.turn_owner = GameManager.player
+	GameManager.get_items()
 
 
 func end_shop():

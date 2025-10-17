@@ -73,6 +73,7 @@ var enemy: Node3D
 var inventory_root: Node3D
 var shotgun_node: Node3D
 var shop_root: Node3D
+var on_screen_text_node: Label
 
 var center_bullet_pos: Node3D
 var used_bullet_pos: Node3D
@@ -83,6 +84,8 @@ var camera: Node3D
 
 var hover_text_colour: Color = Color("ffffff")
 var unhover_text_colour: Color = Color("adadad")
+var gun_guide_text_count: int = 0
+var shoot_someone_text_count: int = 0
 
 var item_name_array:Array = [
 	"double_damage",
@@ -93,11 +96,11 @@ var item_name_array:Array = [
 ]
 
 @onready var item_scene_dictionary = {
-	"double_damage": GameManager.double_damage_item_scene, 
-	"one_health": GameManager.one_health_item_scene, 
-	"peek": GameManager.peek_item_scene, 
-	"remove_bullet": GameManager.remove_bullet_item_scene,
-	"shuffle": GameManager.shuffle_item_scene, 
+	"double_damage": double_damage_item_scene, 
+	"one_health": one_health_item_scene, 
+	"peek": peek_item_scene, 
+	"remove_bullet": remove_bullet_item_scene,
+	"shuffle": shuffle_item_scene, 
 }
 
 
@@ -126,7 +129,7 @@ func start_game():
 	player_health = player_max_health
 	enemy_health = enemy_max_health
 	turn_owner = player
-	get_items()
+	reload()
 
 
 func start_turn():
@@ -169,14 +172,20 @@ func start_shop():
 
 
 func get_items():
-	GameManager.dealing_box.visible = false
-	GameManager.game_state = GameManager.GameState.WAITING
-	await GameManager.dealing_table.box_open_player()
-	GameManager.dealing_box.visible = true
-	await GameManager.dealing_table.box_close_player()
-	GameManager.game_state = GameManager.GameState.GETTINGITEM
-	GameManager.receive_item_count = 2
-	inventory_root.add_random_item()
+	if inventory_root.inventory_has_empty_slot():
+		dealing_box.visible = false
+		game_state = GameState.WAITING
+		await dealing_table.box_open_player()
+		dealing_box.visible = true
+		await dealing_table.box_close_player()
+		on_screen_text_node.get_item_text()
+		game_state = GameState.GETTINGITEM
+		receive_item_count = 2
+		inventory_root.add_random_item()
+	else:
+		GameManager.game_state = GameManager.GameState.DECIDING
+		GameManager.turn_owner = GameManager.player
+		on_screen_text_node.gun_guide_text()
 
 
 func reload():
@@ -185,6 +194,9 @@ func reload():
 		turn_owner == player or 
 		game_state == GameState.WAITING
 	):
+		for item in used_bullets_array:
+			item.queue_free()
+		used_bullets_array = []
 		loaded_bullets_array = []
 		loaded_bullets_array.append(BulletType.LIVE)
 		loaded_bullets_array.append(BulletType.BLANK)
@@ -200,12 +212,14 @@ func reload():
 			else:
 				loaded_bullets_array.append(BulletType.BLANK)
 		loaded_bullets_array.shuffle()
-		await show_loaded_bullets()
 		game_state = GameState.RELOADING
+		await show_loaded_bullets()
 		start_turn()
 
 
 func shoot(shooter:Node3D, target:Node3D):
+	if on_screen_text_node.is_text == true:
+		on_screen_text_node.text_disseapear()
 	inventory_root.drop_item()
 	inventory_root.update_item_position()
 	var next_bullet = loaded_bullets_array[0]
@@ -236,6 +250,8 @@ func show_loaded_bullets():
 	var bullet_obj_array : Array
 	var blank_count: int = loaded_bullets_array.count(BulletType.BLANK)
 	var live_count: int = loaded_bullets_array.count(BulletType.LIVE)
+	if blank_count and live_count and on_screen_text_node:
+		on_screen_text_node.loaded_bullets_text(live_count, blank_count)
 	var bullet_spacing: float = 0.2
 	var starting_x: float = ((loaded_bullets_array.size() - 1) * bullet_spacing) / 2
 	var instantiated_bullet_count: int = 0
@@ -259,9 +275,11 @@ func show_loaded_bullets():
 		bullet_obj_array.append(bullet)
 		instantiated_bullet_count += 1
 	var start = Time.get_ticks_msec()
-	await get_tree().create_timer(2, true).timeout
+	await get_tree().create_timer(3, false, true).timeout
 	print("Elapsed:", (Time.get_ticks_msec() - start) / 1000.0)
 	print("finished showing")
+	if blank_count and live_count and on_screen_text_node:
+		on_screen_text_node.text_disseapear()
 	for item in bullet_obj_array:
 		item.queue_free()
 	bullet_obj_array.resize(0)
@@ -275,9 +293,10 @@ func toggle_child_collision(object : Node, condition : bool):
 
 func end_getting_item():
 	game_state = GameState.WAITING
-	await GameManager.dealing_table.box_open_player()
-	await get_tree().create_timer(0.2).timeout
-	GameManager.dealing_box.visible = false
-	await GameManager.dealing_table.box_close_player()
-	reload()
+	await dealing_table.box_open_player()
+	dealing_box.visible = false
+	await dealing_table.box_close_player()
+	GameManager.game_state = GameManager.GameState.DECIDING
+	GameManager.turn_owner = GameManager.player
+	on_screen_text_node.gun_guide_text()
 	

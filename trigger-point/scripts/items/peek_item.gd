@@ -20,5 +20,5 @@ func use():
 		bullet.global_position = GameManager.center_bullet_pos.global_position
 		bullet.get_child(0).set_colour(is_live_bullet)
 		bullet.rotation = Vector3(0, deg_to_rad(180), deg_to_rad(90))
-		await get_tree().create_timer(2).timeout
+		await get_tree().create_timer(2, false, true).timeout
 		bullet.queue_free()

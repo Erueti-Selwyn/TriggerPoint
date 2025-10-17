@@ -67,7 +67,8 @@ func add_random_item():
 		new_item.is_recieving = true
 		loaded_items.append(new_item)
 		update_item_position()
-
+	else:
+		GameManager.end_getting_item()
 
 func inventory_has_empty_slot():
 	for item in inventory:
@@ -82,7 +83,7 @@ func click_item(current_hover_object):
 		not current_hover_object.is_in_group("gun") and 
 		inventory[current_hover_object.slot_number] == null
 	):
-		inventory.insert(current_hover_object.slot_number, new_item)
+		inventory[current_hover_object.slot_number] = new_item
 		new_item.inventory_slot = current_hover_object.slot_number
 		
 		# Puts news local transform
@@ -100,9 +101,11 @@ func click_item(current_hover_object):
 			add_random_item()
 		else:
 			GameManager.end_getting_item()
+			GameManager.on_screen_text_node.text_disseapear()
 	elif current_hover_object.is_in_group("gun"):
 		drop_item()
 		GameManager.shotgun_node.in_hand = true
+		GameManager.on_screen_text_node.shoot_someone_text()
 		update_item_position()
 		await GameManager.shotgun_node.hold()
 	elif not GameManager.game_state == GameManager.GameState.GETTINGITEM and is_instance_valid(inventory[current_hover_object.slot_number]):
@@ -117,6 +120,8 @@ func use_item():
 			GameManager.game_state = GameManager.GameState.USINGITEM
 			if not await item.use() == false:
 				slots_nodes[item.inventory_slot].item_in_slot = null
+				inventory[item.inventory_slot] = null
+				GameManager.toggle_child_collision(slots_nodes[item.inventory_slot], false)
 				destroy_item(item)
 			GameManager.game_state = GameManager.GameState.DECIDING
 			update_item_position()
