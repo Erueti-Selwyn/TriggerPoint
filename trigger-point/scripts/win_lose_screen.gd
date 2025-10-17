@@ -16,9 +16,11 @@ func display_winner(player_won : bool):
 
 
 func _on_restart_pressed():
+	GameManager.round_ended = false
 	self.visible = false
 	get_tree().reload_current_scene()
 
 
 func _on_quit_pressed():
+	GameManager.round_ended = false
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

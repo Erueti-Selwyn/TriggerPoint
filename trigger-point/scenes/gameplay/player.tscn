@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvtpy0a34dg4c"]
+[gd_scene load_steps=7 format=3 uid="uid://bvtpy0a34dg4c"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_i10gd"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="2_6d3xt"]
@@ -6,9 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://boembsc3j8hr8" path="res://scenes/ui/pause_menu.tscn" id="3_37ssm"]
 [ext_resource type="FontFile" uid="uid://byfgd2yvl30p4" path="res://assets/2D/fonts/digital-7.ttf" id="5_peuxu"]
 [ext_resource type="Script" path="res://scripts/ui/on_screen_text.gd" id="6_nbue6"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_iww2h"]
-font_size = 10
 
 [node name="player" type="Node3D" node_paths=PackedStringArray("player_blood_position", "win_lose_screen", "on_screen_text_node")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.44138, 0.878755, 0)
@@ -66,34 +63,6 @@ script = ExtResource("6_nbue6")
 
 [node name="Control" type="Control" parent="CanvasLayer/GUI/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/GUI"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GUI/HBoxContainer"]
-layout_mode = 2
-
-[node name="Debug1" type="Label" parent="CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test"
-label_settings = SubResource("LabelSettings_iww2h")
-
-[node name="Debug2" type="Label" parent="CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test"
-label_settings = SubResource("LabelSettings_iww2h")
-
-[node name="Debug3" type="Label" parent="CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test"
-label_settings = SubResource("LabelSettings_iww2h")
-
-[node name="Debug4" type="Label" parent="CanvasLayer/GUI/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Test"
-label_settings = SubResource("LabelSettings_iww2h")
 
 [node name="WinLoseScreen" parent="CanvasLayer/GUI" instance=ExtResource("2_xb1iw")]
 layout_mode = 1

@@ -4,7 +4,6 @@
 [ext_resource type="FontFile" uid="uid://byfgd2yvl30p4" path="res://assets/2D/fonts/digital-7.ttf" id="2_rp85c"]
 
 [node name="WinLoseScreen" type="Control" node_paths=PackedStringArray("winner_text")]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -31,18 +31,9 @@ var current_hover_mesh: Node
 # For Mouse Hovering
 const DIST = 1000
 
-var debug_label_1: Label = null
-var debug_label_2: Label = null
-var debug_label_3: Label = null
-var debug_label_4: Label = null
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	debug_label_1 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug1
-	debug_label_2 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug2
-	debug_label_3 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug3
-	debug_label_4 = $CanvasLayer/GUI/HBoxContainer/VBoxContainer/Debug4
 	camera = $Head/Camera3D
 	GameManager.player = self
 	GameManager.on_screen_text_node = on_screen_text_node
@@ -169,10 +160,6 @@ func click():
 
 
 func update_text_labels():
-	debug_label_1.text = str(GameManager.GameStateNames[GameManager.game_state])
-	debug_label_3.text = str(GameManager.loaded_bullets_array)
-	debug_label_2.text = str(GameManager.turn_owner)
-	debug_label_4.text = str(GameManager.inventory_root.inventory)
 	# Changes health symbols
 	# Changes the colour of the text on the table when hovering
 	if (

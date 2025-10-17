@@ -43,7 +43,7 @@ var player_money: int = 0
 
 # Enemy stats
 var enemy_health: int
-var enemy_max_health: int = 5
+var enemy_max_health: int = 1
 
 # Game Rules
 var base_damage: int = 1
@@ -124,6 +124,7 @@ func _process(_delta) -> void:
 		reload()
 
 func start_game():
+	round_ended = false
 	game_state = GameState.WAITING
 	base_damage = 1
 	damage = base_damage
@@ -136,7 +137,6 @@ func start_game():
 func start_turn():
 	if not turn_owner:
 		return
-	print(str(turn_owner))
 	turn_owner.start_turn()
 
 
@@ -191,9 +191,10 @@ func get_items():
 
 func reload():
 	if (
-		game_state == GameState.DECIDING and 
-		turn_owner == player or 
-		game_state == GameState.WAITING
+		((game_state == GameState.DECIDING and 
+		turn_owner == player) or 
+		(game_state == GameState.WAITING)) and
+		not round_ended == true
 	):
 		for item in used_bullets_array:
 			item.queue_free()
@@ -224,7 +225,6 @@ func shoot(shooter:Node3D, target:Node3D):
 	var next_bullet = loaded_bullets_array[0]
 	game_state = GameState.SHOOTING
 	await shotgun_node.shoot(shooter, target, next_bullet)
-	print("finished shooting")
 	if next_bullet == BulletType.LIVE:
 		if turn_owner == player:
 			end_player_turn()
@@ -258,7 +258,7 @@ func show_loaded_bullets():
 		return
 	for item in range(blank_count):
 		var bullet = shotgun_shell_scene.instantiate()
-		add_child(bullet)
+		player.add_child(bullet)
 		bullet.global_position = Vector3(center_bullet_pos.global_position.x, center_bullet_pos.global_position.y, center_bullet_pos.global_position.z - starting_x + (bullet_spacing * instantiated_bullet_count))
 		bullet.get_child(0).set_colour(false)
 		bullet.rotation = Vector3(0, deg_to_rad(180), deg_to_rad(90))
@@ -267,20 +267,18 @@ func show_loaded_bullets():
 	
 	for item in range(live_count):
 		var bullet = shotgun_shell_scene.instantiate()
-		add_child(bullet)
+		player.add_child(bullet)
 		bullet.global_position = Vector3(center_bullet_pos.global_position.x, center_bullet_pos.global_position.y, center_bullet_pos.global_position.z - starting_x + (bullet_spacing * instantiated_bullet_count))
 		bullet.get_child(0).set_colour(true)
 		bullet.rotation = Vector3(0, deg_to_rad(180), deg_to_rad(90))
 		bullet_obj_array.append(bullet)
 		instantiated_bullet_count += 1
-	var start = Time.get_ticks_msec()
 	await get_tree().create_timer(3, false, true).timeout
-	print("Elapsed:", (Time.get_ticks_msec() - start) / 1000.0)
-	print("finished showing")
 	if blank_count and live_count and on_screen_text_node:
 		on_screen_text_node.text_disseapear()
 	for item in bullet_obj_array:
-		item.queue_free()
+		if is_instance_valid(item):
+			item.queue_free()
 	bullet_obj_array.resize(0)
 
 

@@ -3,11 +3,11 @@ extends Node3D
 var in_hand : bool = false
 var type : String = "gun"
 var current_target:Node3D
-@onready var animation_player = $Shotgun_Final/AnimationPlayer
-@onready var collision_shape = $CollisionShape3D 
-@onready var gun_shot_audio_stream_player = $GunShotAudioStreamPlayer3D
-@onready var gun_click_audio_stream_player = $GunClickAudioStreamPlayer3D3
-@onready var gun_cock_audio_stream_player = $GunCockAudioStreamPlayer3D2
+@onready var animation_player: AnimationPlayer = $Shotgun_Final/AnimationPlayer
+@onready var collision_shape: CollisionShape3D = $CollisionShape3D 
+@onready var gun_shot_audio_stream_player: AudioStreamPlayer3D = $GunShotAudioStreamPlayer3D
+@onready var gun_click_audio_stream_player: AudioStreamPlayer3D = $GunClickAudioStreamPlayer3D3
+@onready var gun_cock_audio_stream_player: AudioStreamPlayer3D = $GunCockAudioStreamPlayer3D2
 
 
 func _ready():
@@ -18,90 +18,76 @@ func hold():
 	in_hand = true
 	animation_player.play("GUN SELECT")
 	collision_shape.disabled = true
-	while animation_player.is_playing() and animation_player.current_animation == "GUN SELECT":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func drop_gun():
 	in_hand = false
 	animation_player.play("GUN RRETURN")
-	while animation_player.is_playing() and animation_player.current_animation == "GUN RRETURN":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 	collision_shape.disabled = false
 
 
 func enemy_hold():
 	animation_player.play("ENEMY PICKUP")
-	while animation_player.is_playing() and animation_player.current_animation == "ENEMY PICKUP":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func enemy_drop_gun():
 	animation_player.play("ENEMY RETURN GUN")
-	while animation_player.is_playing() and animation_player.current_animation == "ENEMY RETURN GUN":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func player_shoot_self():
 	animation_player.play("AIM  SELF")
-	while animation_player.is_playing() and animation_player.current_animation == "AIM  SELF":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func player_shoot_enemy():
 	animation_player.play("AIM ENEMY")
-	while animation_player.is_playing() and animation_player.current_animation == "AIM ENEMY":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func enemy_shoot_self():
 	animation_player.play("ENEMY KILL SELF")
-	while animation_player.is_playing() and animation_player.current_animation == "ENEMY KILL SELF":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func enemy_shoot_player():
 	animation_player.play("ENEMY KILL AIM ")
-	while animation_player.is_playing() and animation_player.current_animation == "ENEMY KILL AIM ":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func player_shoot_self_return():
 	animation_player.play("SHOOT SELF GUN RETURN")
-	while animation_player.is_playing() and animation_player.current_animation == "SHOOT SELF GUN RETURN":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func player_shoot_enemy_return():
 	animation_player.play("SHOOT ENEMY GUN RETURN")
-	while animation_player.is_playing() and animation_player.current_animation == "SHOOT ENEMY GUN RETURN":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func enemy_shoot_self_return():
 	animation_player.play("ENEMY KILL SELF UNAIM")
-	while animation_player.is_playing() and animation_player.current_animation == "ENEMY KILL SELF UNAIM":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func enemy_shoot_player_return():
 	animation_player.play("ENEMY KILL UNAIM")
-	while animation_player.is_playing() and animation_player.current_animation == "ENEMY KILL UNAIM":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func player_reload():
 	animation_player.play("PLAYER RELOAD")
 	gun_cock_audio_stream_player.play()
-	while animation_player.is_playing() and animation_player.current_animation == "PLAYER RELOAD":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func enemy_reload():
 	animation_player.play("ENEMY RELOAD")
 	gun_cock_audio_stream_player.play()
-	while animation_player.is_playing() and animation_player.current_animation == "ENEMY RELOAD":
-		await get_tree().process_frame
+	await animation_player.animation_finished
 
 
 func shoot_bullet(next_bullet):

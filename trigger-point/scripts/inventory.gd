@@ -81,7 +81,7 @@ func click_item(current_hover_object):
 	if (
 		GameManager.game_state == GameManager.GameState.GETTINGITEM and 
 		not current_hover_object.is_in_group("gun") and 
-		inventory[current_hover_object.slot_number] == null
+		inventory[current_hover_object.slot_number] == null and GameManager.round_ended == false
 	):
 		inventory[current_hover_object.slot_number] = new_item
 		new_item.inventory_slot = current_hover_object.slot_number
@@ -100,15 +100,16 @@ func click_item(current_hover_object):
 		if GameManager.receive_item_count > 0:
 			add_random_item()
 		else:
+			GameManager.receive_item_count = 0
 			GameManager.end_getting_item()
 			GameManager.on_screen_text_node.text_disseapear()
-	elif current_hover_object.is_in_group("gun"):
+	elif current_hover_object.is_in_group("gun") and GameManager.round_ended == false:
 		drop_item()
 		GameManager.shotgun_node.in_hand = true
 		GameManager.on_screen_text_node.shoot_someone_text()
 		update_item_position()
 		await GameManager.shotgun_node.hold()
-	elif not GameManager.game_state == GameManager.GameState.GETTINGITEM and is_instance_valid(inventory[current_hover_object.slot_number]):
+	elif not GameManager.game_state == GameManager.GameState.GETTINGITEM and is_instance_valid(inventory[current_hover_object.slot_number]) and GameManager.round_ended == false:
 		drop_item()
 		inventory[current_hover_object.slot_number].in_hand = true
 		update_item_position()

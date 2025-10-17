@@ -24,9 +24,6 @@ func start_turn():
 			elif rand == 2:
 				# Enereamy shoots you
 				GameManager.shoot(GameManager.enemy, GameManager.player)
-		else:
-			GameManager.game_state = GameManager.GameState.WAITING
-			GameManager.reload()
 
 
 func blood_particles():
