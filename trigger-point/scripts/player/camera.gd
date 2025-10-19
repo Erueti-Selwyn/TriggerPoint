@@ -3,7 +3,7 @@ extends Node3D
 @export var camera: Camera3D
 @export var tilt_strength: float = 10.0
 @export var smoothness: float = 5.0
-@export var max_strength: float = 30.0
+@export var max_strength: float = 1.0
 @export var shake_fade: float = 5.0
 
 var shake_strength: float = 0.0
