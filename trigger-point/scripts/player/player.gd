@@ -1,11 +1,16 @@
 extends Node3D
 
 # Constants
-const ITEM_LERP_SPEED: float = 5
-const DIST = 1000
 
-@export var camera_lerp_speed: int
+# Item transition speed
+const ITEM_LERP_SPEED: float = 5 
+# Distance for raycasting
+const DIST = 1000 
 
+# Camera transition speed
+@export var camera_lerp_speed: int 
+
+# Location references
 @export var used_bullet_pos: Node3D
 @export var center_bullet_pos: Node3D
 @export var player_blood_position: Node3D
@@ -21,6 +26,8 @@ const DIST = 1000
 @export var inventory_root: Node3D
 @export var on_screen_text_node: Label
 
+# Camera reference
+# Hover detection variables (storing current interactive object)
 var camera: Camera3D
 var target_rotation: Vector3
 var current_hover_object: Node
@@ -44,15 +51,16 @@ func _process(_delta: float) -> void:
 	update_text_labels()
 	# Checks mouse position
 	check_mouse_position(get_viewport().get_mouse_position())
-	# Checks if right click
+	# Checks if right click to reposition the item
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		inventory_root.drop_item()
 		inventory_root.update_item_position()
 
-
+# Handles mouse click inputs
 func _input(event):
 	# Checks for click
 	if event is InputEventMouseButton and event.pressed:
+		# If the received input event is a left click, perform click
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			click()
 
@@ -95,10 +103,13 @@ func check_mouse_position(mouse:Vector2):
 
 # Looks through children to find hover script
 func find_hover_script(node):
+	# Checks if the node has a hover method, return if it does
 	if node.has_method("hover"):
 		return node
+	# Loops through child nodes to check each one for hover method 
 	for child in node.get_children():
 		var hover_node = find_hover_script(child)
+		# Return node if it is a hover node
 		if hover_node:
 			return hover_node
 	return null
@@ -133,7 +144,7 @@ func click():
 			# Checks if clicked object is item and clicks it
 			inventory_root.click_item(current_hover_object)
 
-
+# Function for updating the interactive text based on received inputs
 func update_text_labels():
 	# Changes the colour of the text on the table when hovering
 	if (
@@ -150,9 +161,11 @@ func update_text_labels():
 		else:
 			shoot_enemy_label.modulate = GameManager.unhover_text_colour
 	else:
+		# Text color is at default color when hover is not detected
 		shoot_player_label.modulate = GameManager.unhover_text_colour
 		shoot_enemy_label.modulate = GameManager.unhover_text_colour
 	# Changes text on table depending on what is being held
+	# Displays Shoot options when picking up gun, and Use option when an item is picked up
 	if is_instance_valid(inventory_root.held_item) and inventory_root.held_item.type == "gun" and GameManager.loaded_bullets_array.size() > 0:
 		shoot_player_label.visible = true
 		shoot_enemy_label.visible = true
@@ -162,35 +175,43 @@ func update_text_labels():
 		shoot_player_label.visible = true
 		shoot_enemy_label.visible = false
 		shoot_player_label.text = "Use item"
+		# Label is removed for the opposite side of the table when using an item
 		shoot_enemy_label.text = "null"
 	else:
+		# Hides all labels when neither items or gun is being held 
 		shoot_player_label.visible = false
 		shoot_enemy_label.visible = false
 	# Shows item description
 	if is_instance_valid(inventory_root.held_item) and not inventory_root.held_item.is_in_group("gun"):
 		held_item_description_label.visible = true
+		# Displays specific description for each different item
 		held_item_description_label.text = inventory_root.held_item.item_description
 	else:
+		# Hides description when no item is held, or if the player is holding the gun
 		held_item_description_label.visible = false
 
-
-# Starts players turn
+# Starts player's turn
+# Distribute items at the start of the player's turn
 func start_turn():
 	GameManager.get_items()
 
 
 # Calls win function
 func win():
+	# Displays victory screen 
 	win_lose_screen.display_winner(true)
 
 # Calls lose function
 func lose():
+	# Displays lose screen
 	win_lose_screen.display_winner(false)
 
 
 # Creates blood particles for when being shot
 func blood_particles():
+	# Instantiates blood splatter effect from GameManager
 	var blood = GameManager.blood_splatter_particle.instantiate()
 	add_child(blood)
+	# Set the blood splatter position to match with the node inside of previous variable
 	blood.global_position = player_blood_position.global_position
 	blood.emitting = true
